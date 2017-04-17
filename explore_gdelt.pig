@@ -63,12 +63,14 @@ gdelt = LOAD '/Data/GDELT/201704*.export.csv' AS (
     SOURCEURL:chararray
 );
 
-gdelt_w_locs = FILTER gdelt BY (Actor1Geo_Lat IS NOT NULL) AND (Actor1Geo_Long IS NOT NULL);
-/**
-gdelt_part = SAMPLE gdelt_w_locs 0.1;
-**/
+gdelt_w_locs = FILTER gdelt BY (Actor1Geo_Lat IS NOT NULL) 
+                               AND (Actor1Geo_Long IS NOT NULL)
+                               AND (Actor2Geo_Lat IS NOT NULL)
+                               AND (Actor2Geo_Long IS NOT NULL;
 
-miles2atwaters = FOREACH gdelt_w_locs GENERATE 
+-- gdelt_part = SAMPLE gdelt_w_locs 0.1;
+
+milesapart = FOREACH gdelt_w_locs GENERATE 
                     Actor1Name,
                     Actor1CountryCode,
                     Actor2Name,
@@ -79,11 +81,11 @@ miles2atwaters = FOREACH gdelt_w_locs GENERATE
                     NumArticles,
                     Actor1Geo_FullName,
                     Actor2Geo_FullName,
-                    DIST(39.364243, -76.608669,
-                        Actor1Geo_Lat, Actor1Geo_Long) AS miles2atwaters;
+                    DIST(Actor1Geo_Lat, Actor1Geo_Long,
+                        Actor2Geo_Lat, Actor2Geo_Long) AS milesapart;
                         
-mostmiles2atwaters = ORDER miles2atwaters BY miles2atwaters DESC;
+mostmilesapart = ORDER milesapart BY milesapart DESC;
 
-farthest_events = LIMIT mostmiles2atwaters 10;
+farthest_apart = LIMIT mostmilesapart 10;
 
-DUMP farthest_events;                        
+DUMP farthest_apart;                        
