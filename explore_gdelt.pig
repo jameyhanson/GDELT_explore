@@ -66,7 +66,7 @@ gdelt = LOAD '/Data/GDELT/201704*.export.csv' AS (
 gdelt_w_locs = FILTER gdelt BY (Actor1Geo_Lat IS NOT NULL) 
                                AND (Actor1Geo_Long IS NOT NULL)
                                AND (Actor2Geo_Lat IS NOT NULL)
-                               AND (Actor2Geo_Long IS NOT NULL;
+                               AND (Actor2Geo_Long IS NOT NULL);
 
 -- gdelt_part = SAMPLE gdelt_w_locs 0.1;
 
