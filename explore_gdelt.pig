@@ -56,11 +56,11 @@ gdelt = LOAD '/Data/GDELT/201704*.export.csv' AS (
     ActionGeo_FullName:chararray,
     ActionGeo_CountryCode:chararray,
     ActionGeo_ADM1Code:chararray,
-    ActionGeo_Lat:flaot,
+    ActionGeo_Lat:float,
     ActionGeo_Long:float,
     ActionGeo_FeatureID:chararray,
     DATEADDED:long,
-    SOURCEURL:url
+    SOURCEURL:chararray
 );
 
 gdelt_part = SAMPLE gdelt 0.01;
@@ -73,7 +73,7 @@ miles2atwaters = FOREACH gdelt_part GENERATE
                     GoldsteinScale,
                     NumMentions,
                     NumSources,
-                    NumArticle,
+                    NumArticles,
                     Actor1Geo_FullName,
                     Actor2Geo_FullName,
                     DIST(39.364243, -76.608669,
