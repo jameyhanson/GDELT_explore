@@ -2,7 +2,7 @@
 REGISTER '/opt/cloudera/parcels/CDH-5.10.0-1.cdh5.10.0.p0.41/lib/pig/datafu.jar';
 DEFINE DIST datafu.pig.geo.HaversineDistInMiles;
 
-gdelt = LOAD '/Data/GDELT/201704??.export.csv' AS (
+gdelt = LOAD '/Data/GDELT/201704*.export.csv' AS (
     GLOBALEVENTID:long,
     SQLDATE:long,
     MonthYear:long,
@@ -62,3 +62,25 @@ gdelt = LOAD '/Data/GDELT/201704??.export.csv' AS (
     DATEADDED:long,
     SOURCEURL:url
 );
+
+gdelt_part = SAMPLE gdelt 0.01;
+
+miles2atwaters = FOREACH gdelt_part GENERATE 
+                    Actor1Name,
+                    Actor1CountryCode,
+                    Actor2Name,
+                    Actor2CountryCode,
+                    GoldsteinScale,
+                    NumMentions,
+                    NumSources,
+                    NumArticle,
+                    Actor1Geo_FullName,
+                    Actor2Geo_FullName,
+                    DIST(39.364243, -76.608669,
+                        Actor1Geo_Lat, Actor1Geo_Long) AS miles2atwaters;
+                        
+mostmiles2atwaters = ORDER miles2atwaters BY miles2atwaters DESC;
+
+farthest_events = LIMIT mostmiles2atwaters 10;
+
+DUMP farthest_events;                        
