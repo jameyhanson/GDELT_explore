@@ -2,7 +2,7 @@
 REGISTER '/opt/cloudera/parcels/CDH-5.11.0-1.cdh5.11.0.p0.34/lib/pig/datafu.jar';
 DEFINE DIST datafu.pig.geo.HaversineDistInMiles;
 
-gdelt = LOAD '/Data/GDELT/201704*.export.csv' AS (
+gdelt = LOAD '/Data/GDELT_v2/events/201704*.export.csv' AS (
     GLOBALEVENTID:long,
     SQLDATE:long,
     MonthYear:long,
