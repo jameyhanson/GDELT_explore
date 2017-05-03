@@ -1,5 +1,5 @@
 -- Register DataFu and define an alias for the function
-REGISTER '/opt/cloudera/parcels/CDH-5.10.0-1.cdh5.10.0.p0.41/lib/pig/datafu.jar';
+REGISTER '/opt/cloudera/parcels/CDH-5.11.0-1.cdh5.11.0.p0.34/lib/pig/datafu.jar';
 DEFINE DIST datafu.pig.geo.HaversineDistInMiles;
 
 gdelt = LOAD '/Data/GDELT/201704*.export.csv' AS (
