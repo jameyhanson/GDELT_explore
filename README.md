@@ -64,7 +64,7 @@ alias pig6='$PIG_HOME/bin/pig'
 3.  Verify the version and cluster connection for Pig
 `$PIG_HOME/bin/pig --version`
 `grunt> ls /user` Expect the directory structure of hdfs `/user/`
-### Install Tex 0.7.0
+### Install Tez 0.7.0
 NOTE:  The Tez UI was not used or installed  
 1. Download and untar Tez 0.7.0 source.
 `wget http://archive.apache.org/dist/tez/0.7.0/apache-tez-0.7.0-src.tar.gz`
