@@ -27,15 +27,15 @@ wget http://mirror.nexcess.net/apache/maven/maven-3/3.3.9/binaries/apache-maven-
 sudo tar -xvf apache-maven-3.3.9-bin.tar.gz -C /usr/local/
 export PATH=$PATH:/usr/local/apache-maven-3.3.9/bin
 export JAVA_HOME=/usr/java/jdk1.7.0_67-cloudera
-mvn -version
 ```
-expect Apache Maven 3.3.9
-Relax `/usr/local` permissions.  `sudo chmod -R ugo+rwx /usr/local`
-3.  Download Protobuf 2.5.0  
+`mvn -version`  expect Apache Maven 3.3.9
+3. Relax `/usr/local` permissions.  
+`sudo chmod -R ugo+rwx /usr/local`
+4.  Download Protobuf 2.5.0  
 NOTE:  The Yum install does not include protoc, so it must be made.  
 wget https://github.com/google/protobuf/releases/download/v2.5.0/protobuf-2.5.0.tar.gz
 `tar -xvf protobuf-2.5.0.tar.gz`
-4. Make Protobuf
+5. Make Protobuf
 ```
 cd protobuf-2.5.0
 ./configure --prefix=/usr
@@ -43,7 +43,7 @@ make
 make check
 sudo make install
 ```
-5. Verify that protoc is installed correctly
+6. Verify that protoc is installed correctly
 `export LD_LIBRARY_PATH=/usr/lib`
 `protoc --version` expect `libprotoc 2.5.0`
 ### Install Pig 0.16
@@ -63,5 +63,55 @@ alias pig6='$PIG_HOME/bin/pig'
 ```
 3.  Verify the version and cluster connection for Pig
 `$PIG_HOME/bin/pig --version`
-`grunt> ls /user`
+`grunt> ls /user` Expect the directory structure of hdfs `/user/`
+### Install Tex 0.7.0
+NOTE:  The Tez UI was not used or installed  
+1. Download and untar Tez 0.7.0 source.
+`wget http://archive.apache.org/dist/tez/0.7.0/apache-tez-0.7.0-src.tar.gz`
+`tar -xvf apache-tez-0.7.0-src.tar.gz`
+2. Edit `pom.xml`
+`cd apache-tez-0.7.0-src`
+Set the values:
+```
+<pig.version>0.16.0</pig.version>
+<hadoop.version>2.6.0</hadoop.version>
+```
+3. Build Tex with Maven  
+`mvn clean package -DskipTests=true`
+4. Copy to tez-0.7.0-minimal.tar.gz to HDFS
+```
+cd ./tez-dist/target
+cp tez-0.7.0.tar.gz /tmp
+sudo -u hdfs hdfs dfs -mkdir -p /apps/tez-0.7.0
+sudo -u hdfs hdfs dfs -put /tmp/tez-0.7.0.tar.gz /apps/tez-0.7.0
+```
+5.  Create a `tez-site.xml` file in the `$TEZ_CONF_DIR` directory, `/etc/hadoop/conf`, with:
+```
+<configuration>
+    <property>
+        <name>tez.lib.uris</name>
+        <value>hdfs:///apps/tez-0.7.0/tez-0.7.0.tar.gz</value>
+    </property>
+</configuration>
+```
+6. Create local `$TEZ_JARS`
+```
+mkdir /usr/local/tez_jars
+tar -xvf ~/apache-tez-0.7.0-src/tez-dist/target/tez-0.7.0.tar.gz -C /usr/local/tez_jars 
+chmod -R 777 /usr/local/tez_jars
+```
+7. Setup and source the environment for Pig 0.16 and Tex 0.7.0
+```
+export PATH=$PATH:/usr/local/apache-maven-3.3.9/bin
+export JAVA_HOME=/usr/java/jdk1.7.0_67-cloudera
+export LD_LIBRARY_PATH=/usr/lib
+export PIG_HOME=/usr/local/pig-0.16.0
+export HADOOP_CONF_DIR=/etc/hadoop/conf/
+export HADOOP_USER_CLASSPATH_FIRST=true
+export PATH=$PATH:$PIG_HOME/bin
+export TEZ_CONF_DIR=/etc/hadoop/conf
+export TEZ_JARS=/usr/local/tez_jars
+export HADOOP_CLASSPATH=${TEZ_CONF_DIR}:${TEZ_JARS}:${TEZ_JARS}/lib:${HADOOP_CLASSPATH}:${JAVA_JDBC_LIBS}:${MAPREDUCE_LIBS}
+alias pig6='$PIG_HOME/bin/pig'
+```
 
