@@ -5,7 +5,7 @@ GDELT data is available as an AWS public dataset, documented [here] (https://aws
 
 NOTE:  CDH 5.x incudes Pig 0.13 and does not include Tez, which means that Pig 0.16 and Tez 0.70 must be installed.  
 
-### Install AWS-CLI and `distcp` the GDELT dataset
+### Install AWS-CLI and `distcp` the GDELT dataset to your cluster
 1. Install AWS-CLI  
 AWS-CLI [installation documentation] (http://docs.aws.amazon.com/cli/latest/userguide/installing.html)
 2. Review the GDELT dataset
@@ -18,7 +18,7 @@ hdfs dfs -mv /Data/GDELT_v2/events/200?.csv /Data/GDELT_v1/events
 hdfs dfs -mv /Data/GDELT_v2/events/200???.csv /Data/GDELT_v1/events
 hdfs dfs -mv /Data/GDELT_v2/events/201???.csv /Data/GDELT_v1/events
 ```
-### Install Pig 0.16 and Tez 0.70 on a CDH 5.11 cluster
+### Install Maven and build Protobuf
 1.  Install `bzip2`, `gcc*`, and `wget`  
 yum -y install bzip2 gcc* wget
 2. Install Maven.  
@@ -44,5 +44,24 @@ make check
 sudo make install
 ```
 5. Verify that protoc is installed correctly
-```export LD_LIBRARY_PATH=/usr/lib```
-```protoc --version``` expect ```libprotoc 2.5.0```
+`export LD_LIBRARY_PATH=/usr/lib`
+`protoc --version` expect `libprotoc 2.5.0`
+### Install Pig 0.16
+1. Download Pig
+```
+wget http://www.us.apache.org/dist/pig/pig-0.16.0/pig-0.16.0.tar.gz
+sudo tar -xvf pig-0.16.0.tar.gz -C /usr/local
+```
+2. Setup environment  
+```export JAVA_HOME=/usr/java/jdk1.7.0_67-cloudera
+export PIG_HOME=/usr/local/pig-0.16.0
+export HADOOP_CONF_DIR=/etc/hadoop/conf/
+export HADOOP_USER_CLASSPATH_FIRST=true
+export PATH=$PATH:$PIG_HOME/bin
+export LD_LIBRARY_PATH=/usr/lib
+alias pig6='$PIG_HOME/bin/pig'
+```
+3.  Verify the version and cluster connection for Pig
+`$PIG_HOME/bin/pig --version`
+`grunt> ls /user`
+
