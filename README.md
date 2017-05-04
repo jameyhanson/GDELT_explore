@@ -28,20 +28,22 @@ wget http://mirror.nexcess.net/apache/maven/maven-3/3.3.9/binaries/apache-maven-
 sudo tar -xvf apache-maven-3.3.9-bin.tar.gz -C /usr/local/
 export PATH=$PATH:/usr/local/apache-maven-3.3.9/bin
 export JAVA_HOME=/usr/java/jdk1.7.0_67-cloudera
-mvn -version  expect Apache Maven 3.3.9
+mvn -version
 ```
-Set /usr/local permissions
-sudo chmod -R ugo+rwx /usr/local
-Install protobuf 2.5.0
-NOTE:  The Yum install does not include protoc, so it must be mad
+expect Apache Maven 3.3.9
+Relax `/usr/local` permissions.  `sudo chmod -R ugo+rwx /usr/local`
+3.  Download Protobuf 2.5.0  
+NOTE:  The Yum install does not include protoc, so it must be made.  
 wget https://github.com/google/protobuf/releases/download/v2.5.0/protobuf-2.5.0.tar.gz
-tar -xvf protobuf-2.5.0.tar.gz
-Run make
+`tar -xvf protobuf-2.5.0.tar.gz`
+4. Make Protobuf
+```
 cd protobuf-2.5.0
 ./configure --prefix=/usr
 make
 make check
 sudo make install
-Verify that protoc is installed correctly
-export LD_LIBRARY_PATH=/usr/lib
-protoc --version expect libprotoc 2.5.0
+```
+5. Verify that protoc is installed correctly
+```export LD_LIBRARY_PATH=/usr/lib```
+```protoc --version``` expect ```libprotoc 2.5.0```
