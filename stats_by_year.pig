@@ -1,4 +1,9 @@
--- Load GDELT records into relation and count
+-- Register DataFu and define an alias for the function
+-- https://datafu.incubator.apache.org/docs/datafu/guide.html
+
+REGISTER '/opt/cloudera/parcels/CDH-5.11.0-1.cdh5.11.0.p0.34/lib/pig/datafu.jar';
+DEFINE DIST datafu.pig.geo.HaversineDistInMiles;
+DEFINE Quantile datafu.pig.stats.StreamingQuantile('0.0','0.05', '0.25', '0.5', '0.75', '0.9', '1.0');
 
 gdelt_v1 = LOAD '/data/gdelt_v1/events/' AS (
     GLOBALEVENTID:long,
@@ -143,3 +148,14 @@ gdelt_v2_nums = FOR EACH gdelt_v2_samp GENERATE
     AvgTone;
 
 gdelt_nums = UNION ONSCHEMA gdelt_v1_nums, gdelt_v2_nums;
+
+quantiles = FOREACH (GROUP input ALL) GENERATE Quantile(input.val);
+gdelt_quantiles = FOREACH (GROUP gdelt_nums) GENERATE 
+    year,
+    Quantile(gdelt_nums.GoldsteinScale), 
+    Quantile(gdelt_nums.NumMentions),
+    Quantile(gdelt_nums.NumSource), 
+    Quantile(gdelt_nums.NumArticles), 
+    Quantile(gdelt_nums.AvgTone); 
+ 
+ STORE gdelt_quantiles INTO 'gdelt_quantiles';
