@@ -147,7 +147,7 @@ gdelt_v2_nums = FOREACH gdelt_v2_samp GENERATE
     NumArticles,
     AvgTone;
 
-gdelt_nums = SAMPLE gdelt_v2_nums 0.5;
+gdelt_nums = UNION gdelt_v1_nums gdelt_v2_nums;
 
 DESCRIBE gdelt_nums;
 
