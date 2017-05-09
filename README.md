@@ -12,11 +12,11 @@ AWS-CLI [installation documentation] (http://docs.aws.amazon.com/cli/latest/user
 `aws s3 ls s3://gdelt-open-data/events/ --recursive --human-readable --summarize`
 3. Copy GDELT.  The scripts assume `/Data/GDELT_v[1-2]/events`.  The format changed slightly, which is why we put the files in two directories.  
 ```
-hadoop distcp -Dfs.s3n.awsAccessKeyId=XXXXXXXXXXXXXXXXXXXX -Dfs.s3n.awsSecretAccessKey=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX s3n://gdelt-open-data/events/ hdfs:///Data/GDELT_v2/
-hdfs dfs -mv /Data/GDELT_v2/events/19??.csv /Data/GDELT_v1/events
-hdfs dfs -mv /Data/GDELT_v2/events/200?.csv /Data/GDELT_v1/events
-hdfs dfs -mv /Data/GDELT_v2/events/200???.csv /Data/GDELT_v1/events
-hdfs dfs -mv /Data/GDELT_v2/events/201???.csv /Data/GDELT_v1/events
+hadoop distcp -Dfs.s3n.awsAccessKeyId=XXXXXXXXXXXXXXXXXXXX -Dfs.s3n.awsSecretAccessKey=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX s3n://gdelt-open-data/events/ hdfs:///data/gdelt_v2/
+hdfs dfs -mv /Data/GDELT_v2/events/19??.csv /data/gdelt_v1/events
+hdfs dfs -mv /Data/GDELT_v2/events/200?.csv /data/gdelt_v1/events
+hdfs dfs -mv /Data/GDELT_v2/events/200???.csv /data/gdelt_v1/events
+hdfs dfs -mv /Data/GDELT_v2/events/201???.csv /data/gdelt_v1/events
 ```
 ### Install Maven and build Protobuf
 1.  Install `bzip2`, `gcc*`, and `wget`  
