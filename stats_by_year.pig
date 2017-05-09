@@ -121,8 +121,25 @@ gdelt_v2 = LOAD '/data/gdelt_v2/events/' AS (
     SOURCEURL:chararray
 );
 
-gdelt = UNION ONSCHEMA gdelt_v1, gdelt_v2;
+gdelt_v1_samp = SAMPLE gdelt_v1 0.01;
+gdelt_v2_samp = SAMPLE gdelt_v2 0.01;
 
-gdelt_count = FOREACH (GROUP gdelt ALL) GENERATE COUNT_STAR(gdelt);
+gdelt_v1_nums = FOR EACH gdelt_v1_samp GENERATE 
+    GLOBALEVENTID,
+    Year,
+    GoldsteinScale,
+    NumMentions,
+    NumSources,
+    NumArticles,
+    AvgTone;
 
-DUMP gdelt_count;
+gdelt_v2_nums = FOR EACH gdelt_v2_samp GENERATE 
+    GLOBALEVENTID,
+    Year,
+    GoldsteinScale,
+    NumMentions,
+    NumSources,
+    NumArticles,
+    AvgTone;
+
+gdelt_nums = UNION ONSCHEMA gdelt_v1_nums, gdelt_v2_nums;
