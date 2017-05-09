@@ -149,13 +149,14 @@ gdelt_v2_nums = FOR EACH gdelt_v2_samp GENERATE
 
 gdelt_nums = UNION ONSCHEMA gdelt_v1_nums, gdelt_v2_nums;
 
-quantiles = FOREACH (GROUP input ALL) GENERATE Quantile(input.val);
-gdelt_quantiles = FOREACH (GROUP gdelt_nums) GENERATE 
-    year,
-    Quantile(gdelt_nums.GoldsteinScale), 
-    Quantile(gdelt_nums.NumMentions),
-    Quantile(gdelt_nums.NumSource), 
-    Quantile(gdelt_nums.NumArticles), 
-    Quantile(gdelt_nums.AvgTone); 
+gdelt_nums_by_year = GROUP gdelt_nums BY Year;
+
+gdelt_quantiles_by_year = FOREACH gdelt_nums_by_year GENERATE
+    group AS year,
+    Quantile(gdelt_nums.GoldsteinScale) AS goldstein_quant, 
+    Quantile(gdelt_nums.NumMentions) AS nummentions_quant,
+    Quantile(gdelt_nums.NumSource) AS numsource_quant, 
+    Quantile(gdelt_nums.NumArticles) AS numarticles_quant, 
+    Quantile(gdelt_nums.AvgTone) AS avgtone_quant; 
  
  STORE gdelt_quantiles INTO 'gdelt_quantiles';
