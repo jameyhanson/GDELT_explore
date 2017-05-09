@@ -147,7 +147,7 @@ gdelt_v2_nums = FOR EACH gdelt_v2_samp GENERATE
     NumArticles,
     AvgTone;
 
-gdelt_nums = UNION ONSCHEMA gdelt_v1_nums, gdelt_v2_nums;
+gdelt_nums = UNION ONSCHEMA gdelt_v1_nums gdelt_v2_nums;
 
 gdelt_nums_by_year = GROUP gdelt_nums BY Year;
 
