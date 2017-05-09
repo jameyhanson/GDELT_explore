@@ -161,4 +161,4 @@ gdelt_quantiles_by_year = FOREACH gdelt_nums_by_year GENERATE
     Quantile(gdelt_nums.NumArticles) AS numarticles_quant, 
     Quantile(gdelt_nums.AvgTone) AS avgtone_quant; 
  
-STORE gdelt_quantiles INTO 'gdelt_quantiles';
+STORE gdelt_quantiles_by_year INTO 'gdelt_quantiles';
