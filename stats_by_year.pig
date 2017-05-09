@@ -151,7 +151,7 @@ gdelt_nums = UNION ONSCHEMA gdelt_v1_nums, gdelt_v2_nums;
 
 DESCRIBE gdelt_nums;
 
--- gdelt_nums_by_year = GROUP gdelt_nums BY Year;
+gdelt_nums_by_year = GROUP gdelt_nums BY Year;
 
 -- gdelt_quantiles_by_year = FOREACH gdelt_nums_by_year GENERATE
 --     group AS year,
