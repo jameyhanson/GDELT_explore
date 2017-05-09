@@ -153,12 +153,12 @@ DESCRIBE gdelt_nums;
 
 gdelt_nums_by_year = GROUP gdelt_nums BY Year;
 
--- gdelt_quantiles_by_year = FOREACH gdelt_nums_by_year GENERATE
---     group AS year,
---    Quantile(gdelt_nums.GoldsteinScale) AS goldstein_quant, 
---    Quantile(gdelt_nums.NumMentions) AS nummentions_quant,
---    Quantile(gdelt_nums.NumSource) AS numsource_quant, 
---    Quantile(gdelt_nums.NumArticles) AS numarticles_quant, 
---    Quantile(gdelt_nums.AvgTone) AS avgtone_quant; 
+gdelt_quantiles_by_year = FOREACH gdelt_nums_by_year GENERATE
+    group AS year,
+    Quantile(gdelt_nums.GoldsteinScale) AS goldstein_quant, 
+    Quantile(gdelt_nums.NumMentions) AS nummentions_quant,
+    Quantile(gdelt_nums.NumSource) AS numsource_quant, 
+    Quantile(gdelt_nums.NumArticles) AS numarticles_quant, 
+    Quantile(gdelt_nums.AvgTone) AS avgtone_quant; 
  
- --STORE gdelt_quantiles INTO 'gdelt_quantiles';
+STORE gdelt_quantiles INTO 'gdelt_quantiles';
