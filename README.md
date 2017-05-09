@@ -1,9 +1,11 @@
 # GDELT_explore
 Explore the [GDELT project](http://gdeltproject.org/ "GDELT project") with Pig-on-MapReduce, Pig-on-Tez and other tools.  This repository is a mix of tool installation, tool exporation, tool performance testing, and data exploration.  
 
-GDELT data is available as an AWS public dataset, documented [here] (https://aws.amazon.com/public-datasets/gdelt/).  That requires installing the AWS-CLI to `distcp` to the cluster.  
+GDELT data is available as an AWS public dataset, documented [here] (https://aws.amazon.com/public-datasets/gdelt/).  The fields are defined [here] (http://data.gdeltproject.org/documentation/GDELT-Data_Format_Codebook.pdf).  That requires installing the AWS-CLI to `distcp` to the cluster.  
 
 NOTE:  CDH 5.x incudes Pig 0.13 and does not include Tez, which means that Pig 0.16 and Tez 0.70 must be installed.  
+
+[Pig cheat-sheet] (https://www.qubole.com/resources/cheatsheet/pig-function-cheat-sheet/).  
 
 ### Install AWS-CLI and `distcp` the GDELT dataset to your cluster
 1. Install AWS-CLI  
