@@ -38,7 +38,7 @@ expect `Apache Maven 3.3.9`
 4.  Download Protobuf 2.5.0  
 NOTE:  The Yum install does not include protoc, so it must be made.  
 `wget https://github.com/google/protobuf/releases/download/v2.5.0/protobuf-2.5.0.tar.gz`  
-`tar -xvf protobuf-2.5.0.tar.gz`
+`tar -xvf protobuf-2.5.0.tar.gz`  
 5. Make Protobuf
 ```
 cd protobuf-2.5.0  
