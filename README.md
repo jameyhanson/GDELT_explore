@@ -32,7 +32,7 @@ export PATH=$PATH:/usr/local/apache-maven-3.3.9/bin`
 export JAVA_HOME=/usr/java/jdk1.7.0_67-cloudera  
 ```
 `mvn -version`  
-expect Apache Maven 3.3.9  
+expect `Apache Maven 3.3.9`  
 3. Relax `/usr/local` permissions.    
 `sudo chmod -R ugo+rwx /usr/local`  
 4.  Download Protobuf 2.5.0  
@@ -47,9 +47,10 @@ make
 make check  
 sudo make install  
 ```
-6. Verify that protoc is installed correctly
+6. Verify that protoc is installed correctly  
 `export LD_LIBRARY_PATH=/usr/lib`
-`protoc --version` expect `libprotoc 2.5.0`
+`protoc --version`  
+expect `libprotoc 2.5.0`
 ### Install Pig 0.16
 1. Download Pig
 ```
