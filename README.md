@@ -48,8 +48,8 @@ make check
 sudo make install  
 ```
 6. Verify that protoc is installed correctly  
-`export LD_LIBRARY_PATH=/usr/lib`
-`protoc --version`  
+`export LD_LIBRARY_PATH=/usr/lib`  
+`protoc --version`   
 expect `libprotoc 2.5.0`
 ### Install Pig 0.16
 1. Download Pig
