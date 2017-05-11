@@ -129,6 +129,20 @@ gdelt_v2 = LOAD '/data/gdelt_v2/events/201???01.export.csv' AS (
 gdelt_v1 = SAMPLE gdelt_v1 0.01;
 gdelt_v2 = SAMPLE gdelt_v2 0.01;
 
+gdelt_v1 = FILTER gdelt_v1 BY (GoldsteinScale IS NOT NULL)
+                               AND (NumMentions IS NOT NULL)
+                               AND (NumSources IS NOT NULL)
+                               AND (NumArticles IS NOT NULL)
+                               AND (AvgTone IS NOT NULL);
+
+
+gdelt_v2 = FILTER gdelt_v2 BY (GoldsteinScale IS NOT NULL)
+                               AND (NumMentions IS NOT NULL)
+                               AND (NumSources IS NOT NULL)
+                               AND (NumArticles IS NOT NULL)
+                               AND (AvgTone IS NOT NULL);
+
+
 gdelt_v1_nums = FOREACH gdelt_v1 GENERATE 
     GLOBALEVENTID,
     Year,
