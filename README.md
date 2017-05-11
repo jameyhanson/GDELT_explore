@@ -80,14 +80,14 @@ cd ~
 wget http://archive.apache.org/dist/tez/0.7.0/apache-tez-0.7.0-src.tar.gz  
 tar -xvf apache-tez-0.7.0-src.tar.gz  
 ```
-2. Edit `pom.xml`  
+2. Edit `.\apache-tez-0.7.0-src\pom.xml`  
 `cd apache-tez-0.7.0-src`  
 Set the values:  
 ```
 <pig.version>0.16.0</pig.version>
 <hadoop.version>2.6.0</hadoop.version>
 ```
-3. Build Tex with Maven  
+3. Build Tez with Maven  
 `mvn clean package -DskipTests=true`
 4. Copy to tez-0.7.0-minimal.tar.gz to HDFS
 ```
