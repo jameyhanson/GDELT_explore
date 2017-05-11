@@ -66,9 +66,10 @@ export PATH=$PATH:$PIG_HOME/bin
 export LD_LIBRARY_PATH=/usr/lib
 alias pig6='$PIG_HOME/bin/pig'
 ```
-3.  Verify the version and cluster connection for Pig
-`$PIG_HOME/bin/pig --version`
-`grunt> ls /user` Expect the directory structure of hdfs `/user/`
+3.  Verify the version and cluster connection for Pig  
+`$PIG_HOME/bin/pig --version`  
+`grunt> ls /user`
+expect the directory structure of hdfs `/user/`  
 ### Install Tez 0.7.0
 NOTE:  The Tez UI was not used or installed  
 1. Download and untar Tez 0.7.0 source.
