@@ -128,8 +128,8 @@ gdelt_v2 = LOAD '/data/gdelt_v2/events/' AS (
     SOURCEURL:chararray
 );
 
-gdelt_v1 = SAMPLE gdelt_v1 0.01;
-gdelt_v2 = SAMPLE gdelt_v2 0.01;
+-- gdelt_v1 = SAMPLE gdelt_v1 0.01;
+-- gdelt_v2 = SAMPLE gdelt_v2 0.01;
 
 gdelt_v1 = FILTER gdelt_v1 BY (GoldsteinScale IS NOT NULL)
                                AND (NumMentions IS NOT NULL)
