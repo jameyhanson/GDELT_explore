@@ -74,12 +74,12 @@ alias pig6='$PIG_HOME/bin/pig'
 expect the directory structure of hdfs `/user/`  
 ### Install Tez 0.7.0
 NOTE:  The Tez UI was not used or installed  
-1. Download and untar Tez 0.7.0 source.
-`wget http://archive.apache.org/dist/tez/0.7.0/apache-tez-0.7.0-src.tar.gz`
-`tar -xvf apache-tez-0.7.0-src.tar.gz`
-2. Edit `pom.xml`
-`cd apache-tez-0.7.0-src`
-Set the values:
+1. Download and untar Tez 0.7.0 source.  
+`wget http://archive.apache.org/dist/tez/0.7.0/apache-tez-0.7.0-src.tar.gz`  
+`tar -xvf apache-tez-0.7.0-src.tar.gz`  
+2. Edit `pom.xml`  
+`cd apache-tez-0.7.0-src`  
+Set the values:  
 ```
 <pig.version>0.16.0</pig.version>
 <hadoop.version>2.6.0</hadoop.version>
