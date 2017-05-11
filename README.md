@@ -19,10 +19,10 @@ The format changed slightly, which is why we put the files in two directories.
 export awsAccessKey=XXXXXXXXXXXXXXXXXXXX
 export awsSecretAccessKey=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 hadoop distcp -Dfs.s3n.awsAccessKeyId=$awsAccessKey -Dfs.s3n.awsSecretAccessKey=$awsSecretAccessKey s3n://gdelt-open-data/events/ hdfs:///data/gdelt_v2/
-sudo -u hdfs hdfs dfs -mv /Data/GDELT_v2/events/19??.csv /data/gdelt_v1/events
-sudo -u hdfs hdfs dfs -mv /Data/GDELT_v2/events/200?.csv /data/gdelt_v1/events
-sudo -u hdfs hdfs dfs -mv /Data/GDELT_v2/events/200???.csv /data/gdelt_v1/events
-sudo -u hdfs hdfs dfs -mv /Data/GDELT_v2/events/201???.csv /data/gdelt_v1/events
+sudo -u hdfs hdfs dfs -mv /data/gdelt_v2/events/19??.csv /data/gdelt_v1/events
+sudo -u hdfs hdfs dfs -mv /data/gdelt_v2/events/200?.csv /data/gdelt_v1/events
+sudo -u hdfs hdfs dfs -mv /data/gdelt_v2/events/200???.csv /data/gdelt_v1/events
+sudo -u hdfs hdfs dfs -mv /data/gdelt_v2/events/201???.csv /data/gdelt_v1/events
 ```
 ### Install Maven and build Protobuf
 1.  Install `bzip2`, `gcc*`, and `wget`  
