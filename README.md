@@ -25,13 +25,13 @@ hdfs dfs -mv /Data/GDELT_v2/events/201???.csv /data/gdelt_v1/events
 1.  Install `bzip2`, `gcc*`, and `wget`  
 `sudo yum -y install bzip2 gcc* wget`  
 2. Install Maven.  
-```
-wget http://mirror.nexcess.net/apache/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.tar.gz  
-sudo tar -xvf apache-maven-3.3.9-bin.tar.gz -C /usr/local/  
-export PATH=$PATH:/usr/local/apache-maven-3.3.9/bin  
-export JAVA_HOME=/usr/java/jdk1.7.0_67-cloudera  
-```
-`mvn -version`  expect Apache Maven 3.3.9  
+`wget http://mirror.nexcess.net/apache/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.tar.gz`  
+`sudo tar -xvf apache-maven-3.3.9-bin.tar.gz -C /usr/local/`  
+`export PATH=$PATH:/usr/local/apache-maven-3.3.9/bin`  
+`export JAVA_HOME=/usr/java/jdk1.7.0_67-cloudera`  
+
+`mvn -version`  
+expect Apache Maven 3.3.9  
 3. Relax `/usr/local` permissions.    
 `sudo chmod -R ugo+rwx /usr/local`  
 4.  Download Protobuf 2.5.0  
