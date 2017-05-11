@@ -36,16 +36,14 @@ expect Apache Maven 3.3.9
 `sudo chmod -R ugo+rwx /usr/local`  
 4.  Download Protobuf 2.5.0  
 NOTE:  The Yum install does not include protoc, so it must be made.  
-wget https://github.com/google/protobuf/releases/download/v2.5.0/protobuf-2.5.0.tar.gz
+`wget https://github.com/google/protobuf/releases/download/v2.5.0/protobuf-2.5.0.tar.gz`  
 `tar -xvf protobuf-2.5.0.tar.gz`
 5. Make Protobuf
-```
-cd protobuf-2.5.0
-./configure --prefix=/usr
-make
-make check
-sudo make install
-```
+`cd protobuf-2.5.0`  
+`./configure --prefix=/usr`  
+`make`  
+`make check`  
+`sudo make install`  
 6. Verify that protoc is installed correctly
 `export LD_LIBRARY_PATH=/usr/lib`
 `protoc --version` expect `libprotoc 2.5.0`
