@@ -126,8 +126,8 @@ gdelt_v2 = LOAD '/data/gdelt_v2/events/201???01.export.csv' AS (
     SOURCEURL:chararray
 );
 
-gdelt_v1 = SAMPLE gdelt_v1 0.01;
-gdelt_v2 = SAMPLE gdelt_v2 0.01;
+gdelt_v1 = SAMPLE gdelt_v1 0.1;
+gdelt_v2 = SAMPLE gdelt_v2 0.1;
 
 gdelt_v1_nums = FOREACH gdelt_v1 GENERATE 
     GLOBALEVENTID,
