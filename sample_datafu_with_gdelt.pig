@@ -1,8 +1,10 @@
+-- Run DataFu.HaversineDistInMiles on a sample of a subset of records
+
 -- Register DataFu and define an alias for the function
 REGISTER '/opt/cloudera/parcels/CDH-5.11.0-1.cdh5.11.0.p0.34/lib/pig/datafu.jar';
 DEFINE DIST datafu.pig.geo.HaversineDistInMiles;
 
-gdelt = LOAD '/Data/GDELT_v2/events/2017????.export.csv' AS (
+gdelt = LOAD '/data/gdelt_v2/events/2017????.export.csv' AS (
     GLOBALEVENTID:long,
     SQLDATE:long,
     MonthYear:long,
@@ -68,7 +70,7 @@ gdelt_w_locs = FILTER gdelt BY (Actor1Geo_Lat IS NOT NULL)
                                AND (Actor2Geo_Lat IS NOT NULL)
                                AND (Actor2Geo_Long IS NOT NULL);
 
-gdelt_w_locs = SAMPLE gdelt_w_locs 0.001;
+gdelt_w_locs = SAMPLE gdelt_w_locs 0.01;
 
 milesapart = FOREACH gdelt_w_locs GENERATE 
                     Actor1Name,
