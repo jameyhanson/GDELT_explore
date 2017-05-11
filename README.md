@@ -70,7 +70,7 @@ alias pig6='$PIG_HOME/bin/pig'
 `$PIG_HOME/bin/pig --version`  
 `pig6 --version`  
 `pig6`  
-`grunt> ls /user`
+`grunt> ls /user`  
 expect the directory structure of hdfs `/user/`  
 ### Install Tez 0.7.0
 NOTE:  The Tez UI was not used or installed  
