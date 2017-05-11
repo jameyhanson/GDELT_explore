@@ -131,14 +131,18 @@ gdelt_v2 = LOAD '/data/gdelt_v2/events/' AS (
 -- gdelt_v1 = SAMPLE gdelt_v1 0.01;
 -- gdelt_v2 = SAMPLE gdelt_v2 0.01;
 
-gdelt_v1 = FILTER gdelt_v1 BY (GoldsteinScale IS NOT NULL)
+gdelt_v1 = FILTER gdelt_v1 BY (GLOVALEVENTID IS NOT NULL)
+                               AND (Year IS NOT NULL)
+                               AND (GoldsteinScale IS NOT NULL)
                                AND (NumMentions IS NOT NULL)
                                AND (NumSources IS NOT NULL)
                                AND (NumArticles IS NOT NULL)
                                AND (AvgTone IS NOT NULL);
 
 
-gdelt_v2 = FILTER gdelt_v2 BY (GoldsteinScale IS NOT NULL)
+gdelt_v2 = FILTER gdelt_v2 BY (GLOVALEVENTID IS NOT NULL)
+                               AND (Year IS NOT NULL)
+                               AND (GoldsteinScale IS NOT NULL)
                                AND (NumMentions IS NOT NULL)
                                AND (NumSources IS NOT NULL)
                                AND (NumArticles IS NOT NULL)
@@ -164,8 +168,6 @@ gdelt_v2_nums = FOREACH gdelt_v2 GENERATE
     AvgTone;
 
 gdelt_nums = UNION ONSCHEMA gdelt_v1_nums, gdelt_v2_nums;
-
-DESCRIBE gdelt_nums;
 
 gdelt_nums_by_year = GROUP gdelt_nums BY Year;
 
