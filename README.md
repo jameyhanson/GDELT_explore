@@ -25,11 +25,12 @@ hdfs dfs -mv /Data/GDELT_v2/events/201???.csv /data/gdelt_v1/events
 1.  Install `bzip2`, `gcc*`, and `wget`  
 `sudo yum -y install bzip2 gcc* wget`  
 2. Install Maven.  
-`wget http://mirror.nexcess.net/apache/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.tar.gz`  
-`sudo tar -xvf apache-maven-3.3.9-bin.tar.gz -C /usr/local/`  
-`export PATH=$PATH:/usr/local/apache-maven-3.3.9/bin`  
-`export JAVA_HOME=/usr/java/jdk1.7.0_67-cloudera`  
-
+```
+wget http://mirror.nexcess.net/apache/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.tar.gz  
+sudo tar -xvf apache-maven-3.3.9-bin.tar.gz -C /usr/local/  
+export PATH=$PATH:/usr/local/apache-maven-3.3.9/bin`  
+export JAVA_HOME=/usr/java/jdk1.7.0_67-cloudera  
+```
 `mvn -version`  
 expect Apache Maven 3.3.9  
 3. Relax `/usr/local` permissions.    
@@ -39,11 +40,13 @@ NOTE:  The Yum install does not include protoc, so it must be made.
 `wget https://github.com/google/protobuf/releases/download/v2.5.0/protobuf-2.5.0.tar.gz`  
 `tar -xvf protobuf-2.5.0.tar.gz`
 5. Make Protobuf
-`cd protobuf-2.5.0`  
-`./configure --prefix=/usr`  
-`make`  
-`make check`  
-`sudo make install`  
+```
+cd protobuf-2.5.0  
+./configure --prefix=/usr  
+make  
+make check  
+sudo make install  
+```
 6. Verify that protoc is installed correctly
 `export LD_LIBRARY_PATH=/usr/lib`
 `protoc --version` expect `libprotoc 2.5.0`
