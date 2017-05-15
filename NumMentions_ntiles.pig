@@ -143,12 +143,12 @@ gdelt_v2_nums = FOREACH gdelt_v2 GENERATE
 
 gdelt_v1 = FILTER gdelt_v1 BY (GLOBALEVENTID IS NOT NULL)
                                AND (Year IS NOT NULL)
-                               AND (NumMentions IS NOT NULL);
+                               AND org.apache.pig.piggybank.evaluation.IsInt(NumMentions);
 
 
 gdelt_v2 = FILTER gdelt_v2 BY (GLOBALEVENTID IS NOT NULL)
                                AND (Year IS NOT NULL)
-                               AND (NumMentions IS NOT NULL);
+                               AND org.apache.pig.piggybank.evaluation.IsInt(NumMentions);
 
 gdelt_nums = UNION ONSCHEMA gdelt_v1_nums, gdelt_v2_nums;
 
