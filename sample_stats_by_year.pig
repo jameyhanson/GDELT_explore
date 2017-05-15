@@ -149,7 +149,7 @@ gdelt_v2_nums = FOREACH gdelt_v2 GENERATE
     NumArticles,
     AvgTone;
 
-gdelt_v1 = FILTER gdelt_v1 BY (GLOVALEVENTID IS NOT NULL)
+gdelt_v1 = FILTER gdelt_v1 BY (GLOBALEVENTID IS NOT NULL)
                                AND (Year IS NOT NULL)
                                AND (GoldsteinScale IS NOT NULL)
                                AND (NumMentions IS NOT NULL)
@@ -158,7 +158,7 @@ gdelt_v1 = FILTER gdelt_v1 BY (GLOVALEVENTID IS NOT NULL)
                                AND (AvgTone IS NOT NULL);
 
 
-gdelt_v2 = FILTER gdelt_v2 BY (GLOVALEVENTID IS NOT NULL)
+gdelt_v2 = FILTER gdelt_v2 BY (GLOBALEVENTID IS NOT NULL)
                                AND (Year IS NOT NULL)
                                AND (GoldsteinScale IS NOT NULL)
                                AND (NumMentions IS NOT NULL)
