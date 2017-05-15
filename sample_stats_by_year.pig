@@ -128,26 +128,8 @@ gdelt_v2 = LOAD '/data/gdelt_v2/events/' AS (
     SOURCEURL:chararray
 );
 
--- gdelt_v1 = SAMPLE gdelt_v1 0.01;
--- gdelt_v2 = SAMPLE gdelt_v2 0.01;
-
-gdelt_v1 = FILTER gdelt_v1 BY (GLOVALEVENTID IS NOT NULL)
-                               AND (Year IS NOT NULL)
-                               AND (GoldsteinScale IS NOT NULL)
-                               AND (NumMentions IS NOT NULL)
-                               AND (NumSources IS NOT NULL)
-                               AND (NumArticles IS NOT NULL)
-                               AND (AvgTone IS NOT NULL);
-
-
-gdelt_v2 = FILTER gdelt_v2 BY (GLOVALEVENTID IS NOT NULL)
-                               AND (Year IS NOT NULL)
-                               AND (GoldsteinScale IS NOT NULL)
-                               AND (NumMentions IS NOT NULL)
-                               AND (NumSources IS NOT NULL)
-                               AND (NumArticles IS NOT NULL)
-                               AND (AvgTone IS NOT NULL);
-
+gdelt_v1 = SAMPLE gdelt_v1 0.01;
+gdelt_v2 = SAMPLE gdelt_v2 0.01;
 
 gdelt_v1_nums = FOREACH gdelt_v1 GENERATE 
     GLOBALEVENTID,
@@ -166,6 +148,23 @@ gdelt_v2_nums = FOREACH gdelt_v2 GENERATE
     NumSources,
     NumArticles,
     AvgTone;
+
+gdelt_v1 = FILTER gdelt_v1 BY (GLOVALEVENTID IS NOT NULL)
+                               AND (Year IS NOT NULL)
+                               AND (GoldsteinScale IS NOT NULL)
+                               AND (NumMentions IS NOT NULL)
+                               AND (NumSources IS NOT NULL)
+                               AND (NumArticles IS NOT NULL)
+                               AND (AvgTone IS NOT NULL);
+
+
+gdelt_v2 = FILTER gdelt_v2 BY (GLOVALEVENTID IS NOT NULL)
+                               AND (Year IS NOT NULL)
+                               AND (GoldsteinScale IS NOT NULL)
+                               AND (NumMentions IS NOT NULL)
+                               AND (NumSources IS NOT NULL)
+                               AND (NumArticles IS NOT NULL)
+                               AND (AvgTone IS NOT NULL);
 
 gdelt_nums = UNION ONSCHEMA gdelt_v1_nums, gdelt_v2_nums;
 
