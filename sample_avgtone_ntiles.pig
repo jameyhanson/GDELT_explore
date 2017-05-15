@@ -134,36 +134,20 @@ gdelt_v2 = SAMPLE gdelt_v2 0.01;
 gdelt_v1_nums = FOREACH gdelt_v1 GENERATE 
     GLOBALEVENTID,
     Year,
-    GoldsteinScale,
-    NumMentions,
-    NumSources,
-    NumArticles,
     AvgTone;
 
 gdelt_v2_nums = FOREACH gdelt_v2 GENERATE 
     GLOBALEVENTID,
     Year,
-    GoldsteinScale,
-    NumMentions,
-    NumSources,
-    NumArticles,
     AvgTone;
 
 gdelt_v1 = FILTER gdelt_v1 BY (GLOVALEVENTID IS NOT NULL)
                                AND (Year IS NOT NULL)
-                               AND (GoldsteinScale IS NOT NULL)
-                               AND (NumMentions IS NOT NULL)
-                               AND (NumSources IS NOT NULL)
-                               AND (NumArticles IS NOT NULL)
                                AND (AvgTone IS NOT NULL);
 
 
 gdelt_v2 = FILTER gdelt_v2 BY (GLOVALEVENTID IS NOT NULL)
                                AND (Year IS NOT NULL)
-                               AND (GoldsteinScale IS NOT NULL)
-                               AND (NumMentions IS NOT NULL)
-                               AND (NumSources IS NOT NULL)
-                               AND (NumArticles IS NOT NULL)
                                AND (AvgTone IS NOT NULL);
 
 gdelt_nums = UNION ONSCHEMA gdelt_v1_nums, gdelt_v2_nums;
@@ -172,11 +156,7 @@ gdelt_nums_by_year = GROUP gdelt_nums BY Year;
 
 gdelt_quantiles_by_year = FOREACH gdelt_nums_by_year GENERATE
     group AS year,
-    Quantile(gdelt_nums.GoldsteinScale) AS goldstein_quant,
-    Quantile(gdelt_nums.NumMentions) AS nummentions_quant,
-    Quantile(gdelt_nums.NumSources) AS numsource_quant, 
-    Quantile(gdelt_nums.NumArticles) AS numarticles_quant, 
     Quantile(gdelt_nums.AvgTone) AS avgtone_quant; 
  
-STORE gdelt_quantiles_by_year INTO 'gdelt_quantiles' 
+STORE gdelt_quantiles_by_year INTO 'gdelt_avgtone_quantiles' 
    USING PigStorage('\t', '-tagsource');
