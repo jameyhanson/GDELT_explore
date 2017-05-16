@@ -66,8 +66,8 @@ gdelt_v1 = LOAD '/data/gdelt_v1/events/19*.csv' AS (
     DATEADDED:long
 );
 
-gdelt_v2 = LOAD '/data/gdelt_v2/events/20?????1.export.csv' AS (
--- gdelt_v2 = LOAD '/data/gdelt_v2/events/' AS (
+-- gdelt_v2 = LOAD '/data/gdelt_v2/events/20?????1.export.csv' AS (
+gdelt_v2 = LOAD '/data/gdelt_v2/events/' AS (
     GLOBALEVENTID:long,
     SQLDATE:long,
     MonthYear:long,
