@@ -135,15 +135,15 @@ STORED AS TEXTFILE;
 LOAD DATA INPATH '/data/gdelt_v2/events/*'
 OVERWRITE INTO TABLE gdelt_v2;
 
-INSERT OVERWRITE gdelt_v1_samp
-SELECT * FROM gdelt_v1
-TABLESAMPLE (1m ROWS) t;
--- TABLESAMPLE (1 PERCENT) t;
+-- INSERT OVERWRITE gdelt_v1_samp
+-- SELECT * FROM gdelt_v1
+-- TABLESAMPLE (1m ROWS) t; -- alternate syntax 1
+-- TABLESAMPLE (1 PERCENT) t; -- alternate syntax 2
 
-INSERT OVERWRITE gdelt_v2_samp
-SELECT * FROM gdelt_v2
-TABLESAMPLE (1m ROWS) t;
--- TABLESAMPLE (1 PERCENT) t;
+-- INSERT OVERWRITE gdelt_v2_samp
+-- SELECT * FROM gdelt_v2
+-- TABLESAMPLE (1m ROWS) t; -- alternate syntax 1
+-- TABLESAMPLE (1 PERCENT) t; -- alternate syntax 2
 
 -- https://cwiki.apache.org/confluence/display/Hive/LanguageManual+UDF
 
