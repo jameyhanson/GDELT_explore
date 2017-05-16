@@ -164,11 +164,11 @@ gdelt_AvgTone_ntiles_by_year = FOREACH gdelt_nums_by_year GENERATE
 gdelt_AvgTone_flat_ntiles_by_year = FOREACH gdelt_AvgTone_ntiles_by_year GENERATE
     year,
     AvgTone_ntile.$0 AS min,
-    AvgTone_ntile.$1 AS zerofive,
-    AvgTone_ntile.$2 AS quarter,
+    AvgTone_ntile.$1 AS q05,
+    AvgTone_ntile.$2 AS q25,
     AvgTone_ntile.$3 AS median,
-    AvgTone_ntile.$4 AS threequarters,
-    AvgTone_ntile.$5 AS ninetyfive,
+    AvgTone_ntile.$4 AS q75,
+    AvgTone_ntile.$5 AS q95,
     AvgTone_ntile.$6 AS max;
     
 STORE gdelt_AvgTone_flat_ntiles_by_year INTO 'gdelt_AvgTone_flat_ntiles_by_year'
