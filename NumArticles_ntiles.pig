@@ -160,11 +160,11 @@ gdelt_NumArticles_ntiles_by_year = FOREACH gdelt_nums_by_year GENERATE
 gdelt_NumArticles_flat_ntiles_by_year = FOREACH gdelt_NumArticles_ntiles_by_year GENERATE
     year,
     NumArticles_ntile.$0 AS min,
-    NumArticles_ntile.$1 AS zerofive,
-    NumArticles_ntile.$2 AS quarter,
+    NumArticles_ntile.$1 AS q05,
+    NumArticles_ntile.$2 AS q25,
     NumArticles_ntile.$3 AS median,
-    NumArticles_ntile.$4 AS threequarters,
-    NumArticles_ntile.$5 AS ninetyfive,
+    NumArticles_ntile.$4 AS q75,
+    NumArticles_ntile.$5 AS q95,
     NumArticles_ntile.$6 AS max;
     
 STORE gdelt_NumArticles_flat_ntiles_by_year INTO 'gdelt_NumArticles_flat_ntiles_by_year'
