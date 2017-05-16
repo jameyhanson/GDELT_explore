@@ -158,5 +158,15 @@ gdelt_NumSources_ntiles_by_year = FOREACH gdelt_nums_by_year GENERATE
     group AS year,
     Quantile(gdelt_nums.NumSources) AS NumSources_ntile; 
  
-STORE gdelt_NumSources_ntiles_by_year INTO 'gdelt_NumSources_ntiles' 
-   USING PigStorage('\t', '-tagsource');
+gdelt_NumSources_flat_ntiles by_year = FOREACH gdelt_NumSources_ntiles_by_year GENERATE
+    year,
+    NumSources_ntile.$1 AS min,
+    NumSources_ntile.$2 AS zerofive,
+    NumSources_ntile.$3 AS quarter,
+    NumSources_ntile.$4 AS median,
+    NumSources_ntile.$5 AS threequarters,
+    NumSources_ntile.$6 AS ninetyfive,
+    NumSources_ntile.$7 AS max;
+    
+STORE gdelt_NumSources_flat_ntiles by_year INTO 'gdelt_NumSources_flat_ntiles by_year'
+    USING PigStorage('\t', '-tagsource');
