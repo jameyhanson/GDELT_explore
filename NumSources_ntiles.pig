@@ -3,7 +3,7 @@
 
 REGISTER '/opt/cloudera/parcels/CDH-5.11.0-1.cdh5.11.0.p0.34/lib/pig/datafu.jar';
 DEFINE DIST datafu.pig.geo.HaversineDistInMiles;
-DEFINE Quantile datafu.pig.stats.StreamingQuantile('0.0','0.05', '0.25', '0.5', '0.75', '0.9', '1.0');
+DEFINE Quantile datafu.pig.stats.StreamingQuantile('0.0', '0.05', '0.25', '0.5', '0.75', '0.9', '1.0');
 
 -- gdelt_v1 = LOAD '/data/gdelt_v1/events/19*.csv' AS (
 gdelt_v1 = LOAD '/data/gdelt_v1/events/' AS (
@@ -160,13 +160,13 @@ gdelt_NumSources_ntiles_by_year = FOREACH gdelt_nums_by_year GENERATE
  
 gdelt_NumSources_flat_ntiles by_year = FOREACH gdelt_NumSources_ntiles_by_year GENERATE
     year,
-    NumSources_ntile.$1 AS min,
-    NumSources_ntile.$2 AS zerofive,
-    NumSources_ntile.$3 AS quarter,
-    NumSources_ntile.$4 AS median,
-    NumSources_ntile.$5 AS threequarters,
-    NumSources_ntile.$6 AS ninetyfive,
-    NumSources_ntile.$7 AS max;
+    NumSources_ntile.$0 AS min,
+    NumSources_ntile.$1 AS q05,
+    NumSources_ntile.$2 AS q25,
+    NumSources_ntile.$3 AS median,
+    NumSources_ntile.$4 AS q75,
+    NumSources_ntile.$5 AS q95,
+    NumSources_ntile.$6 AS max;
     
 STORE gdelt_NumSources_flat_ntiles by_year INTO 'gdelt_NumSources_flat_ntiles by_year'
     USING PigStorage('\t', '-tagsource');
