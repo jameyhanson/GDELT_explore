@@ -135,37 +135,48 @@ STORED AS TEXTFILE;
 LOAD DATA INPATH '/data/gdelt_v2/events/*'
 OVERWRITE INTO TABLE gdelt_v2;
 
--- UPDATING LINE 
+INSERT OVERWRITE gdelt_v1_samp
+SELECT * FROM gdelt_v1
+TABLESAMPLE (1m ROWS) t;
+-- TABLESAMPLE (1 PERCENT) t;
 
--- gdelt_v1 = SAMPLE gdelt_v1 0.1;
--- gdelt_v2 = SAMPLE gdelt_v2 0.1;
+INSERT OVERWRITE gdelt_v2_samp
+SELECT * FROM gdelt_v2
+TABLESAMPLE (1m ROWS) t;
+-- TABLESAMPLE (1 PERCENT) t;
 
-gdelt_v1_nums = FOREACH gdelt_v1 GENERATE 
+-- https://cwiki.apache.org/confluence/display/Hive/LanguageManual+UDF
+
+INSERT OVERWRITE DIRECTORY '/user/pigtez/hive_NumMentions/'
+SELECT
+   MAX(gdelt_ua.NumMentions) AS min_NumMentions,
+   percentile(gdelt_ua.NumMentions,0.05) AS q05, 
+   percentile(gdelt_ua.NumMentions,0.25) AS q25,
+   percentile(gdelt_ua.NumMentions,0.5) AS q50,
+   percentile(gdelt_ua.NumMentions,0.75) AS q75,
+   percentile(gdelt_ua.NumMentions,0.95) AS q95,
+   MAX(gdelt_ua.NumMentions) AS max_NumMentions,
+   Year
+FROM (
+SELECT 
     GLOBALEVENTID,
     Year,
-    NumMentions;
-
-gdelt_v2_nums = FOREACH gdelt_v2 GENERATE 
+    NumMentions
+FROM gdelt_v1
+WHERE (
+    GLOBALEVENTID IS NOT NULL
+    AND Year IS NOT NULL
+    AND (cast(NumMentions AS int) IS NOT NULL)
+    )
+UNION ALL
+SELECT 
     GLOBALEVENTID,
     Year,
-    NumMentions;
-
-gdelt_v1 = FILTER gdelt_v1 BY (GLOBALEVENTID IS NOT NULL)
-                               AND (Year IS NOT NULL)
-                               AND org.apache.pig.piggybank.evaluation.IsInt(NumMentions);
-
-
-gdelt_v2 = FILTER gdelt_v2 BY (GLOBALEVENTID IS NOT NULL)
-                               AND (Year IS NOT NULL)
-                               AND org.apache.pig.piggybank.evaluation.IsInt(NumMentions);
-
-gdelt_nums = UNION ONSCHEMA gdelt_v1_nums, gdelt_v2_nums;
-
-gdelt_nums_by_year = GROUP gdelt_nums BY Year;
-
-gdelt_NumMentions_ntiles_by_year = FOREACH gdelt_nums_by_year GENERATE
-    group AS year,
-    Quantile(gdelt_nums.NumMentions) AS NumMentions_ntile; 
- 
-STORE gdelt_NumMentions_ntiles_by_year INTO 'gdelt_NumMentions_ntiles' 
-   USING PigStorage('\t', '-tagsource');
+    NumMentions
+FROM gdelt_v2
+WHERE (
+    GLOBALEVENTID IS NOT NULL
+    AND Year IS NOT NULL
+    AND (cast(NumMentions AS int) IS NOT NULL)
+    )) gdelt_ua
+GROUP BY gdelt_ua.Year;
