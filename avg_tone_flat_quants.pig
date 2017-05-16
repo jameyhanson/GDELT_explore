@@ -167,4 +167,3 @@ gdelt_tone_quants_by_year = FOREACH gdelt_quantiles_by_year
     
 STORE gdelt_tone_quants_by_year INTO 'gdelt_tone_quants_by_year'
    USING PigStorage('\t', '-tagsource');
-
