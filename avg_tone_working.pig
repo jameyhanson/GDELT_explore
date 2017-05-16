@@ -162,5 +162,9 @@ gdelt_quantiles_by_year = FOREACH gdelt_nums_by_year GENERATE
     group AS year,
     Quantile(gdelt_nums.AvgTone) AS avgtone_quant; 
  
-STORE gdelt_quantiles_by_year INTO 'gdelt_avgtone_ntiles' 
+gdelt_tone_quants_by_year = FOREACH gdelt_quantiles_by_year 
+    GENERATE  $0, flatten($1);
+    
+STORE gdelt_tone_quants_by_year INTO 'gdelt_tone_quants_by_year'
    USING PigStorage('\t', '-tagsource');
+
