@@ -1,7 +1,3 @@
--- Description:
--- Identify hosts that produce articles about the USA with a very negative
---     or very positive tone.
-
 -- Register DataFu and define an alias for the function
 -- https://datafu.incubator.apache.org/docs/datafu/guide.html
 
@@ -9,8 +5,8 @@ REGISTER '/opt/cloudera/parcels/CDH-5.11.0-1.cdh5.11.0.p0.34/lib/pig/datafu.jar'
 DEFINE DIST datafu.pig.geo.HaversineDistInMiles;
 DEFINE Quantile datafu.pig.stats.StreamingQuantile('0.0','0.05', '0.25', '0.5', '0.75', '0.9', '1.0');
 
-gdelt_v1 = LOAD '/data/gdelt_v1/events/19*.csv' AS (
--- gdelt_v1 = LOAD '/data/gdelt_v1/events/' AS (
+-- gdelt_v1 = LOAD '/data/gdelt_v1/events/19*.csv' AS (
+gdelt_v1 = LOAD '/data/gdelt_v1/events/' AS (
     GLOBALEVENTID:long,
     SQLDATE:long,
     MonthYear:long,
@@ -70,8 +66,8 @@ gdelt_v1 = LOAD '/data/gdelt_v1/events/19*.csv' AS (
     DATEADDED:long
 );
 
-gdelt_v2 = LOAD '/data/gdelt_v2/events/20?????1.export.csv' AS (
--- gdelt_v2 = LOAD '/data/gdelt_v2/events/' AS (
+-- gdelt_v2 = LOAD '/data/gdelt_v2/events/20?????1.export.csv' AS (
+gdelt_v2 = LOAD '/data/gdelt_v2/events/' AS (
     GLOBALEVENTID:long,
     SQLDATE:long,
     MonthYear:long,
@@ -132,8 +128,8 @@ gdelt_v2 = LOAD '/data/gdelt_v2/events/20?????1.export.csv' AS (
     SOURCEURL:chararray
 );
 
-gdelt_v1 = SAMPLE gdelt_v1 0.1;
-gdelt_v2 = SAMPLE gdelt_v2 0.1;
+-- gdelt_v1 = SAMPLE gdelt_v1 0.1;
+-- gdelt_v2 = SAMPLE gdelt_v2 0.1;
 
 gdelt_v1_nums = FOREACH gdelt_v1 GENERATE 
     GLOBALEVENTID,
@@ -162,8 +158,5 @@ gdelt_quantiles_by_year = FOREACH gdelt_nums_by_year GENERATE
     group AS year,
     Quantile(gdelt_nums.AvgTone) AS avgtone_quant; 
  
--- gdelt_tone_quants_by_year = FOREACH gdelt_quantiles_by_year 
---    GENERATE year, FLATTEN(avgtone_quant)  AS (f1:float, f2:float, f3:float, f4:float, f5:float, f6:float, f7:float);
-    
--- STORE gdelt_tone_quants_by_year INTO 'gdelt_tone_quants_by_year'
----   USING PigStorage('\t', '-tagsource');
+STORE gdelt_quantiles_by_year INTO 'gdelt_avgtone_ntiles' 
+   USING PigStorage('\t', '-tagsource');
