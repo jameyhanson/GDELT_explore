@@ -160,5 +160,15 @@ gdelt_GoldsteinScale_ntiles_by_year = FOREACH gdelt_nums_by_year GENERATE
     group AS year,
     Quantile(gdelt_nums.GoldsteinScale) AS GoldsteinScale_ntile; 
  
-STORE gdelt_GoldsteinScale_ntiles_by_year INTO 'gdelt_GoldsteinScale_ntiles' 
-   USING PigStorage('\t', '-tagsource');
+gdelt_GoldsteinScale_flat_ntiles_by_year = FOREACH gdelt_GoldsteinScale_ntiles_by_year GENERATE
+    year,
+    GoldsteinScale_ntile.$1 AS min,
+    GoldsteinScale.$2 AS zerofive,
+    GoldsteinScale.$3 AS quarter,
+    GoldsteinScale.$4 AS median,
+    GoldsteinScale.$5 AS threequarters,
+    GoldsteinScale.$6 AS ninetyfive,
+    GoldsteinScale.$7 AS max;
+    
+STORE gdelt_GoldsteinScale_flat_ntiles_by_year INTO 'gdelt_GoldsteinScale_flat_ntiles_by_year'
+    USING PigStorage('\t', '-tagsource');
