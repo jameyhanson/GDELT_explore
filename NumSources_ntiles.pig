@@ -168,5 +168,5 @@ gdelt_NumSources_flat_ntiles_by_year = FOREACH gdelt_NumSources_ntiles_by_year G
     NumSources_ntile.$5 AS q95,
     NumSources_ntile.$6 AS max;
     
-STORE gdelt_NumSources_flat_ntiles by_year INTO 'gdelt_NumSources_flat_ntiles by_year'
+STORE gdelt_NumSources_flat_ntiles_by_year INTO 'gdelt_NumSources_flat_ntiles_by_year'
     USING PigStorage('\t', '-tagsource');
