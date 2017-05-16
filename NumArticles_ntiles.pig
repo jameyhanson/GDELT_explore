@@ -157,7 +157,7 @@ gdelt_NumArticles_ntiles_by_year = FOREACH gdelt_nums_by_year GENERATE
     group AS year,
     Quantile(gdelt_nums.NumArticles) AS NumArticles_ntile; 
  
-gdelt_flat_NumArticles_by_year = FOREACH gdelt_NumArticles_ntiles_by_year GENERATE
+gdelt_NumArticles_flat_ntiles by_year = FOREACH gdelt_NumArticles_ntiles_by_year GENERATE
     year,
     NumArticles_ntile.$1 AS min,
     NumArticles_ntile.$2 AS zerofive,
@@ -167,7 +167,7 @@ gdelt_flat_NumArticles_by_year = FOREACH gdelt_NumArticles_ntiles_by_year GENERA
     NumArticles_ntile.$6 AS ninetyfive,
     NumArticles_ntile.$7 AS max;
     
-STORE gdelt_flat_NumArticles_by_year INTO 'gdelt_ntiles_NumArticles_by_year'
+STORE gdelt_NumArticles_flat_ntiles INTO 'gdelt_NumArticles_flat_ntiles'
     USING PigStorage('\t', '-tagsource');
 
   
