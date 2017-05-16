@@ -165,7 +165,7 @@ gdelt_flat_NumArticles_by_year = FOREACH gdelt_NumArticles_ntiles_by_year GENERA
     NumArticles_ntile.$4 AS median,
     NumArticles_ntile.$5 AS threequarters,
     NumArticles_ntile.$6 AS ninetyfive,
-    NumArticles_ntile.$5 AS max;
+    NumArticles_ntile.$7 AS max;
     
 STORE gdelt_flat_NumArticles_by_year INTO 'gdelt_ntiles_NumArticles_by_year'
     USING PigStorage('\t', '-tagsource');
