@@ -154,9 +154,24 @@ gdelt_nums = UNION ONSCHEMA gdelt_v1_nums, gdelt_v2_nums;
 
 gdelt_nums_by_year = GROUP gdelt_nums BY Year;
 
-gdelt_quantiles_by_year = FOREACH gdelt_nums_by_year GENERATE
+gdelt_AvgTone_ntiles_by_year = FOREACH gdelt_nums_by_year GENERATE
     group AS year,
     Quantile(gdelt_nums.AvgTone) AS avgtone_quant; 
  
-STORE gdelt_quantiles_by_year INTO 'gdelt_avgtone_ntiles' 
-   USING PigStorage('\t', '-tagsource');
+-- gdelt_tone_quants_by_year = FOREACH gdelt_quantiles_by_year 
+--    GENERATE year, FLATTEN(avgtone_quant)  AS (min:float, fifth:float, quarter:float, median:float, threequarters:float, nintyfifth:float, max:float); 
+
+gdelt_AvgTone_flat_ntiles_by_year = FOREACH gdelt_AvgTone_ntiles_by_year GENERATE
+    year,
+    AvgTone_ntile.$1 AS min,
+    AvgTone_ntile.$2 AS zerofive,
+    AvgTone_ntile.$3 AS quarter,
+    AvgTone_ntile.$4 AS median,
+    AvgTone_ntile.$5 AS threequarters,
+    AvgTone_ntile.$6 AS ninetyfive,
+    AvgTone_ntile.$7 AS max;
+    
+STORE gdelt_AvgTone_flat_ntiles_by_year INTO 'gdelt_AvgTone_flat_ntiles_by_year'
+    USING PigStorage('\t', '-tagsource');
+
+
