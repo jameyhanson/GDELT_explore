@@ -78,23 +78,20 @@ gdelt_v2 = LOAD '/data/gdelt_v2/events/20?????1.export.csv' AS (
 
 -- gdelt_v2 = SAMPLE gdelt_v2 0.1;
 
-gdelt_v2 = FILTER gdelt_v2 BY 
-    (
-         (Actor1CountryCode IS NOT NULL ? Actor1CountryCode: 'Z') == 'USA' OR 
-         (Actor2CountryCode IS NOT NULL ? Actor2CountryCode: 'Z') == 'USA' 
-    )
-    AND (AvgTone IS NOT NULL)
-    AND (SOURCEURL IS NOT NULL)
-    AND (AvgTone IS NOT NULL);
-    
 gdelt_v2_nums = FOREACH gdelt_v2 GENERATE 
     GLOBALEVENTID,
     SQLDATE,
-    Actor1CountryCode,
-    Actor2CountryCode,
+    (Actor1CountryCode IS NULL ? 'was_null': Actor1CountryCode) AS Actor1CountryCode,
+    (Actor2CountryCode IS NULL ? 'was_null': Actor2CountryCode) AS Actor2CountryCode,
     AvgTone,
     SOURCEURL,
-    org.apache.pig.piggybank.evaluation.util.apachelogparser.HostExtractor(SOURCEURL) AS host;    
+    (SOURCEURL IS NULL ? 'null' : org.apache.pig.piggybank.evaluation.util.apachelogparser.HostExtractor(SOURCEURL)) AS host;  
+
+gdelt_v2 = FILTER gdelt_v2 BY 
+    (Actor1CountryCode == 'USA' OR Actor2CountryCode == 'USA')
+    AND (AvgTone IS NOT NULL)
+    AND (SOURCEURL IS NOT NULL)
+    AND (host);
     
 ILLUSTRATE gdelt_v2_nums;    
 
