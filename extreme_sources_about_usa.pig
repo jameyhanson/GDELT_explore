@@ -94,7 +94,7 @@ gdelt_v2_nums = FOREACH gdelt_v2 GENERATE
     Actor2CountryCode,
     AvgTone,
     SOURCEURL,
-    org.apache.pig.piggybank.evaluation.util.apachelogparser.HostExtractor(SOURCEURL) AS host);    
+    org.apache.pig.piggybank.evaluation.util.apachelogparser.HostExtractor(SOURCEURL) AS host;    
     
 ILLUSTRATE gdelt_v2_nums;    
 
