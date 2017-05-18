@@ -175,5 +175,5 @@ gdelt_AvgTone_flat_ntiles_by_month = FOREACH gdelt_AvgTone_ntiles_by_month GENER
     AvgTone_ntile.$3 AS plus1sigma,
     AvgTone_ntile.$4 AS plus2sigma;
     
-STORE gdelt_AvgTone_flat_ntiles_by_month INTO 'gdelt_AvgTone_flat_ntiles_by_month'
+STORE gdelt_AvgTone_flat_ntiles_by_month INTO 'gdelt_AvgTone_ntiles_by_month'
     USING PigStorage('\t', '-tagsource');
