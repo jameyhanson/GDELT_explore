@@ -142,38 +142,38 @@ gdelt_v2 = LOAD '/data/gdelt_v2/events/' AS (
 
 gdelt_v1_nums = FOREACH gdelt_v1 GENERATE 
     GLOBALEVENTID,
-    MonthYear,
+    SQLDATE,
     AvgTone;
 
 gdelt_v2_nums = FOREACH gdelt_v2 GENERATE 
     GLOBALEVENTID,
-    MonthYear,
+    SQLDATE,
     AvgTone;
 
 gdelt_v1 = FILTER gdelt_v1 BY (GLOBALEVENTID IS NOT NULL)
-                               AND (MonthYear IS NOT NULL)
+                               AND (SQLDATE IS NOT NULL)
                                AND (AvgTone IS NOT NULL);
 
 
 gdelt_v2 = FILTER gdelt_v2 BY (GLOBALEVENTID IS NOT NULL)
-                               AND (MonthYear IS NOT NULL)
+                               AND (SQLDATE IS NOT NULL)
                                AND (AvgTone IS NOT NULL);
 
 gdelt_nums = UNION ONSCHEMA gdelt_v1_nums, gdelt_v2_nums;
 
-gdelt_nums_by_month = GROUP gdelt_nums BY MonthYear;
+gdelt_nums_by_day = GROUP gdelt_nums BY SQLDATE;
 
-gdelt_AvgTone_ntiles_by_month = FOREACH gdelt_nums_by_month GENERATE
-    group AS month,
+gdelt_AvgTone_ntiles_by_day = FOREACH gdelt_nums_by_day GENERATE
+    group AS day,
     Quantile(gdelt_nums.AvgTone) AS AvgTone_ntile; 
  
-gdelt_AvgTone_flat_ntiles_by_month = FOREACH gdelt_AvgTone_ntiles_by_month GENERATE
-    month,
+gdelt_AvgTone_flat_ntiles_by_day = FOREACH gdelt_AvgTone_ntiles_by_day GENERATE
+    day,
     AvgTone_ntile.$0 AS minus2sigma,
     AvgTone_ntile.$1 AS minus1sigma,
     AvgTone_ntile.$2 AS median,
     AvgTone_ntile.$3 AS plus1sigma,
     AvgTone_ntile.$4 AS plus2sigma;
     
-STORE gdelt_AvgTone_flat_ntiles_by_month INTO 'gdelt_AvgTone_ntiles_by_month'
+STORE gdelt_AvgTone_flat_ntiles_by_day INTO 'gdelt_AvgTone_ntiles_by_day'
     USING PigStorage('\t', '-tagsource');
