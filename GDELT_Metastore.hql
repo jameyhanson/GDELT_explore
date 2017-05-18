@@ -1,7 +1,7 @@
 -- Create Hive Metastore tables related to GDELT and associated
 --    lookup tables
 
-CREATE DATABASE gdelt;
+CREATE DATABASE IF NOT EXISTS gdelt;
 
 CREATE EXTERNAL TABLE IF NOT EXISTS gdelt.country_codes (
     country_code STRING,
