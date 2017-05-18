@@ -5,8 +5,8 @@ REGISTER '/opt/cloudera/parcels/CDH-5.11.0-1.cdh5.11.0.p0.34/lib/pig/datafu.jar'
 DEFINE DIST datafu.pig.geo.HaversineDistInMiles;
 DEFINE Quantile datafu.pig.stats.StreamingQuantile('0.0', '0.05', '0.25', '0.5', '0.75', '0.9', '1.0');
 
--- gdelt_v1 = LOAD '/data/gdelt_v1/events/19*.csv' AS (
-gdelt_v1 = LOAD '/data/gdelt_v1/events/' AS (
+-- gdelt_v1 = LOAD '/data/gdelt_v1/events/' AS (
+gdelt_v1 = LOAD '/data/gdelt_v1/events/19*.csv' AS (
     GLOBALEVENTID:long,
     SQLDATE:long,
     MonthYear:long,
@@ -66,8 +66,8 @@ gdelt_v1 = LOAD '/data/gdelt_v1/events/' AS (
     DATEADDED:long
 );
 
--- gdelt_v2 = LOAD '/data/gdelt_v2/events/20?????1.export.csv' AS (
-gdelt_v2 = LOAD '/data/gdelt_v2/events/' AS (
+-- gdelt_v2 = LOAD '/data/gdelt_v2/events/' AS (
+gdelt_v2 = LOAD '/data/gdelt_v2/events/20?????1.export.csv' AS (
     GLOBALEVENTID:long,
     SQLDATE:long,
     MonthYear:long,
