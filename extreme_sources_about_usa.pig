@@ -80,8 +80,8 @@ gdelt_v2 = LOAD '/data/gdelt_v2/events/20?????1.export.csv' AS (
 
 gdelt_v2 = FILTER gdelt_v2 BY 
     (
-         (Actor1CountryCode IS NOT NULL ? Actor1CountryCode: '') == 'USA' OR 
-         (Actor2CountryCode IS NOT NULL ? Actor2CountryCode: '') == 'USA' 
+         (Actor1CountryCode IS NOT NULL ? Actor1CountryCode: 'Z') == 'USA' OR 
+         (Actor2CountryCode IS NOT NULL ? Actor2CountryCode: 'Z') == 'USA' 
     )
     AND (AvgTone IS NOT NULL)
     AND (SOURCEURL IS NOT NULL)
