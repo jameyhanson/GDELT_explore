@@ -3,20 +3,6 @@
 
 USE gdelt;
 
-CREATE EXTERNAL TABLE IF NOT EXISTS gdelt.avgtone_by_month (
-    month        INT,
-    minus2sigma  FLOAT,
-    minus1sigma  FLOAT,
-    median       FLOAT,
-    plus1sigma   FLOAT,
-    plus2sigma   FLOAT)
-COMMENT 'GDELT AvgTone, grouped by Month'
-ROW FORMAT DELIMITED
-FIELDS TERMINATED BY '\t'
-LINES TERMINATED BY '\n'
-STORED AS TEXTFILE
-LOCATION  '/results/gdelt_AvgTone_ntiles_by_month';
-
 CREATE EXTERNAL TABLE IF NOT EXISTS gdelt.avgtone_by_year (
     year     INT,
     min      FLOAT,
@@ -32,6 +18,34 @@ FIELDS TERMINATED BY '\t'
 LINES TERMINATED BY '\n'
 STORED AS TEXTFILE
 LOCATION  '/results/gdelt_AvgTone_ntiles_by_year';
+
+CREATE EXTERNAL TABLE IF NOT EXISTS gdelt.avgtone_by_month (
+    month        INT,
+    minus2sigma  FLOAT,
+    minus1sigma  FLOAT,
+    median       FLOAT,
+    plus1sigma   FLOAT,
+    plus2sigma   FLOAT)
+COMMENT 'GDELT AvgTone, grouped by Month'
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY '\t'
+LINES TERMINATED BY '\n'
+STORED AS TEXTFILE
+LOCATION  '/results/gdelt_AvgTone_ntiles_by_month';
+
+CREATE EXTERNAL TABLE IF NOT EXISTS gdelt.avgtone_by_day (
+    day        INT,
+    minus2sigma  FLOAT,
+    minus1sigma  FLOAT,
+    median       FLOAT,
+    plus1sigma   FLOAT,
+    plus2sigma   FLOAT)
+COMMENT 'GDELT AvgTone, grouped by Day'
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY '\t'
+LINES TERMINATED BY '\n'
+STORED AS TEXTFILE
+LOCATION  '/results/gdelt_AvgTone_ntiles_by_day';
 
 CREATE EXTERNAL TABLE IF NOT EXISTS gdelt.num_articles_by_year (
     year     INT,
