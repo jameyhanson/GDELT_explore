@@ -156,7 +156,7 @@ gdelt_nums_by_year = GROUP gdelt_nums BY Year;
 
 gdelt_GoldsteinScale_ntiles_by_year = FOREACH gdelt_nums_by_year GENERATE
     group AS year,
-    Quantile(gdelt_nums.GoldsteinScalee) AS GoldsteinScale_ntile; 
+    Quantile(gdelt_nums.GoldsteinScale) AS GoldsteinScale_ntile; 
  
 -- gdelt_tone_quants_by_year = FOREACH gdelt_quantiles_by_year 
 --    GENERATE year, FLATTEN(avgtone_quant)  AS (min:float, fifth:float, quarter:float, median:float, threequarters:float, nintyfifth:float, max:float); 
