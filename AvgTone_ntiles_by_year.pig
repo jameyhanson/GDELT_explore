@@ -171,7 +171,7 @@ gdelt_AvgTone_flat_ntiles_by_year = FOREACH gdelt_AvgTone_ntiles_by_year GENERAT
     AvgTone_ntile.$5 AS q95,
     AvgTone_ntile.$6 AS max;
     
-STORE gdelt_AvgTone_flat_ntiles_by_year INTO 'gdelt_AvgTone_flat_ntiles_by_year'
+STORE gdelt_AvgTone_flat_ntiles_by_year INTO 'gdelt_AvgTone_ntiles_by_year'
     USING PigStorage('\t', '-tagsource');
 
 
