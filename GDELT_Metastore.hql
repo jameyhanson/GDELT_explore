@@ -25,7 +25,7 @@ LOCATION  '/data/ethnic_codes';
 
 CREATE EXTERNAL TABLE IF NOT EXISTS gdelt.known_groups (
     group_code STRING,
-    group[_name STRING)
+    group_name STRING)
 COMMENT 'CAMEO Known Groups'
 ROW FORMAT DELIMITED
 FIELDS TERMINATED BY '\t'
