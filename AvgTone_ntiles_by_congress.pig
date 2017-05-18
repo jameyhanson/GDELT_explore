@@ -143,6 +143,7 @@ gdelt_v1_nums = FOREACH gdelt_v1 GENERATE
 
 gdelt_v2_nums = FOREACH gdelt_v2 GENERATE 
     GLOBALEVENTID,
+    Year,
     (Year + 1)/2 - 894 AS CongressNum,
     AvgTone;
 
@@ -164,7 +165,7 @@ gdelt_AvgTone_ntiles_by_congress = FOREACH gdelt_nums_by_congress GENERATE
     Quantile(gdelt_nums.AvgTone) AS AvgTone_ntile; 
  
 gdelt_AvgTone_flat_ntiles_by_congress = FOREACH gdelt_AvgTone_ntiles_by_congress GENERATE
-    year,
+    CongressNum,
     AvgTone_ntile.$0 AS q05,
     AvgTone_ntile.$1 AS q25,
     AvgTone_ntile.$2 AS median,
