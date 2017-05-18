@@ -1,3 +1,4 @@
+-- Find record where Actor1 and Actor2 are the farthest apart
 -- Run DataFu.HaversineDistInMiles on a sample of a subset of records
 
 -- Register DataFu and define an alias for the function
