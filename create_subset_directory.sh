@@ -1,7 +1,8 @@
 #!/bin/bash
 
 # create subset directory for development
-hdfs dfs -mkdir /data/subset_gdelt_v2/events/
+hdfs dfs -mkdir /data/subset_gdelt_v2/events
+hdfs dfs -mkdir /data/full_gdelt_v2/events
 
 hdfs dfs -cp /data/gdelt_v2/events/20130402.export.csv /data/subset_gdelt_v2/events/
 hdfs dfs -cp /data/gdelt_v2/events/20130602.export.csv /data/subset_gdelt_v2/events/
