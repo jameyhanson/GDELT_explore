@@ -74,16 +74,18 @@ gdelt_v2 = LOAD '/data/gdelt_v2/events/' AS (
     SOURCEURL:chararray
 );
 
-gdelt_v2_sel_fields = FOREACH gdelt_v2 GENERATE 
-    GLOBALEVENTID,
-    SQLDATE,
-    (Actor1CountryCode IS NULL ? 'was_null': Actor1CountryCode) AS Actor1CountryCode,
-    (Actor2CountryCode IS NULL ? 'was_null': Actor2CountryCode) AS Actor2CountryCode,
-    AvgTone,
-    SOURCEURL,
-    (SOURCEURL IS NULL ? 'was_null' : org.apache.pig.piggybank.evaluation.util.apachelogparser.HostExtractor(SOURCEURL)) AS host;  
+ILLUSTRATE gdelt_v2;
+
+--gdelt_v2_sel_fields = FOREACH gdelt_v2 GENERATE 
+--    GLOBALEVENTID,
+--    SQLDATE,
+--    (Actor1CountryCode IS NULL ? 'was_null': Actor1CountryCode) AS Actor1CountryCode,
+--    (Actor2CountryCode IS NULL ? 'was_null': Actor2CountryCode) AS Actor2CountryCode,
+--    AvgTone,
+--    SOURCEURL,
+--    (SOURCEURL IS NULL ? 'was_null' : org.apache.pig.piggybank.evaluation.util.apachelogparser.HostExtractor(SOURCEURL)) AS host;  
     
-ILLUSTRATE gdelt_v2_sel_fields;
+-- ILLUSTRATE gdelt_v2_sel_fields;
 
 -- gdelt_v2_usa = FILTER gdelt_v2_sel_fields BY 
 --    (Actor1CountryCode == 'USA' OR Actor2CountryCode == 'USA')
