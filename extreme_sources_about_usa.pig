@@ -82,14 +82,16 @@ gdelt_v2_sel_fields = FOREACH gdelt_v2 GENERATE
     AvgTone,
     SOURCEURL,
     (SOURCEURL IS NULL ? 'was_null' : org.apache.pig.piggybank.evaluation.util.apachelogparser.HostExtractor(SOURCEURL)) AS host;  
-
-gdelt_v2_usa = FILTER gdelt_v2_sel_fields BY 
-    (Actor1CountryCode == 'USA' OR Actor2CountryCode == 'USA')
-    AND (AvgTone IS NOT NULL)
-    AND (SOURCEURL IS NOT NULL)
-    AND (host IS NOT NULL);
     
-ILLUSTRATE gdelt_v2_usa;    
+ILLUSTRATE gdelt_v2_sel_fields;
+
+-- gdelt_v2_usa = FILTER gdelt_v2_sel_fields BY 
+--    (Actor1CountryCode == 'USA' OR Actor2CountryCode == 'USA')
+--    AND (AvgTone IS NOT NULL)
+--    AND (SOURCEURL IS NOT NULL)
+--    AND (host IS NOT NULL);
+    
+-- ILLUSTRATE gdelt_v2_usa;    
 
 -- gdelt_nums_by_day = GROUP gdelt_nums BY SQLDATE;
 
