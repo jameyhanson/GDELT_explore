@@ -11,11 +11,9 @@
 -- https://datafu.incubator.apache.org/docs/datafu/guide.html
 
 REGISTER '/opt/cloudera/parcels/CDH-5.11.0-1.cdh5.11.0.p0.34/lib/pig/datafu.jar';
-DEFINE DIST datafu.pig.geo.HaversineDistInMiles;
 DEFINE Quantile datafu.pig.stats.StreamingQuantile('0.0455', '0.3173', '0.5', '0.6827', '0.9545');
 
--- gdelt_v2 = LOAD '/data/gdelt_v2/events/' AS (
-gdelt_v2 = LOAD '/data/gdelt_v2/events/20?????1.export.csv' AS (
+gdelt_v2 = LOAD '/data/gdelt_v2/events/' AS (
     GLOBALEVENTID:long,
     SQLDATE:long,
     MonthYear:long,
@@ -76,8 +74,6 @@ gdelt_v2 = LOAD '/data/gdelt_v2/events/20?????1.export.csv' AS (
     SOURCEURL:chararray
 );
 
--- gdelt_v2 = SAMPLE gdelt_v2 0.1;
-
 gdelt_v2_nums = FOREACH gdelt_v2 GENERATE 
     GLOBALEVENTID,
     SQLDATE,
@@ -85,13 +81,13 @@ gdelt_v2_nums = FOREACH gdelt_v2 GENERATE
     (Actor2CountryCode IS NULL ? 'was_null': Actor2CountryCode) AS Actor2CountryCode,
     AvgTone,
     SOURCEURL,
-    (SOURCEURL IS NULL ? 'null' : org.apache.pig.piggybank.evaluation.util.apachelogparser.HostExtractor(SOURCEURL)) AS host;  
+    (SOURCEURL IS NULL ? 'was_null' : org.apache.pig.piggybank.evaluation.util.apachelogparser.HostExtractor(SOURCEURL)) AS host;  
 
 gdelt_v2 = FILTER gdelt_v2 BY 
     (Actor1CountryCode == 'USA' OR Actor2CountryCode == 'USA')
     AND (AvgTone IS NOT NULL)
     AND (SOURCEURL IS NOT NULL)
-    AND (host);
+    AND (host IS NOT NULL);
     
 ILLUSTRATE gdelt_v2_nums;    
 
