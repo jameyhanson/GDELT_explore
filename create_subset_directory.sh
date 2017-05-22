@@ -20,5 +20,5 @@ hdfs dfs -cp /data/gdelt_v2/events/20170402.export.csv /data/subset_gdelt_v2/eve
 hdfs dfs -cp /data/gdelt_v2/events/20170502.export.csv /data/subset_gdelt_v2/events/
 
 # swap directories for development / testing
-# hdfs hdfs -mv /data/gdelt_v2/ /data/full_gdelt_v2/
-# hdfs hdfs -mv /data/subset_gdelt_v2/ /data/gdelt_v2/
+# hdfs dfs -mv /data/gdelt_v2 /data/full_gdelt_v2
+# hdfs dfs -mv /data/subset_gdelt_v2 /data/gdelt_v2
