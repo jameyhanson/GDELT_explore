@@ -76,11 +76,10 @@ gdelt_limited_cols = FOREACH gdelt GENERATE
     Year,
     org.apache.pig.piggybank.evaluation.util.apachelogparser.HostExtractor(SOURCEURL) AS host;
         
-gdelt_by_year_host = GROUP gdelt_limited_cols BY (year, host);
+gdelt_by_year_host = GROUP gdelt_limited_cols BY (Year, host);
 
 gdelt_by_year_host_counts = FOR EACH gdelt_by_year_host GENERATE
-    FLATTEN(group) AS (year, host),
-    year,
+    FLATTEN(group) AS (Year, host),
     COUNT(gdelt_limited_cols.host) AS num_hosts;
 
 
