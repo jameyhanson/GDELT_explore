@@ -74,7 +74,7 @@ gdelt = FILTER gdelt BY (SOURCEURL IS NOT NULL);
 gdelt_limited_cols = FOREACH gdelt GENERATE 
     GLOBALEVENTID,
     Year,
-    org.apache.pig.piggybank.evaluation.util.apachelogparser.HostExtractor(SOURCEURL)) AS host;
+    org.apache.pig.piggybank.evaluation.util.apachelogparser.HostExtractor(SOURCEURL) AS host;
         
 gdelt_by_year_host = GROUP gdelt_limited_cols BY (year, host);
 
