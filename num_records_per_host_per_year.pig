@@ -84,8 +84,8 @@ gdelt_by_year_host_count = FOREACH gdelt_by_year_host GENERATE
     
 gdelt_by_year_host_count = FOREACH gdelt_by_year_host_count GENERATE 
   $0.$1 as Year,
-  $0$1 AS host,
-  $0$2 AS host_count;
+  $0.$1 AS host,
+  $0.$2 AS host_count;
   
 gdelt_by_year_host_count = LIMIT gdelt_by_year_host_count 100;
  
