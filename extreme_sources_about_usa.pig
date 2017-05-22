@@ -74,28 +74,25 @@ gdelt_v2 = LOAD '/data/gdelt_v2/events/' AS (
     SOURCEURL:chararray
 );
 
-ILLUSTRATE gdelt_v2;
-
---gdelt_v2_sel_fields = FOREACH gdelt_v2 GENERATE 
---    GLOBALEVENTID,
---    SQLDATE,
---    (Actor1CountryCode IS NULL ? 'was_null': Actor1CountryCode) AS Actor1CountryCode,
---    (Actor2CountryCode IS NULL ? 'was_null': Actor2CountryCode) AS Actor2CountryCode,
---    AvgTone,
---    SOURCEURL,
---    (SOURCEURL IS NULL ? 'was_null' : org.apache.pig.piggybank.evaluation.util.apachelogparser.HostExtractor(SOURCEURL)) AS host;  
+gdelt_v2_sel_fields = FOREACH gdelt_v2 GENERATE 
+    GLOBALEVENTID,
+    SQLDATE,
+    (Actor1CountryCode IS NULL ? 'was_null': Actor1CountryCode) AS Actor1CountryCode,
+    (Actor2CountryCode IS NULL ? 'was_null': Actor2CountryCode) AS Actor2CountryCode,
+    AvgTone,
+    SOURCEURL,
+    (SOURCEURL IS NULL ? 'was_null' : org.apache.pig.piggybank.evaluation.util.apachelogparser.HostExtractor(SOURCEURL)) AS host;  
     
--- ILLUSTRATE gdelt_v2_sel_fields;
+gdelt_v2_usa = FILTER gdelt_v2_sel_fields BY 
+    (Actor1CountryCode == 'USA' OR Actor2CountryCode == 'USA')
+    AND (AvgTone IS NOT NULL)
+    AND (host IS NOT NULL);
 
--- gdelt_v2_usa = FILTER gdelt_v2_sel_fields BY 
---    (Actor1CountryCode == 'USA' OR Actor2CountryCode == 'USA')
---    AND (AvgTone IS NOT NULL)
---    AND (SOURCEURL IS NOT NULL)
---    AND (host IS NOT NULL);
-    
--- ILLUSTRATE gdelt_v2_usa;    
+gdelt_v2_usa = LIMIT gdelt_v2_usa 10;
 
--- gdelt_nums_by_day = GROUP gdelt_nums BY SQLDATE;
+DUMP gdelt_v2_usa;
+
+-- gdelt_nums_by_day = GROUP gdelt_v2_usa BY SQLDATE;
 
 -- gdelt_AvgTone_ntiles_by_day = FOREACH gdelt_nums_by_day GENERATE
 --     group AS day,
