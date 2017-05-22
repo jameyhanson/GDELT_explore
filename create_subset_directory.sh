@@ -1,8 +1,7 @@
 #!/bin/bash
 
 # create subset directory for development
-hdfs dfs -mkdir /data/subset_gdelt_v2/events
-hdfs dfs -mkdir /data/full_gdelt_v2/events
+hdfs dfs -mkdir -p /data/subset_gdelt_v2/events/
 
 hdfs dfs -cp /data/gdelt_v2/events/20130402.export.csv /data/subset_gdelt_v2/events/
 hdfs dfs -cp /data/gdelt_v2/events/20130602.export.csv /data/subset_gdelt_v2/events/
@@ -23,3 +22,7 @@ hdfs dfs -cp /data/gdelt_v2/events/20170502.export.csv /data/subset_gdelt_v2/eve
 # swap directories for development / testing
 # hdfs dfs -mv /data/gdelt_v2 /data/full_gdelt_v2
 # hdfs dfs -mv /data/subset_gdelt_v2 /data/gdelt_v2
+
+# swap directories for full load
+# hdfs dfs -mv /data/gdelt_v2 /data/subset_gdelt_v2
+# hdfs dfs -mv /data/full_gdelt_v2 /data/gdelt_v2
