@@ -27,6 +27,7 @@ do
         for script in $scripts
         do
             echo $framework $script
+            export HADOOP_OPTS=-Dmapreduce.job.tags=_trial:_$run_num
             /usr/local/pig-0.16.0/bin/pig -x $framework $script
         done
     done
