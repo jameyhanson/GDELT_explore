@@ -172,5 +172,5 @@ gdelt_AvgTone_flat_ntiles_by_congress = FOREACH gdelt_AvgTone_ntiles_by_congress
     AvgTone_ntile.$3 AS q75,
     AvgTone_ntile.$4 AS q95;
     
-STORE gdelt_AvgTone_flat_ntiles_by_congress INTO 'gdelt_AvgTone_ntiles_by_congress'
+STORE gdelt_AvgTone_flat_ntiles_by_congress INTO '/results/gdelt_AvgTone_ntiles_by_congress'
     USING PigStorage('\t', '-tagsource');

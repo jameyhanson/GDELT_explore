@@ -175,5 +175,5 @@ gdelt_AvgTone_flat_ntiles_by_day = FOREACH gdelt_AvgTone_ntiles_by_day GENERATE
     AvgTone_ntile.$3 AS plus1sigma,
     AvgTone_ntile.$4 AS plus2sigma;
     
-STORE gdelt_AvgTone_flat_ntiles_by_day INTO 'gdelt_AvgTone_ntiles_by_day'
+STORE gdelt_AvgTone_flat_ntiles_by_day INTO '/results/gdelt_AvgTone_ntiles_by_day'
     USING PigStorage('\t', '-tagsource');
