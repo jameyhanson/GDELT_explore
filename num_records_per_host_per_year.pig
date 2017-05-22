@@ -79,7 +79,7 @@ gdelt_limited_cols = FOREACH gdelt GENERATE
 gdelt_by_year_host = GROUP gdelt_limited_cols BY (Year, host);
 
 gdelt_by_year_host_counts = FOREACH gdelt_by_year_host GENERATE
-    FLATTEN(group) AS (Year, host) AS year_host,
+    FLATTEN(group) AS (Year, host),
     COUNT(gdelt_limited_cols.host) AS num_hosts;
     
  gdelt_by_year_host_counts = LIMIT gdelt_by_year_host_counts 100;
