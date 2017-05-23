@@ -1,11 +1,13 @@
 -- File: num_records_per_host_per_year.pig
--- For gdelt_v2, which has SOURCEURL
+-- Use gdelt_v2, which has SOURCEURL
+
+-- Generate ntiles for number of records records a host appears in for each month
 
 -- Register DataFu and define an alias for the function
 -- https://datafu.incubator.apache.org/docs/datafu/guide.html
 
 REGISTER '/opt/cloudera/parcels/CDH-5.11.0-1.cdh5.11.0.p0.34/lib/pig/datafu.jar';
-DEFINE Quantile datafu.pig.stats.StreamingQuantile('0.0', '0.05', '0.25', '0.5', '0.75', '0.9', '1.0');
+DEFINE Quantile datafu.pig.stats.StreamingQuantile('0.0455', '0.3173', '0.5', '0.6827', '0.9545');
 
 -- only gdelt_v2 data includes SOURCEURL
 gdelt = LOAD '/data/gdelt_v2/events/' AS (
@@ -73,21 +75,32 @@ gdelt = FILTER gdelt BY (SOURCEURL IS NOT NULL);
 
 gdelt_limited_cols = FOREACH gdelt GENERATE 
     GLOBALEVENTID,
-    Year,
+    MonthYear,
     org.apache.pig.piggybank.evaluation.util.apachelogparser.HostExtractor(SOURCEURL) AS host;
         
-gdelt_by_year_host = GROUP gdelt_limited_cols BY (Year, host);
+by_month_host = GROUP gdelt_limited_cols BY (MonthYear, host);
 
-gdelt_by_year_host_count = FOREACH gdelt_by_year_host GENERATE
-    FLATTEN(group) AS (Year, host),
+by_month_host_count = FOREACH by_month_host GENERATE
+    FLATTEN(group) AS (MonthYear, host),
     COUNT(gdelt_limited_cols.host) AS num_hosts;
     
-gdelt_by_year_host_count = FOREACH gdelt_by_year_host_count GENERATE 
-  $0 as Year,
+by_month_host_count = FOREACH by_month_host_count GENERATE 
+  $0 as MonthYear,
   $1 AS host,
   $2 AS host_count;
   
-gdelt_by_year_host_count = LIMIT gdelt_by_year_host_count 100;
+top_hosts_by_month = FILTER by_month_host_count BY
+    host_count >= 10);
+    
+STORE top_hosts_by_month INTO '/results/top_hosts_by_month'
+    USING PigStorage('\t', '-tagsource');
+    
+host_count_ntiles_by_month = FOREACH by_month_host_count GENERATE
+   group AS month,
+   Quantiles(by_month_host_count.host_count) AS HostCount_ntile;
+
+gdelt_
+   
  
-DUMP gdelt_by_year_host_count;
+DUMP gdelt_by_month_host_count;
 
