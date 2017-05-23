@@ -80,7 +80,7 @@ gdelt_v2_sel_fields = FOREACH gdelt_v2 GENERATE
     (Actor1CountryCode IS NULL ? 'was_null': Actor1CountryCode) AS Actor1CountryCode,
     (Actor2CountryCode IS NULL ? 'was_null': Actor2CountryCode) AS Actor2CountryCode,
     AvgTone,
---    SOURCEURL,
+    SOURCEURL,
     (SOURCEURL IS NULL ? 'was_null' : org.apache.pig.piggybank.evaluation.util.apachelogparser.HostExtractor(SOURCEURL)) AS host;  
     
 gdelt_v2_usa = FILTER gdelt_v2_sel_fields BY 
