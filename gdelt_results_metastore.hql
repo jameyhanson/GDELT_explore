@@ -35,13 +35,11 @@ LOCATION  '/results/gdelt_AvgTone_ntiles_by_year';
 
 CREATE EXTERNAL TABLE IF NOT EXISTS gdelt.avgtone_by_congress (
     CongressNum INT,
-    min      FLOAT,
-    p05      FLOAT,
-    p25      FLOAT,
-    median   FLOAT,
-    p75      FLOAT,
-    p95      FLOAT,
-    max      FLOAT)
+    minus2sigma  FLOAT,
+    minus1sigma  FLOAT,
+    median       FLOAT,
+    plus1sigma   FLOAT,
+    plus2sigma   FLOAT)
 COMMENT 'GDELT AvgTone, grouped by Congress number'
 ROW FORMAT DELIMITED
 FIELDS TERMINATED BY '\t'
