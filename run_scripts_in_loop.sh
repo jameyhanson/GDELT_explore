@@ -5,17 +5,17 @@
 
 # scripts to test
 read -d '' scripts << EOF
-AvgTone_ntiles_by_congress.pig
 AvgTone_ntiles_by_day.pig
 AvgTone_ntiles_by_month.pig
 AvgTone_ntiles_by_year.pig
+AvgTone_ntiles_by_congress.pig
 EOF
 
 frameworks='tez mapreduce'
 # outer loop for frameworks
 for framework in $frameworks
 do
-    echo $framework 'tests'
+    echo "####### $framework tests ######"
     
     # middle loop for run number
     for run_num in {1..3}
@@ -27,7 +27,7 @@ do
         for script in $scripts
         do
             echo $framework $script
-            export HADOOP_OPTS=-Dmapreduce.job.tags=$framework_trial_num:_$run_num
+            export HADOOP_OPTS=-Dmapreduce.job.tags=trial_number:_$run_num
             /usr/local/pig-0.16.0/bin/pig -x $framework $script
         done
     done
