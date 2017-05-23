@@ -33,6 +33,22 @@ LINES TERMINATED BY '\n'
 STORED AS TEXTFILE
 LOCATION  '/results/gdelt_AvgTone_ntiles_by_year';
 
+CREATE EXTERNAL TABLE IF NOT EXISTS gdelt.avgtone_by_congress (
+    CongressNum INT,
+    min      FLOAT,
+    p05      FLOAT,
+    p25      FLOAT,
+    median   FLOAT,
+    p75      FLOAT,
+    p95      FLOAT,
+    max      FLOAT)
+COMMENT 'GDELT AvgTone, grouped by Congress number'
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY '\t'
+LINES TERMINATED BY '\n'
+STORED AS TEXTFILE
+LOCATION  '/results/gdelt_AvgTone_ntiles_by_congress';
+
 CREATE EXTERNAL TABLE IF NOT EXISTS gdelt.num_articles_by_year (
     year     INT,
     min      FLOAT,
