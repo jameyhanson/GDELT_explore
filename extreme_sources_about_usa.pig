@@ -105,4 +105,11 @@ host_count_by_month_ntiles = FOREACH grp_host_count_by_month GENERATE
     FLATTEN(group) AS MonthYear,
     Quantile(host_count_by_month.num_records) AS num_records_ntile;    
    
-DUMP host_count_by_month_ntiles;
+-- DUMP host_count_by_month_ntiles;
+
+joined = JOIN host_count_by_month BY MonthYear,
+    host_count_by_month_ntiles BY MonthYear;
+    
+joined = FILTER joined 100;
+
+DUMP joined;
