@@ -112,4 +112,4 @@ joined = JOIN host_count_by_month BY MonthYear,
     
 joined = LIMIT joined 100;
 
-DUMP joined;
+DESCRIBE joined;
