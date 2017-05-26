@@ -103,6 +103,6 @@ grp_host_count_by_month = GROUP host_count_by_month BY MonthYear;
 --                            echo host has by month, given that the host has one record
 host_count_by_month_ntiles = FOREACH grp_host_count_by_month GENERATE
     FLATTEN(group) AS MonthYear,
-    Quantile(grp_host_count_by_month.num_entries) AS num_entries_ntile;    
+    Quantile(host_count_by_month.num_entries) AS num_entries_ntile;    
    
 DUMP host_count_by_month_ntiles;
