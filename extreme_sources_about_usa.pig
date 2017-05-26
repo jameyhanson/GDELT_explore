@@ -83,14 +83,23 @@ gdelt_v2_sel_fields = FOREACH gdelt_v2 GENERATE
     SOURCEURL,
     (SOURCEURL IS NULL ? 'was_null' : org.apache.pig.piggybank.evaluation.util.apachelogparser.HostExtractor(SOURCEURL)) AS host;  
     
-gdelt_v2_usa = FILTER gdelt_v2_sel_fields BY 
+w_usa_actors = FILTER gdelt_v2_sel_fields BY 
     (Actor1CountryCode == 'USA' OR Actor2CountryCode == 'USA')
     AND (AvgTone IS NOT NULL)
     AND (host IS NOT NULL);
 
-gdelt_v2_usa = LIMIT gdelt_v2_usa 10;
+w_usa_actors_by_day = GROUP w_usa_actors BY (SQLDATE, host);
 
-DUMP gdelt_v2_usa;
+w_usa_actors_daily_count = FOREACH w_usa_actors_by_day GENERATE 
+    FLATTEN(group) AS (SQLDATE, host),
+    COUNT(w_usa_actors_by_day) AS num_records;
+    
+w_usa_actors_daily_count = LIMIT w_usa_actors_daily_count 100;
+
+DUMP w_usa_actors_daily_count;
+
+-- by_clusters = GROUP sample_data by (cluster_id, terms);
+--  by_clusters_terms_count = FOREACH by_clusters GENERATE FLATTEN(group) as (cluster_id, terms), COUNT($1);
 
 -- gdelt_nums_by_day = GROUP gdelt_v2_usa BY SQLDATE;
 
