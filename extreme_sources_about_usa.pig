@@ -91,16 +91,16 @@ w_usa_actors = FILTER gdelt_v2_sel_fields BY
 
 grp_month_host = GROUP w_usa_actors BY (MonthYear,  host);
 
-#  host_count_by_month :: number of records that include an American actor
-#                         for each host grouped by month
+--  host_count_by_month :: number of records that include an American actor
+--                         for each host grouped by month
 host_count_by_month = FOREACH grp_month_host GENERATE 
     FLATTEN(group) AS (MonthYear, host),
     COUNT(w_usa_actors) AS num_entries;
     
 grp_host_count_by_month = GROUP host_count_by_month BY MonthYear;
 
-# host_count_by_month_ntiles :: ntiles of the number of records with an American actor
-#                            echo host has by month, given that the host has one record
+-- host_count_by_month_ntiles :: ntiles of the number of records with an American actor
+--                            echo host has by month, given that the host has one record
 host_count_by_month_ntiles = FOREACH grp_host_count_by_month GENERATE
     FLATTEN(group) AS MonthYear,
     Quantile(by_month_host_count.month_host_counts) AS month_host_counts_ntile;    
