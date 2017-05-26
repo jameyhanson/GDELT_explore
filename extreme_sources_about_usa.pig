@@ -77,6 +77,7 @@ gdelt_v2 = LOAD '/data/gdelt_v2/events/' AS (
 gdelt_v2_sel_fields = FOREACH gdelt_v2 GENERATE 
     GLOBALEVENTID,
     SQLDATE,
+    MonthYear,
     (Actor1CountryCode IS NULL ? 'was_null': Actor1CountryCode) AS Actor1CountryCode,
     (Actor2CountryCode IS NULL ? 'was_null': Actor2CountryCode) AS Actor2CountryCode,
     AvgTone,
@@ -88,10 +89,10 @@ w_usa_actors = FILTER gdelt_v2_sel_fields BY
     AND (AvgTone IS NOT NULL)
     AND (host IS NOT NULL);
 
-by_day_host = GROUP w_usa_actors BY (SQLDATE, host);
+by_day_host = GROUP w_usa_actors BY (SQLDATE,MonthYear,  host);
 
 by_day_host_counts = FOREACH by_day_host GENERATE 
-    FLATTEN(group) AS (SQLDATE, host),
+    FLATTEN(group) AS (SQLDATE,MonthYear, host),
     COUNT(w_usa_actors) AS day_host_counts;
     
 by_day_host_counts = LIMIT by_day_host_counts 100;
