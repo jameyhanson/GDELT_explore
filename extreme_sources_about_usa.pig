@@ -88,15 +88,15 @@ w_usa_actors = FILTER gdelt_v2_sel_fields BY
     AND (AvgTone IS NOT NULL)
     AND (host IS NOT NULL);
 
-w_usa_actors_by_day = GROUP w_usa_actors BY (SQLDATE, host);
+by_day_host = GROUP w_usa_actors BY (SQLDATE, host);
 
-w_usa_actors_daily_count = FOREACH w_usa_actors_by_day GENERATE 
+by_day_host_counts = FOREACH by_day_host GENERATE 
     FLATTEN(group) AS (SQLDATE, host),
-    COUNT(w_usa_actors_by_day) AS num_records;
+    COUNT(w_usa_actors) AS day_host_counts;
     
-w_usa_actors_daily_count = LIMIT w_usa_actors_daily_count 100;
+by_day_host_counts = LIMIT by_day_host_counts 100;
 
-DUMP w_usa_actors_daily_count;
+DUMP by_day_host_counts;
 
 -- by_clusters = GROUP sample_data by (cluster_id, terms);
 --  by_clusters_terms_count = FOREACH by_clusters GENERATE FLATTEN(group) as (cluster_id, terms), COUNT($1);
