@@ -91,30 +91,22 @@ w_usa_actors = FILTER gdelt_v2_sel_fields BY
 
 by_month_host = GROUP w_usa_actors BY (MonthYear,  host);
 
-by_month_host_counts = FOREACH by_month_host GENERATE 
+by_month_host_count = FOREACH by_month_host GENERATE 
     FLATTEN(group) AS (MonthYear, host),
     COUNT(w_usa_actors) AS month_host_counts;
     
-by_month_host_counts = LIMIT by_month_host_counts 100;
+month_host_count_by_month = GROUP by_month_host_count BY MonthYear;
 
-DUMP by_month_host_counts;
-
--- by_clusters = GROUP sample_data by (cluster_id, terms);
---  by_clusters_terms_count = FOREACH by_clusters GENERATE FLATTEN(group) as (cluster_id, terms), COUNT($1);
-
--- gdelt_nums_by_day = GROUP gdelt_v2_usa BY SQLDATE;
-
--- gdelt_AvgTone_ntiles_by_day = FOREACH gdelt_nums_by_day GENERATE
---     group AS day,
---     Quantile(gdelt_nums.AvgTone) AS AvgTone_ntile; 
- 
--- gdelt_AvgTone_flat_ntiles_by_day = FOREACH gdelt_AvgTone_ntiles_by_day GENERATE
---     day,
---     AvgTone_ntile.$0 AS minus2sigma,
---     AvgTone_ntile.$1 AS minus1sigma,
---     AvgTone_ntile.$2 AS median,
---     AvgTone_ntile.$3 AS plus1sigma,
---     AvgTone_ntile.$4 AS plus2sigma;
+month_host_count_ntiles_by_month = FOREACH month_host_count_by_month GENERATE
+    FLATTEN(group) AS MonthYear,
+    Quanitile(by_month_host_count.month_host_counts) AS month_host_counts_ntile;
     
--- STORE gdelt_AvgTone_flat_ntiles_by_day INTO 'gdelt_AvgTone_ntiles_by_day'
---    USING PigStorage('\t', '-tagsource');
+month_host_count_flat_ntiles_by_month = FOREATH month_host_count_ntiles_by_month GENERATE
+    MonthYear,
+    month_host_counts_ntile.$0 AS minus2sigma,
+    month_host_counts_ntile.$1 AS minus1sigma,
+    month_host_counts_ntile.$2 AS median,
+    month_host_counts_ntile.$3 AS plus1sigma,
+    month_host_counts_ntile.$4 AS plus2sigma;
+    
+DUMP month_host_count_flat_ntiles_by_month;
