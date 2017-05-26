@@ -99,7 +99,7 @@ month_host_count_by_month = GROUP by_month_host_count BY MonthYear;
 
 month_host_count_ntiles_by_month = FOREACH month_host_count_by_month GENERATE
     FLATTEN(group) AS MonthYear,
-    Quanitile(by_month_host_count.month_host_counts) AS month_host_counts_ntile;
+    Quantile(by_month_host_count.month_host_counts) AS month_host_counts_ntile;
     
 month_host_count_flat_ntiles_by_month = FOREATH month_host_count_ntiles_by_month GENERATE
     MonthYear,
