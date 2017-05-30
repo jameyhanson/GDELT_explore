@@ -131,22 +131,22 @@ gdelt_v2 = LOAD '/data/gdelt_v2/events/' AS (
 
 gdelt_v1_nums = FOREACH gdelt_v1 GENERATE 
     GLOBALEVENTID,
-    Year,
+    DATEADDED/1000 AS YearAdded,
     NumArticles;
 
 gdelt_v2_nums = FOREACH gdelt_v2 GENERATE 
     GLOBALEVENTID,
-    Year,
+    DATEADDED/1000 AS YearAdded,
     NumArticles;
 
 gdelt_v1 = FILTER gdelt_v1 BY (GLOBALEVENTID IS NOT NULL)
-                               AND (Year IS NOT NULL)
+                               AND (YearAdded IS NOT NULL)
                                AND (NumArticles IS NOT NULL)
                                AND org.apache.pig.piggybank.evaluation.IsInt(NumArticles);
 
 
 gdelt_v2 = FILTER gdelt_v2 BY (GLOBALEVENTID IS NOT NULL)
-                               AND (Year IS NOT NULL)
+                               AND (YearAdded IS NOT NULL)
                                AND org.apache.pig.piggybank.evaluation.IsInt(NumArticles);
 
 gdelt_nums = UNION ONSCHEMA gdelt_v1_nums, gdelt_v2_nums;
@@ -154,7 +154,7 @@ gdelt_nums = UNION ONSCHEMA gdelt_v1_nums, gdelt_v2_nums;
 gdelt_nums_by_year = GROUP gdelt_nums BY Year;
 
 gdelt_NumArticles_ntiles_by_year = FOREACH gdelt_nums_by_year GENERATE
-    group AS year,
+    group AS YearAdded,
     Quantile(gdelt_nums.NumArticles) AS NumArticles_ntile; 
 
 gdelt_NumArticles_flat_ntiles_by_year = FOREACH gdelt_NumArticles_ntiles_by_year GENERATE
