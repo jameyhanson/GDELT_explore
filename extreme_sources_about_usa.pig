@@ -8,8 +8,8 @@
 --      hosts_that_report_alot_on_USA
 --   4. What is the tone of articles about the USA?
 --      tone_of_articles_on_USA
---   5. Which articles about the USA have a very negative tone?
---      very_negative_articles_about_usa
+--   5. Which records about the USA have a very negative tone?
+--      very_negative_records_about_usa
 
 -- AvgTone_ntiles_by_day.pig
 -- Average tone or records in GDELT grouped by year.
@@ -160,10 +160,10 @@ AvgTone_about_USA_by_month_ntiles = FOREACH AvgTone_about_USA_by_month GENERATE
 w_usa_plus_AvgTone_monthly_ntiles = JOIN AvgTone_about_USA_by_month_ntiles BY MonthYearReported,
    w_usa_actors BY MonthYearReported;
     
-very_negative_tone_about_USA = FILTER w_usa_plus_AvgTone_monthly_ntiles BY
+very_negative_records_about_USA = FILTER w_usa_plus_AvgTone_monthly_ntiles BY
     w_usa_actors::AvgTone <= AvgTone_about_USA_by_month_ntiles::AvgTone_ntile.quantile_0_0455;
     
-very_negative_tone_about_USA = LIMIT very_negative_tone_about_USA 100;
-DUMP very_negative_tone_about_USA;
-DESCRIBE very_negative_tone_about_USA;
+very_negative_records_about_USA = LIMIT very_negative_records_about_USA 100;
+DUMP very_negative_records_about_USA;
+DESCRIBE very_negative_records_about_USA;
     
