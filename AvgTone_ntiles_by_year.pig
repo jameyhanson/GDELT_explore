@@ -133,36 +133,36 @@ gdelt_v2 = LOAD '/data/gdelt_v2/events/' AS (
 
 gdelt_v1_nums = FOREACH gdelt_v1 GENERATE 
     GLOBALEVENTID,
-    Year,
+    MonthYearAdded/100 AS YearAdded,
     AvgTone;
 
 gdelt_v2_nums = FOREACH gdelt_v2 GENERATE 
     GLOBALEVENTID,
-    Year,
+    MonthYearAdded/100 AS YearAdded,
     AvgTone;
 
 gdelt_v1 = FILTER gdelt_v1 BY (GLOBALEVENTID IS NOT NULL)
-                               AND (Year IS NOT NULL)
+                               AND (YearAdded IS NOT NULL)
                                AND (AvgTone IS NOT NULL);
 
 
 gdelt_v2 = FILTER gdelt_v2 BY (GLOBALEVENTID IS NOT NULL)
-                               AND (Year IS NOT NULL)
+                               AND (YearAdded IS NOT NULL)
                                AND (AvgTone IS NOT NULL);
 
 gdelt_nums = UNION ONSCHEMA gdelt_v1_nums, gdelt_v2_nums;
 
-gdelt_nums_by_year = GROUP gdelt_nums BY Year;
+gdelt_nums_by_year = GROUP gdelt_nums BY YearAdded;
 
 gdelt_AvgTone_ntiles_by_year = FOREACH gdelt_nums_by_year GENERATE
-    group AS year,
+    group AS YearAdded,
     Quantile(gdelt_nums.AvgTone) AS AvgTone_ntile; 
  
 -- gdelt_tone_quants_by_year = FOREACH gdelt_quantiles_by_year 
---    GENERATE year, FLATTEN(avgtone_quant)  AS (min:float, fifth:float, quarter:float, median:float, threequarters:float, nintyfifth:float, max:float); 
+--    GENERATE YearAdded, FLATTEN(avgtone_quant)  AS (min:float, fifth:float, quarter:float, median:float, threequarters:float, nintyfifth:float, max:float); 
 
 gdelt_AvgTone_flat_ntiles_by_year = FOREACH gdelt_AvgTone_ntiles_by_year GENERATE
-    year,
+    YearAdded,
     AvgTone_ntile.$0 AS min,
     AvgTone_ntile.$1 AS q05,
     AvgTone_ntile.$2 AS q25,
