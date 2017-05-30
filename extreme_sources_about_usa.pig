@@ -93,29 +93,23 @@ grp_month_host = GROUP w_usa_actors BY (MonthYear,  host);
 
 --  host_count_by_month :: number of records that include an American actor
 --                         for each host grouped by month
---  host_count_by_month = (MonthYear, host, num_records)
 host_count_by_month = FOREACH grp_month_host GENERATE 
     FLATTEN(group) AS (MonthYear, host),
     COUNT(w_usa_actors) AS num_records;
-        
+    
 grp_host_count_by_month = GROUP host_count_by_month BY MonthYear;
 
 -- host_count_by_month_ntiles :: ntiles of the number of records with an American actor
 --                            echo host has by month, given that the host has one record
--- host_count_by_month_ntiles = (MonthYear, num_records, num_records_ntile)
 host_count_by_month_ntiles = FOREACH grp_host_count_by_month GENERATE
-    FLATTEN(group) AS (MonthYear, num_records), 
+    FLATTEN(group) AS MonthYear,
     Quantile(host_count_by_month.num_records) AS num_records_ntile;    
    
+-- DUMP host_count_by_month_ntiles;
 
-host_count_by_month_ntiles = LIMIT host_count_by_month_ntiles 100;
-DUMP host_count_by_month_ntiles;
-
-DESCRIBE host_count_by_month_ntiles;
-
--- joined = JOIN host_count_by_month BY MonthYear,
---    host_count_by_month_ntiles BY MonthYear;
+joined = JOIN host_count_by_month BY MonthYear,
+    host_count_by_month_ntiles BY MonthYear;
     
--- joined = LIMIT joined 100;
+joined = LIMIT joined 100;
 
--- DESCRIBE joined;
+DESCRIBE joined;
