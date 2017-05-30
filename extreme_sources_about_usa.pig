@@ -151,7 +151,7 @@ hosts_that_report_alot_on_USA = FILTER host_count_and_ntiles_by_month BY
 --       )
 -- }
 
-AvgTone_about_USA_by_month = w_usa_actors GROUP BY MonthYearReported;
+AvgTone_about_USA_by_month = GROUP w_usa_actors BY MonthYearReported;
 
 AvgTone_about_USA_by_month_ntiles = FOREACH AvgTone_about_USA_by_month GENERATE
     group AS MonthYearReported,
