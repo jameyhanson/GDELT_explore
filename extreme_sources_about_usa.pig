@@ -99,7 +99,7 @@ host_count_by_month = FOREACH grp_month_host GENERATE
     
 grp_host_count_by_month = GROUP host_count_by_month BY MonthYear;
 
--- host_count_by_month_ntiles :: ntiles of the number of records with an American actor
+-- host_count_by_month_ntiles: {ntiles of the number of records with an American actor
 --                            echo host has by month, given that the host has one record
 host_count_by_month_ntiles = FOREACH grp_host_count_by_month GENERATE
     FLATTEN(group) AS MonthYear,
@@ -107,6 +107,19 @@ host_count_by_month_ntiles = FOREACH grp_host_count_by_month GENERATE
    
 -- DUMP host_count_by_month_ntiles;
 
+-- joined: {
+--     host_count_by_month::MonthYear: long,
+-- 	   host_count_by_month::host: chararray,
+-- 	   host_count_by_month::num_records: long,
+-- 	   host_count_by_month_ntiles::MonthYear: long,
+-- 	   host_count_by_month_ntiles::num_records_ntile:(
+-- 	       quantile_0_0455: double,
+-- 		   quantile_0_3173: double,
+-- 		   quantile_0_5: double,
+-- 		   quantile_0_6827: double,
+-- 		   quantile_0_9545: double
+-- 	   )
+-- }
 joined = JOIN host_count_by_month BY MonthYear,
     host_count_by_month_ntiles BY MonthYear;
     
