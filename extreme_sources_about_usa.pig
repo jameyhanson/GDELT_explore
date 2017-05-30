@@ -161,7 +161,7 @@ w_usa_plus_AvgTone_monthly_ntiles = JOIN AvgTone_about_USA_by_month_ntiles BY Mo
    w_usa_actors BY MonthYearReported;
     
 very_negative_tone_about_USA = FILTER w_usa_plus_AvgTone_monthly_ntiles BY
-    host_count_by_month_ntiles::AvgTone <= AvgTone_about_USA_by_month_ntiles::AvgTone_ntile.quantile_0_0455;
+    w_usa_actors::AvgTone <= AvgTone_about_USA_by_month_ntiles::AvgTone_ntile.quantile_0_0455;
     
 very_negative_tone_about_USA = LIMIT very_negative_tone_about_USA 100;
 DUMP very_negative_tone_about_USA;
