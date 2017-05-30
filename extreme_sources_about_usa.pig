@@ -10,7 +10,9 @@
 --      tone_of_articles_on_USA
 --   5. Which articles about the USA have a very negative tone?
 --      very_negative_records_about_usa
---   6. Of the hosts that write a lot about the USA each month,
+--   6. How many very negative tone articles about USA to they write each month?
+--      host_count_very_negative_by_month
+--   7. Of the hosts that write a lot about the USA each month,
 --       which ones have a significant fraction of articles with a very negative tone?
 --       hosts_that_write_mostly_very_negative_articles_about_USA
 
@@ -181,10 +183,11 @@ w_usa_plus_AvgTone_monthly_ntiles = JOIN AvgTone_about_USA_by_month_ntiles BY Mo
 --     w_usa_actors::SOURCEURL: chararray,
 --     w_usa_actors::host: chararray
 -- }
-very_negative_records_about_USA = FILTER w_usa_plus_AvgTone_monthly_ntiles BY
-    w_usa_actors::AvgTone <= AvgTone_about_USA_by_month_ntiles::AvgTone_ntile.quantile_0_0455;
+very_negative_tone_about_USA = FILTER w_usa_plus_AvgTone_monthly_ntiles BY
+    w_usa_actors::AvgTone <= AvgTone_about_USA_by_month_ntiles::AvgTone_ntile.quantile_0_0455;  -- AvgTone_ntile minus2sigma
     
-very_negative_records_about_USA = LIMIT very_negative_records_about_USA 100;
-DUMP very_negative_records_about_USA;
-DESCRIBE very_negative_records_about_USA;
-    
+grp_month_host_very_negative = GROUP very_negative_tone_about_USA BY (MonthYearReported,  host);
+
+host_count__very_negative by_month = FOREACH grp_month_host_very_negative GENERATE 
+    FLATTEN(group) AS (MonthYearReported, host),
+    COUNT(very_negative_tone_about_USA) AS num_records;    
