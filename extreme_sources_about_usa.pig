@@ -186,7 +186,7 @@ w_usa_plus_AvgTone_monthly_ntiles = JOIN AvgTone_about_USA_by_month_ntiles BY Mo
 very_negative_tone_about_USA = FILTER w_usa_plus_AvgTone_monthly_ntiles BY
     w_usa_actors::AvgTone <= AvgTone_about_USA_by_month_ntiles::AvgTone_ntile.quantile_0_0455;  -- AvgTone_ntile minus2sigma
     
-grp_month_host_very_negative = GROUP very_negative_tone_about_USA BY (MonthYearReported,  host);
+grp_month_host_very_negative = GROUP very_negative_tone_about_USA BY (w_usa_actors::MonthYearReported,  w_usa_actors::host);
 
 host_count__very_negative by_month = FOREACH grp_month_host_very_negative GENERATE 
     FLATTEN(group) AS (MonthYearReported, host),
