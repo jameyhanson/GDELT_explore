@@ -124,6 +124,19 @@ host_count_and_ntiles_by_month = JOIN host_count_by_month BY MonthYearAdded,
 hosts_that_report_on_USA = FILTER host_count_and_ntiles_by_month BY 
     host_count_by_month::num_records >= host_count_by_month_ntiles::num_records_ntile.quantile_0_5;
 
+-- hosts_that_report_on_USA: {
+--     host_count_by_month::MonthYearAdded: long,
+--      host_count_by_month::host: chararray,
+--       host_count_by_month::num_records: long,
+--       host_count_by_month_ntiles::MonthYearAdded: long,
+--       host_count_by_month_ntiles::num_records_ntile: (
+--           quantile_0_0455: double,
+--           quantile_0_3173: double,
+--           quantile_0_5: double,
+--           quantile_0_6827: double,
+--           quantile_0_9545: double
+--       )
+-- }
 hosts_that_report_on_USA = LIMIT hosts_that_report_on_USA 100;
 
 DUMP hosts_that_report_on_USA;
