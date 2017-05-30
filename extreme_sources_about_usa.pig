@@ -90,7 +90,7 @@ gdelt_v2 = LOAD '/data/gdelt_v2/events/' AS (
 gdelt_v2_sel_fields = FOREACH gdelt_v2 GENERATE 
     GLOBALEVENTID,
     DATEADDED,
-    DATEADDED/10 AS MonthYearAdded,
+    DATEADDED/10 AS MonthYearReported,
     (Actor1CountryCode IS NULL ? 'was_null': Actor1CountryCode) AS Actor1CountryCode,
     (Actor2CountryCode IS NULL ? 'was_null': Actor2CountryCode) AS Actor2CountryCode,
     AvgTone,
@@ -102,27 +102,27 @@ w_usa_actors = FILTER gdelt_v2_sel_fields BY
     AND (AvgTone IS NOT NULL)
     AND (host IS NOT NULL);
 
-grp_month_host = GROUP w_usa_actors BY (MonthYearAdded,  host);
+grp_month_host = GROUP w_usa_actors BY (MonthYearReported,  host);
 
 --  host_count_by_month :: number of records that include an American actor
 --                         for each host grouped by month
 host_count_by_month = FOREACH grp_month_host GENERATE 
-    FLATTEN(group) AS (MonthYearAdded, host),
+    FLATTEN(group) AS (MonthYearReported, host),
     COUNT(w_usa_actors) AS num_records;
     
-grp_host_count_by_month = GROUP host_count_by_month BY MonthYearAdded;
+grp_host_count_by_month = GROUP host_count_by_month BY MonthYearReported;
 
 -- host_count_by_month_ntiles: {ntiles of the number of records with an American actor
 --                            echo host has by month, given that the host has one record
 host_count_by_month_ntiles = FOREACH grp_host_count_by_month GENERATE
-    FLATTEN(group) AS MonthYearAdded,
+    FLATTEN(group) AS MonthYearReported,
     Quantile(host_count_by_month.num_records) AS num_records_ntile;    
 
 -- host_count_and_ntiles_by_month: {
---     host_count_by_month::MonthYearAdded: long,
+--     host_count_by_month::MonthYearReported: long,
 -- 	   host_count_by_month::host: chararray,
 -- 	   host_count_by_month::num_records: long,
--- 	   host_count_by_month_ntiles::MonthYearAdded: long,
+-- 	   host_count_by_month_ntiles::MonthYearReported: long,
 -- 	   host_count_by_month_ntiles::num_records_ntile:(
 -- 	       quantile_0_0455: double,
 -- 		   quantile_0_3173: double,
@@ -131,17 +131,17 @@ host_count_by_month_ntiles = FOREACH grp_host_count_by_month GENERATE
 -- 		   quantile_0_9545: double
 -- 	   )
 -- }
-host_count_and_ntiles_by_month = JOIN host_count_by_month BY MonthYearAdded,
-    host_count_by_month_ntiles BY MonthYearAdded;
+host_count_and_ntiles_by_month = JOIN host_count_by_month BY MonthYearReported,
+    host_count_by_month_ntiles BY MonthYearReported;
     
 hosts_that_report_alot_on_USA = FILTER host_count_and_ntiles_by_month BY 
     host_count_by_month::num_records >= host_count_by_month_ntiles::num_records_ntile.quantile_0_5;
 
 -- hosts_that_report_alot_on_USA: {
---     host_count_by_month::MonthYearAdded: long,
+--     host_count_by_month::MonthYearReported: long,
 --      host_count_by_month::host: chararray,
 --       host_count_by_month::num_records: long,
---       host_count_by_month_ntiles::MonthYearAdded: long,
+--       host_count_by_month_ntiles::MonthYearReported: long,
 --       host_count_by_month_ntiles::num_records_ntile: (
 --           quantile_0_0455: double,
 --           quantile_0_3173: double,
@@ -150,10 +150,9 @@ hosts_that_report_alot_on_USA = FILTER host_count_and_ntiles_by_month BY
 --           quantile_0_9545: double
 --       )
 -- }
-hosts_that_report_alot_on_USA = LIMIT hosts_that_report_alot_on_USA 100;
 
--- Find 
+AvgTone_about_USA_by_month = w_usa_actors GROUP BY MonthYearReported;
 
-DUMP hosts_that_report_alot_on_USA;
-
-DESCRIBE hosts_that_report_alot_on_USA;
+AvgTone_about_USA_by_month_ntiles = FOREACH AvgTone_about_USA_by_month GENERATE
+    group AS MonthYearReported,
+    Quantile(w_usa_actors.AvgTone) as AvgTone_ntile;
