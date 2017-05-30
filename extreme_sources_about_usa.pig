@@ -191,11 +191,7 @@ host_count_of_very_negative_by_month = FOREACH grp_month_host_very_negative GENE
     FLATTEN(group) AS (MonthYearReported, host),
     COUNT(very_negative_tone_about_USA) AS num_records;    
     
-DESCRIBE host_count_of_very_negative_by_month;
-host_count_of_very_negative_by_month = LIMIT host_count_of_very_negative_by_month 100;
-DUMP host_count_of_very_negative_by_month;
-
-join_host_counts_by_month = host_count_by_month BY MonthYearReported,
+join_host_counts_by_month = JOIN host_count_by_month BY MonthYearReported,
     host_count_of_very_negative_by_month BY MonthYearReported;
     
 fraction_of_very_negative_by_month = FOREACH join_host_counts_by_month GENERATE 
