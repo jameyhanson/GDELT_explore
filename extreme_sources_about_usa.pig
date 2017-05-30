@@ -12,9 +12,8 @@
 --      very_negative_records_about_usa
 --   6. How many very negative tone articles about USA to they write each month?
 --      host_count_very_negative_by_month
---   7. Of the hosts that write a lot about the USA each month,
---       which ones have a significant fraction of articles with a very negative tone?
---       hosts_that_write_mostly_very_negative_articles_about_USA
+--   7. What hosts write a large fraction of their articles about the USA with a very negative tone?
+--      large_fraction_negative_about_USA
 
 -- AvgTone_ntiles_by_day.pig
 -- Average tone or records in GDELT grouped by year.
@@ -188,10 +187,25 @@ very_negative_tone_about_USA = FILTER w_usa_plus_AvgTone_monthly_ntiles BY
     
 grp_month_host_very_negative = GROUP very_negative_tone_about_USA BY (w_usa_actors::MonthYearReported,  w_usa_actors::host);
 
-host_count_very_negative_by_month = FOREACH grp_month_host_very_negative GENERATE 
+host_count_of_very_negative_by_month = FOREACH grp_month_host_very_negative GENERATE 
     FLATTEN(group) AS (MonthYearReported, host),
     COUNT(very_negative_tone_about_USA) AS num_records;    
     
-DESCRIBE host_count_very_negative_by_month;
-host_count_very_negative_by_month = LIMIT host_count_very_negative_by_month 100;
-DUMP host_count_very_negative_by_month;
+DESCRIBE host_count_of_very_negative_by_month;
+host_count_of_very_negative_by_month = LIMIT host_count_of_very_negative_by_month 100;
+DUMP host_count_of_very_negative_by_month;
+
+join_host_counts_by_month = host_count_by_month BY MonthYearReported,
+    host_count_of_very_negative_by_month BY MonthYearReported;
+    
+fraction_of_very_negative_by_month = FOREACH join_host_counts_by_month GENERATE 
+     host_count_by_month::MonthYearReported AS MonthYearReported,
+     host_count_by_month::host AS host,
+     host_count_by_month::num_records AS total_num_records,
+     host_count_of_very_negative_by_month::num_records AS very_negative_num_records,
+     (float)host_count_of_very_negative_by_month::num_records/host_count_by_month::num_records AS fraction_of_very_negative;
+
+fraction_of_very_negative_by_mont = LIMIT fraction_of_very_negative_by_month 100;
+DUMP fraction_of_very_negative_by_month;
+DESCRIBE fraction_of_very_negative_by_month;
+      
