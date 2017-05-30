@@ -104,10 +104,8 @@ grp_host_count_by_month = GROUP host_count_by_month BY MonthYear;
 host_count_by_month_ntiles = FOREACH grp_host_count_by_month GENERATE
     FLATTEN(group) AS MonthYear,
     Quantile(host_count_by_month.num_records) AS num_records_ntile;    
-   
--- DUMP host_count_by_month_ntiles;
 
--- joined: {
+-- host_count_and_ntiles_by_month: {
 --     host_count_by_month::MonthYear: long,
 -- 	   host_count_by_month::host: chararray,
 -- 	   host_count_by_month::num_records: long,
@@ -120,9 +118,14 @@ host_count_by_month_ntiles = FOREACH grp_host_count_by_month GENERATE
 -- 		   quantile_0_9545: double
 -- 	   )
 -- }
-joined = JOIN host_count_by_month BY MonthYear,
+host_count_and_ntiles_by_month = JOIN host_count_by_month BY MonthYear,
     host_count_by_month_ntiles BY MonthYear;
     
-joined = LIMIT joined 100;
+hosts_that_report_on_USA = FILTER host_count_and_ntiles_by_month BY 
+    host_count_by_month::num_records >= host_count_by_month_ntiles::num_records_ntile.quantile_0_5;
 
-DESCRIBE joined;
+hosts_that_report_on_USA = LIMIT hosts_that_report_on_USA 100;
+
+DUMP hosts_that_report_on_USA;
+
+DESCRIBE hosts_that_report_on_USA;
