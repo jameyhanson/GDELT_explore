@@ -188,6 +188,6 @@ very_negative_tone_about_USA = FILTER w_usa_plus_AvgTone_monthly_ntiles BY
     
 grp_month_host_very_negative = GROUP very_negative_tone_about_USA BY (w_usa_actors::MonthYearReported,  w_usa_actors::host);
 
-host_count__very_negative by_month = FOREACH grp_month_host_very_negative GENERATE 
+host_count_very_negative by_month = FOREACH grp_month_host_very_negative GENERATE 
     FLATTEN(group) AS (MonthYearReported, host),
     COUNT(very_negative_tone_about_USA) AS num_records;    
