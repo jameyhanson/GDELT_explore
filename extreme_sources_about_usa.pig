@@ -1,3 +1,16 @@
+-- Who writes bad stuff about the USA?
+-- Approach:
+--   1. Who writes about the USA?
+--      w_usa_actors
+--   2. How many articles to they write about the USA each month?
+--      host_count_by_month
+--   3. Which hosts write more than the median number of articles about the USA each month?
+--      hosts_that_report_alot_on_USA
+--   4. What is the tone of articles about the USA?
+--      tone_of_articles_on_USA
+--   5. Which of the hosts that write alot about the USA have a notably negative tone?
+--      hosts_with_negative_tone_about_USA
+
 -- AvgTone_ntiles_by_day.pig
 -- Average tone or records in GDELT grouped by year.
 -- Creates lines for:
@@ -121,10 +134,10 @@ host_count_by_month_ntiles = FOREACH grp_host_count_by_month GENERATE
 host_count_and_ntiles_by_month = JOIN host_count_by_month BY MonthYearAdded,
     host_count_by_month_ntiles BY MonthYearAdded;
     
-hosts_that_report_on_USA = FILTER host_count_and_ntiles_by_month BY 
+hosts_that_report_alot_on_USA = FILTER host_count_and_ntiles_by_month BY 
     host_count_by_month::num_records >= host_count_by_month_ntiles::num_records_ntile.quantile_0_5;
 
--- hosts_that_report_on_USA: {
+-- hosts_that_report_alot_on_USA: {
 --     host_count_by_month::MonthYearAdded: long,
 --      host_count_by_month::host: chararray,
 --       host_count_by_month::num_records: long,
@@ -137,8 +150,10 @@ hosts_that_report_on_USA = FILTER host_count_and_ntiles_by_month BY
 --           quantile_0_9545: double
 --       )
 -- }
-hosts_that_report_on_USA = LIMIT hosts_that_report_on_USA 100;
+hosts_that_report_alot_on_USA = LIMIT hosts_that_report_alot_on_USA 100;
 
-DUMP hosts_that_report_on_USA;
+-- Find 
 
-DESCRIBE hosts_that_report_on_USA;
+DUMP hosts_that_report_alot_on_USA;
+
+DESCRIBE hosts_that_report_alot_on_USA;
