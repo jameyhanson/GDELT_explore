@@ -142,26 +142,26 @@ gdelt_v2 = LOAD '/data/gdelt_v2/events/' AS (
 
 gdelt_v1_nums = FOREACH gdelt_v1 GENERATE 
     GLOBALEVENTID,
-    SQLDATE,
+    DATEADDED,
     AvgTone;
 
 gdelt_v2_nums = FOREACH gdelt_v2 GENERATE 
     GLOBALEVENTID,
-    SQLDATE,
+    DATEADDED,
     AvgTone;
 
 gdelt_v1 = FILTER gdelt_v1 BY (GLOBALEVENTID IS NOT NULL)
-                               AND (SQLDATE IS NOT NULL)
+                               AND (DATEADDED IS NOT NULL)
                                AND (AvgTone IS NOT NULL);
 
 
 gdelt_v2 = FILTER gdelt_v2 BY (GLOBALEVENTID IS NOT NULL)
-                               AND (SQLDATE IS NOT NULL)
+                               AND (DATEADDED IS NOT NULL)
                                AND (AvgTone IS NOT NULL);
 
 gdelt_nums = UNION ONSCHEMA gdelt_v1_nums, gdelt_v2_nums;
 
-gdelt_nums_by_day = GROUP gdelt_nums BY SQLDATE;
+gdelt_nums_by_day = GROUP gdelt_nums BY DATEADDED;
 
 gdelt_AvgTone_ntiles_by_day = FOREACH gdelt_nums_by_day GENERATE
     group AS day,
