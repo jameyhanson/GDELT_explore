@@ -201,7 +201,15 @@ fraction_of_very_negative_by_month = FOREACH join_host_counts_by_month GENERATE
      host_count_of_very_negative_by_month::num_records AS very_negative_num_records,
      (float)host_count_of_very_negative_by_month::num_records/host_count_by_month::num_records AS fraction_of_very_negative;
 
-fraction_of_very_negative_by_mont = LIMIT fraction_of_very_negative_by_month 100;
+fraction_of_very_negative_by_month = LIMIT fraction_of_very_negative_by_month 100;
 DUMP fraction_of_very_negative_by_month;
 DESCRIBE fraction_of_very_negative_by_month;
-      
+
+-- Threshold fraction of very negative = 0.5
+hosts_that_are_significantly_negative_about_USA = FILTER fraction_of_very_negative_by_month BY
+    fraction_of_very_negative >= 0.5;
+    
+hosts_that_are_significantly_negative_about_USA = SAMPLE hosts_that_are_significantly_negative_about_USA 0.10;
+
+DUMP hosts_that_are_significantly_negative_about_USA;
+DESCRIBE hosts_that_are_significantly_negative_about_USA;
