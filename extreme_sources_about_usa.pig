@@ -4,12 +4,15 @@
 --      w_usa_actors
 --   2. How many articles to they write about the USA each month?
 --      host_count_by_month
---   3. Which hosts write more than the median number of articles about the USA each month?
+--   3. Which hosts write a lot of articles about the USA each month?
 --      hosts_that_report_alot_on_USA
 --   4. What is the tone of articles about the USA?
 --      tone_of_articles_on_USA
---   5. Which records about the USA have a very negative tone?
+--   5. Which articles about the USA have a very negative tone?
 --      very_negative_records_about_usa
+--   6. Of the hosts that write a lot about the USA each month,
+--       which ones have a significant fraction of articles with a very negative tone?
+--       hosts_that_write_mostly_very_negative_articles_about_USA
 
 -- AvgTone_ntiles_by_day.pig
 -- Average tone or records in GDELT grouped by year.
@@ -159,7 +162,25 @@ AvgTone_about_USA_by_month_ntiles = FOREACH AvgTone_about_USA_by_month GENERATE
 
 w_usa_plus_AvgTone_monthly_ntiles = JOIN AvgTone_about_USA_by_month_ntiles BY MonthYearReported,
    w_usa_actors BY MonthYearReported;
-    
+
+-- very_negative_tone_about_USA: {
+--     AvgTone_about_USA_by_month_ntiles::MonthYearReported: long,
+--     AvgTone_about_USA_by_month_ntiles::AvgTone_ntile: (
+--         quantile_0_0455: double,
+--         quantile_0_3173: double,
+--         quantile_0_5: double,
+--         quantile_0_6827: double,
+--         quantile_0_9545: double
+--     ),
+--     w_usa_actors::GLOBALEVENTID: long,
+--     w_usa_actors::DATEADDED: long,
+--     w_usa_actors::MonthYearReported: long,
+--     w_usa_actors::Actor1CountryCode: chararray,
+--     w_usa_actors::Actor2CountryCode: chararray,
+--     w_usa_actors::AvgTone: float,
+--     w_usa_actors::SOURCEURL: chararray,
+--     w_usa_actors::host: chararray
+-- }
 very_negative_records_about_USA = FILTER w_usa_plus_AvgTone_monthly_ntiles BY
     w_usa_actors::AvgTone <= AvgTone_about_USA_by_month_ntiles::AvgTone_ntile.quantile_0_0455;
     
