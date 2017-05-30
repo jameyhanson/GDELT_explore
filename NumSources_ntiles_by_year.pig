@@ -133,12 +133,12 @@ gdelt_v2 = LOAD '/data/gdelt_v2/events/' AS (
 
 gdelt_v1_nums = FOREACH gdelt_v1 GENERATE 
     GLOBALEVENTID,
-    Year,
+    DATEADDED/1000 AS YearAdded,
     NumSources;
 
 gdelt_v2_nums = FOREACH gdelt_v2 GENERATE 
     GLOBALEVENTID,
-    Year,
+    DATEADDED/1000 AS YearAdded,
     NumSources;
 
 gdelt_v1 = FILTER gdelt_v1 BY (GLOBALEVENTID IS NOT NULL)
@@ -155,7 +155,7 @@ gdelt_nums = UNION ONSCHEMA gdelt_v1_nums, gdelt_v2_nums;
 gdelt_nums_by_year = GROUP gdelt_nums BY Year;
 
 gdelt_NumSources_ntiles_by_year = FOREACH gdelt_nums_by_year GENERATE
-    group AS year,
+    group AS YearAdded,
     Quantile(gdelt_nums.NumSources) AS NumSources_ntile; 
  
 gdelt_NumSources_flat_ntiles_by_year = FOREACH gdelt_NumSources_ntiles_by_year GENERATE
