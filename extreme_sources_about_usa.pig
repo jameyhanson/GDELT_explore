@@ -15,6 +15,17 @@
 --   7. What hosts write a large fraction of their articles about the USA with a very negative tone?
 --      large_fraction_negative_about_USA
 
+-- Driving thresholds:
+--     Q:  What is the aggregation interval?
+--         A: YearMonth that the article was created
+--     Q: What defines a host with a lot of articles about the USA?
+--         A: any host with more than the median number of articles about the USA
+--     Q: What defines a an article about the USA with a very negative tone?
+--         A: any article with a tone more than 2-sigma below the average tone
+--     Q: What defines a host that writes a lot of very negative articles about the USA?
+--         A: Any host FOR WHICH more than 1/2 of their articles about about the USA
+--             have a very negative tone.
+
 -- AvgTone_ntiles_by_day.pig
 -- Average tone or records in GDELT grouped by year.
 -- Creates lines for:
