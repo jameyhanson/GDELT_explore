@@ -115,6 +115,19 @@ gdelt_v2_sel_fields = FOREACH gdelt_v2 GENERATE
     AvgTone,
     (SOURCEURL IS NULL ? 'was_null' : org.apache.pig.piggybank.evaluation.util.apachelogparser.HostExtractor(SOURCEURL)) AS host,
     SOURCEURL;
+    
+gdelt_v2_sel_fields = FOREACH gdelt_v2_sel_fields GENERATE
+    GLOBALEVENTID,
+    DATADDED,
+    day_added,
+    gdelt_epoch_day,
+    gdelt_epoch_week,
+    AddDuration(DATEADDED, CONCAT('P', (chararray)gdelt_epoch_week*7, 'D')) AS gew_end,
+    Actor1CountryCode,
+    Actor2CountryCode,
+    AvgTone,
+    host,
+    SOURCEURL;
 
 -- ##### Which hosts report on the USA frequently? #####
 -- Records that include at least one actor from USA
