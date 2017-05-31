@@ -134,6 +134,14 @@ host_records_by_week_ntiles = FOREACH grp_host_records_by_week GENERATE
     FLATTEN(group) AS gdelt_epoch_week,
     Quantile(host_records_by_week.num_records) AS num_records_ntile;
     
-host_records_by_week_ntiles = LIMIT host_records_by_week_ntiles 100;
-DUMP host_records_by_week_ntiles;
-DESCRIBE host_records_by_week_ntiles;
+host_records_and_ntiles_by_week = JOIN
+    host_records_by_week BY gdelt_epoch_week,
+    host_records_by_week_ntiles BY gdelt_epoch_week;
+    
+hosts_that_report_alot_on_USA = FILTER host_records_and_ntiles_by_week
+   host_records_by_week::num_records >= host_records_by_week_ntiles::num_records_ntile.quantile_0_3173;
+    
+hosts_that_report_alot_on_USA = FILTER hosts_that_report_alot_on_USA 10;
+DUMP hosts_that_report_alot_on_USA;
+DESCRIBE host_records_and_ntiles_by_week;
+DESCRIBE hosts_that_report_alot_on_USA;
