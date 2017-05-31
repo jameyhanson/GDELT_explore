@@ -35,6 +35,8 @@
 -- -1 sigma p=0.3173
 -- -2 sigma p=0.0455
 
+-- gdelpt epoch began on 1-Jan-1979.  gdelt_epoch is since 1-Jan-1979
+
 -- Register DataFu and define an alias for the function
 -- https://datafu.incubator.apache.org/docs/datafu/guide.html
 
@@ -104,15 +106,20 @@ gdelt_v2 = LOAD '/data/gdelt_v2/events/' AS (
 
 gdelt_v2_sel_fields = FOREACH gdelt_v2 GENERATE 
     GLOBALEVENTID,
-    DATEADDED,
-    DATEADDED/10 AS MonthYearReported,
+    ToDate(DATEADDED, 'YYYYMMDD') AS DATADDED,
+    DaysBetween(ToDate(DATEADDED, 'YYYYMMDD'), ToDate('19790101, 'YYYYMMDD')) AS gdelt_epoch,
     (Actor1CountryCode IS NULL ? 'was_null': Actor1CountryCode) AS Actor1CountryCode,
     (Actor2CountryCode IS NULL ? 'was_null': Actor2CountryCode) AS Actor2CountryCode,
     AvgTone,
     SOURCEURL,
     (SOURCEURL IS NULL ? 'was_null' : org.apache.pig.piggybank.evaluation.util.apachelogparser.HostExtractor(SOURCEURL)) AS host;  
-    
-w_usa_actors = FILTER gdelt_v2_sel_fields BY 
-    (Actor1CountryCode == 'USA' OR Actor2CountryCode == 'USA')
-    AND (AvgTone IS NOT NULL)
-    AND (host IS NOT NULL);
+  
+gdelt_v2_sel_fields = LIMIT gdelt_v2_sel_fields 10;
+DUMP gdelt_v2_sel_fields;
+
+DESCRIBE gdelt_v2_sel_fields;
+  
+-- w_usa_actors = FILTER gdelt_v2_sel_fields BY 
+--    (Actor1CountryCode == 'USA' OR Actor2CountryCode == 'USA')
+--    AND (AvgTone IS NOT NULL)
+--    AND (host IS NOT NULL);
