@@ -47,8 +47,8 @@ gdelt_v2 = LOAD '/data/gdelt_v2/events/' AS (
     GLOBALEVENTID:long,
     SQLDATE:chararray,      -- dates when the event occurred
     MonthYear:chararray,    -- dates when the event occurred
-    Year:int,          -- dates when the event occurred
-    FractionDate:float,    -- dates when the event occurred
+    Year:int,               -- dates when the event occurred
+    FractionDate:float,     -- dates when the event occurred
     Actor1Code:chararray,
     Actor1Name:chararray,
     Actor1CountryCode:chararray,
@@ -127,16 +127,18 @@ grp_week_host = GROUP w_usa_actors BY (gdelt_epoch_week, host);
 
 host_records_by_week = FOREACH grp_week_host GENERATE
     FLATTEN(group) AS (gdelt_epoch_week, host),
+    ToDate(MAX(DATEADDED), 'YYYYMMDD') AS gew_head,
     COUNT(w_usa_actors) AS num_records;
     
-grp_host_records_by_week = GROUP host_records_by_week BY gdelt_epoch_week;
+grp_host_records_by_week = GROUP host_records_by_week BY (gdelt_epoch_week, gew_head);
 
 host_records_by_week_ntiles = FOREACH grp_host_records_by_week GENERATE
-    FLATTEN(group) AS gdelt_epoch_week,
+    FLATTEN(group) AS (gdelt_epoch_week, gew_head),
     Quantile(host_records_by_week.num_records) AS num_records_ntile;
     
 -- host_records_and_ntiles_by_week: {
 --     host_records_by_week::gdelt_epoch_week: long,
+--     host_records_by_week::gew_head: datetime,
 --     host_records_by_week::host: chararray,
 --     host_records_by_week::num_records: long,
 --     host_records_by_week_ntiles::gdelt_epoch_week: long,
