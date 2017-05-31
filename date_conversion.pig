@@ -118,7 +118,7 @@ gdelt_v2_sel_fields = FOREACH gdelt_v2 GENERATE
     
 gdelt_v2_sel_fields = FOREACH gdelt_v2_sel_fields GENERATE
     GLOBALEVENTID,
-    DATADDED,
+    DATEDDED,
     day_added,
     gdelt_epoch_day,
     gdelt_epoch_week,
