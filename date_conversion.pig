@@ -138,10 +138,10 @@ host_records_and_ntiles_by_week = JOIN
     host_records_by_week BY gdelt_epoch_week,
     host_records_by_week_ntiles BY gdelt_epoch_week;
     
-hosts_that_report_alot_on_USA = FILTER host_records_and_ntiles_by_week
+hosts_that_report_alot_on_USA = FILTER host_records_and_ntiles_by_week BY
    host_records_by_week::num_records >= host_records_by_week_ntiles::num_records_ntile.quantile_0_3173;
     
-hosts_that_report_alot_on_USA = FILTER hosts_that_report_alot_on_USA 10;
+hosts_that_report_alot_on_USA = LIMIT hosts_that_report_alot_on_USA 10;
 DUMP hosts_that_report_alot_on_USA;
 DESCRIBE host_records_and_ntiles_by_week;
 DESCRIBE hosts_that_report_alot_on_USA;
