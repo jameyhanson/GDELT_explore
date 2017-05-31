@@ -107,9 +107,9 @@ gdelt_v2 = LOAD '/data/gdelt_v2/events/' AS (
 gdelt_v2_sel_fields = FOREACH gdelt_v2 GENERATE 
     GLOBALEVENTID,
     ToDate(DATEADDED, 'YYYYMMDD') AS DATADDED,
-    DaysBetween(ToDate(DATEADDED, 'YYYYMMDD'), ToDate('19790101', 'YYYYMMDD')) AS gdelt_epoch,
     DaysBetween(ToDate(DATEADDED, 'YYYYMMDD'), ToDate('19790101', 'YYYYMMDD'))%7+1 AS day_added,  -- Sun = 0
-    GetWeekYear(ToDate(DATEADDED, 'YYYYMMDD')) AS weekyear,
+    DaysBetween(ToDate(DATEADDED, 'YYYYMMDD'), ToDate('19790101', 'YYYYMMDD')) AS gdelt_epoch_days,
+    DaysBetween(ToDate(DATEADDED, 'YYYYMMDD'), ToDate('19790101', 'YYYYMMDD'))/7 AS gdelt_epoch_weeks,
     (Actor1CountryCode IS NULL ? 'was_null': Actor1CountryCode) AS Actor1CountryCode,
     (Actor2CountryCode IS NULL ? 'was_null': Actor2CountryCode) AS Actor2CountryCode,
     AvgTone,
