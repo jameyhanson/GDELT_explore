@@ -201,18 +201,22 @@ very_negative_tone_about_USA_by_week = GROUP very_negative_tone_about_USA BY (
 host_count_of_very_negative_by_week = FOREACH very_negative_tone_about_USA_by_week GENERATE
     FLATTEN(group) AS (gdelt_epoch_week, host),
     COUNT(very_negative_tone_about_USA) AS num_records;
+ 
+ host_count_of_very_negative_by_week = LIMIT host_count_of_very_negative_by_week 20;
+ DUMP host_count_of_very_negative_by_week;
+ DESCRIBE host_count_of_very_negative_by_week;
     
-join_host_counts_by_week = JOIN
-    host_records_by_week BY gdelt_epoch_week,
-    host_count_of_very_negative_by_week BY gdelt_epoch_week;
+-- join_host_counts_by_week = JOIN
+--     host_records_by_week BY gdelt_epoch_week,
+--     host_count_of_very_negative_by_week BY gdelt_epoch_week;
     
-fraction_of_very_negative_by_week = FOREACH join_host_counts_by_week GENERATE
-    host_records_by_week::gdelt_epoch_week AS gdelt_epoch_week,
-    host_records_by_week::host AS host,
-    host_records_by_week::num_records AS total_num_records,
-    host_count_of_very_negative_by_week::num_records AS very_negative_num_records,
-    (float)host_count_of_very_negative_by_week::num_records/host_records_by_week::num_records AS fraction_of_very_negative;
+-- fraction_of_very_negative_by_week = FOREACH join_host_counts_by_week GENERATE
+--     host_records_by_week::gdelt_epoch_week AS gdelt_epoch_week,
+--     host_records_by_week::host AS host,
+--     host_records_by_week::num_records AS total_num_records,
+--     host_count_of_very_negative_by_week::num_records AS very_negative_num_records,
+--     (float)host_count_of_very_negative_by_week::num_records/host_records_by_week::num_records AS fraction_of_very_negative;
 
-fraction_of_very_negative_by_week = LIMIT fraction_of_very_negative_by_week 10;
-DUMP fraction_of_very_negative_by_week;
-DESCRIBE fraction_of_very_negative_by_week;
+-- fraction_of_very_negative_by_week = LIMIT fraction_of_very_negative_by_week 10;
+-- DUMP fraction_of_very_negative_by_week;
+-- DESCRIBE fraction_of_very_negative_by_week;
