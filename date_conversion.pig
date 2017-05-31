@@ -216,8 +216,8 @@ fraction_of_very_negative_by_week = FOREACH join_host_counts_by_week GENERATE
     hosts_that_report_alot_on_USA::gdelt_epoch_week AS gdelt_epoch_week,
     hosts_that_report_alot_on_USA::host AS host,
     host_count_of_very_negative_by_week::num_very_negative_records AS num_very_negative_records,    
-    host_records_by_week::num_records AS total_num_records,
-    (float)host_count_of_very_negative_by_week::num_very_negative_records/host_records_by_week::num_records AS fraction_of_very_negative;
+    hosts_that_report_alot_on_USA::num_records AS total_num_records,
+    (float)host_count_of_very_negative_by_week::num_very_negative_records/hosts_that_report_alot_on_USA::num_records AS fraction_of_very_negative;
 
 hosts_with_lots_of_very_negative_by_week = FILTER fraction_of_very_negative_by_week BY
     fraction_of_very_negative >= 0.5;
