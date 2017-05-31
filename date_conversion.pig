@@ -107,12 +107,12 @@ gdelt_v2 = LOAD '/data/gdelt_v2/events/' AS (
 gdelt_v2_sel_fields = FOREACH gdelt_v2 GENERATE 
     GLOBALEVENTID,
     ToDate(DATEADDED, 'YYYYMMDD') AS DATADDED,
-    DaysBetween(ToDate(DATEADDED, 'YYYYMMDD'), ToDate('19790101, 'YYYYMMDD')) AS gdelt_epoch,
-    (Actor1CountryCode IS NULL ? 'was_null': Actor1CountryCode) AS Actor1CountryCode,
-    (Actor2CountryCode IS NULL ? 'was_null': Actor2CountryCode) AS Actor2CountryCode,
-    AvgTone,
-    SOURCEURL,
-    (SOURCEURL IS NULL ? 'was_null' : org.apache.pig.piggybank.evaluation.util.apachelogparser.HostExtractor(SOURCEURL)) AS host;  
+    DaysBetween(ToDate(DATEADDED, 'YYYYMMDD'), ToDate('19790101, 'YYYYMMDD')) AS gdelt_epoch;
+    -- (Actor1CountryCode IS NULL ? 'was_null': Actor1CountryCode) AS Actor1CountryCode,
+    -- (Actor2CountryCode IS NULL ? 'was_null': Actor2CountryCode) AS Actor2CountryCode,
+    -- AvgTone,
+    -- SOURCEURL,
+    -- (SOURCEURL IS NULL ? 'was_null' : org.apache.pig.piggybank.evaluation.util.apachelogparser.HostExtractor(SOURCEURL)) AS host;  
   
 -- gdelt_v2_sel_fields = LIMIT gdelt_v2_sel_fields 10;
 -- DUMP gdelt_v2_sel_fields;
