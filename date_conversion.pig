@@ -192,7 +192,7 @@ DESCRIBE hosts_that_report_alot_on_USA;
 -- }
 
 very_negative_tone_about_USA = FILTER w_usa_AvgTone_and_ntiles_by_week BY
-    w_usa_actors::AvgTone <= w_usa_AvgTone_and_ntiles_by_week::AvgTone_ntile.quantile_0_0455; -- AvgTone_ntile minus2sigma
+    w_usa_actors::AvgTone <= AvgTone_about_USA_by_week_ntiles::AvgTone_ntile.quantile_0_0455; -- AvgTone_ntile minus2sigma
     
 very_negative_tone_about_USA_by_week = GROUP very_negative_tone_about_USA BY (
     w_usa_actors::gdelt_epoch_week,
@@ -204,10 +204,10 @@ host_count_of_very_negative_by_week = FOREACH very_negative_tone_about_USA_by_we
     
 join_host_counts_by_week = JOIN
     host_records_by_week BY gdelt_epoch_week,
-    host_count_of_very_negative_by_week BY gdelt_epock_week;
+    host_count_of_very_negative_by_week BY gdelt_epoch_week;
     
 fraction_of_very_negative_by_week = FOREACH join_host_counts_by_week GENERATE
-    host_records_by_week::gdelt_epoch_week AS gdelt_epock_week,
+    host_records_by_week::gdelt_epoch_week AS gdelt_epoch_week,
     host_records_by_week::host AS host,
     host_records_by_week::num_records AS total_num_records,
     host_count_of_very_negative_by_week::num_records AS very_negative_num_records,
