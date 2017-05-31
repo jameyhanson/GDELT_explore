@@ -106,7 +106,7 @@ gdelt_v2 = LOAD '/data/gdelt_v2/events/' AS (
 
 gdelt_v2_sel_fields = FOREACH gdelt_v2 GENERATE 
     GLOBALEVENTID,
-    ToDate(DATEADDED, 'YYYYMMDD') AS DATADDED,
+    ToDate(DATEADDED, 'YYYYMMDD') AS DATEADDED,
     DaysBetween(ToDate(DATEADDED, 'YYYYMMDD'), ToDate('19790101', 'YYYYMMDD'))%7+1 AS day_added,  -- Sun = 0
     DaysBetween(ToDate(DATEADDED, 'YYYYMMDD'), ToDate('19790101', 'YYYYMMDD')) AS gdelt_epoch_day,
     DaysBetween(ToDate(DATEADDED, 'YYYYMMDD'), ToDate('19790101', 'YYYYMMDD'))/7 AS gdelt_epoch_week,
