@@ -129,7 +129,7 @@ host_records_by_week = FOREACH grp_week_host GENERATE
     FLATTEN(group) AS (gdelt_epoch_week, host),
     COUNT(w_usa_actors) AS num_records;
     
-grp_host_records_by_week = GROUP host_records_by_week BY (gdelt_epoch_week, gew_head);
+grp_host_records_by_week = GROUP host_records_by_week BY (gdelt_epoch_week);
 
 host_records_by_week_ntiles = FOREACH grp_host_records_by_week GENERATE
     FLATTEN(group) AS (gdelt_epoch_week),
