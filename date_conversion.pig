@@ -154,6 +154,8 @@ host_records_and_ntiles_by_week = JOIN
     
 hosts_that_report_alot_on_USA = FILTER host_records_and_ntiles_by_week BY
    host_records_by_week::num_records >= host_records_by_week_ntiles::num_records_ntile.quantile_0_3173;
+   
+STORE hosts_that_report_alot_on_USA INTO '/results/test/hosts_that_report_alot_on_USA;   
     
 -- ##### What is the AvgTone of records on the USA? #####
 AvgTone_about_USA_by_week = GROUP w_usa_actors BY gdelt_epoch_week;
@@ -165,10 +167,6 @@ AvgTone_about_USA_by_week_ntiles = FOREACH AvgTone_about_USA_by_week GENERATE
 w_usa_AvgTone_and_ntiles_by_week = JOIN
     AvgTone_about_USA_by_week_ntiles BY gdelt_epoch_week,
     w_usa_actors BY gdelt_epoch_week;
-    
-hosts_that_report_alot_on_USA = LIMIT hosts_that_report_alot_on_USA 10;
-DUMP hosts_that_report_alot_on_USA;
-DESCRIBE hosts_that_report_alot_on_USA;
 
 -- w_usa_AvgTone_and_ntiles_by_week: {
 --     AvgTone_about_USA_by_week_ntiles::gdelt_epoch_week: long,
@@ -193,6 +191,8 @@ DESCRIBE hosts_that_report_alot_on_USA;
 
 very_negative_tone_about_USA = FILTER w_usa_AvgTone_and_ntiles_by_week BY
     w_usa_actors::AvgTone <= AvgTone_about_USA_by_week_ntiles::AvgTone_ntile.quantile_0_0455; -- AvgTone_ntile minus2sigma
+
+STORE very_negative_tone_about_USA INTO '/results/test/very_negative_tone_about_USA';
     
 very_negative_tone_about_USA_by_week = GROUP very_negative_tone_about_USA BY (
     w_usa_actors::gdelt_epoch_week,
@@ -203,14 +203,14 @@ host_count_of_very_negative_by_week = FOREACH very_negative_tone_about_USA_by_we
     COUNT(very_negative_tone_about_USA) AS num_very_negative_records;
    
 join_host_counts_by_week = JOIN
-    host_records_by_week BY (gdelt_epoch_week, host),
+    hosts_that_report_alot_on_USA BY (gdelt_epoch_week, host),
     host_count_of_very_negative_by_week BY (gdelt_epoch_week, host);
     
 fraction_of_very_negative_by_week = FOREACH join_host_counts_by_week GENERATE
-    host_records_by_week::gdelt_epoch_week AS gdelt_epoch_week,
-    host_records_by_week::host AS host,
-    host_records_by_week::num_records AS total_num_records,
-    host_count_of_very_negative_by_week::num_very_negative_records,
+    hosts_that_report_alot_on_USA::gdelt_epoch_week AS gdelt_epoch_week,
+    hosts_that_report_alot_on_USA::host AS host,
+    host_count_of_very_negative_by_week::num_very_negative_records AS num_very_negative_records,    
+    host_records_by_week::num_records AS total_num_records AS total_num_records,
     (float)host_count_of_very_negative_by_week::num_very_negative_records/host_records_by_week::num_records AS fraction_of_very_negative;
 
 hosts_with_lots_of_very_negative_by_week = FILTER fraction_of_very_negative_by_week BY
