@@ -159,7 +159,7 @@ hosts_that_report_alot_on_USA = FILTER host_records_and_ntiles_by_week BY
 AvgTone_about_USA_by_week = GROUP w_usa_actors BY gdelt_epoch_week;
 
 AvgTone_about_USA_by_week_ntiles = FOREACH AvgTone_about_USA_by_week GENERATE
-    FLATTEN(group) AS gdelt_epoch_week
+    FLATTEN(group) AS gdelt_epoch_week,
     Quantile(w_usa_actors.AvgTone) AS AvgTone_ntile;
 
 w_usa_AvgTone_and_ntiles_by_week = JOIN
@@ -170,7 +170,7 @@ hosts_that_report_alot_on_USA = LIMIT hosts_that_report_alot_on_USA 10;
 DUMP hosts_that_report_alot_on_USA;
 DESCRIBE hosts_that_report_alot_on_USA;
 
-w_usa_AvgTone_and_ntiles_by_week = LIMIT w_usa_AvgTone_and_ntiles_by_week;
+w_usa_AvgTone_and_ntiles_by_week = LIMIT w_usa_AvgTone_and_ntiles_by_week 10;
 DUMP w_usa_AvgTone_and_ntiles_by_week;
 DESCRIBE w_usa_AvgTone_and_ntiles_by_week;
 
