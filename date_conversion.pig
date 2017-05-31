@@ -2,7 +2,7 @@
 -- Approach:
 --   1. Who creates records with USA actors?
 --      w_usa_actors
---   2. How many records with USA actors does a host creat each week?
+--   2. How many records with USA actors does a host create each week?
 --      host_records_by_week
 --   3. Which hosts write a lot of articles about the USA each month?
 --      hosts_that_report_alot_on_USA
@@ -125,9 +125,15 @@ w_usa_actors = FILTER gdelt_v2_sel_fields BY
 grp_week_host = GROUP w_usa_actors BY (gdelt_epoch_week, host);
 
 host_records_by_week = FOREACH grp_week_host GENERATE
-    FLATTEN(group) AS (gdelt_epock_week, host),
+    FLATTEN(group) AS (gdelt_epoch_week, host),
     COUNT(w_usa_actors) AS num_records;
     
-host_records_by_week = LIMIT host_records_by_week 10;
-DUMP host_records_by_week;
-DESCRIBE host_records_by_week;
+grp_host_records_by_week = GROUP host_records_by_week BY gdelt_epoch_week;
+
+host_records_by_week_ntiles = FOREACH grp_host_records_by_week GDNERATE
+    FLATTEN(group_ AS gdelt_epoch_week,
+    QUANTILE(host_records_by_week.num_records AS num_records_ntile;
+    
+host_records_by_week_ntiles = LIMIT host_records_by_week_ntiles 100;
+DUMP host_records_by_week_ntiles;
+DESCRIBE host_records_by_week_ntiles;
