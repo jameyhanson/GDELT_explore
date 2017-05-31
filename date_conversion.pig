@@ -45,8 +45,8 @@ DEFINE Quantile datafu.pig.stats.StreamingQuantile('0.0455', '0.3173', '0.5', '0
 
 gdelt_v2 = LOAD '/data/gdelt_v2/events/' AS (
     GLOBALEVENTID:long,
-    SQLDATE:long,      -- dates when the event occurred
-    MonthYear:long,    -- dates when the event occurred
+    SQLDATE:chararray,      -- dates when the event occurred
+    MonthYear:chararray,    -- dates when the event occurred
     Year:int,          -- dates when the event occurred
     FractionDate:float,    -- dates when the event occurred
     Actor1Code:chararray,
@@ -100,7 +100,7 @@ gdelt_v2 = LOAD '/data/gdelt_v2/events/' AS (
     ActionGeo_Lat:float,
     ActionGeo_Long:float,
     ActionGeo_FeatureID:chararray,
-    DATEADDED:long,    -- dates when the event was reported on
+    DATEADDED:chararray,    -- dates when the event was reported on
     SOURCEURL:chararray
 );
 
