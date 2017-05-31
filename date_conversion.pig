@@ -130,9 +130,9 @@ host_records_by_week = FOREACH grp_week_host GENERATE
     
 grp_host_records_by_week = GROUP host_records_by_week BY gdelt_epoch_week;
 
-host_records_by_week_ntiles = FOREACH grp_host_records_by_week GDNERATE
-    FLATTEN(group_ AS gdelt_epoch_week,
-    QUANTILE(host_records_by_week.num_records AS num_records_ntile;
+host_records_by_week_ntiles = FOREACH grp_host_records_by_week GENERATE
+    FLATTEN(group) AS gdelt_epoch_week,
+    Quantile(host_records_by_week.num_records) AS num_records_ntile;
     
 host_records_by_week_ntiles = LIMIT host_records_by_week_ntiles 100;
 DUMP host_records_by_week_ntiles;
