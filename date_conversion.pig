@@ -122,11 +122,11 @@ w_usa_actors = FILTER gdelt_v2_sel_fields BY
    AND (AvgTone IS NOT NULL)
    AND (host IS NOT NULL);
 
-grp_week_host = GROUP w_usa_actors BY (gdelt_epock_week, host);
+grp_week_host = GROUP w_usa_actors BY (gdelt_epoch_week, host);
 
-host_records_by_week = FOREACH grp_week_hgost GENERATE
+host_records_by_week = FOREACH grp_week_host GENERATE
     FLATTEN(group) AS (gdelt_epock_week, host),
-    COUNT(w_usa_actors) AS NUM REGORDS;
+    COUNT(w_usa_actors) AS num_records;
     
 host_records_by_week = LIMIT host_records_by_week 10;
 DUMP host_records_by_week;
