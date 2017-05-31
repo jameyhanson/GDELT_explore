@@ -122,7 +122,7 @@ gdelt_v2_sel_fields = FOREACH gdelt_v2_sel_fields GENERATE
     day_added,
     gdelt_epoch_day,
     gdelt_epoch_week,
-    AddDuration(DATEADDED, CONCAT('P', (chararray)gdelt_epoch_week*7, 'D')) AS gew_end,
+    AddDuration(DATEADDED, CONCAT('P', (chararray)(gdelt_epoch_week*7), 'D')) AS gew_end,
     Actor1CountryCode,
     Actor2CountryCode,
     AvgTone,
