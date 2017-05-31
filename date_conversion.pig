@@ -155,7 +155,7 @@ host_records_and_ntiles_by_week = JOIN
 hosts_that_report_alot_on_USA = FILTER host_records_and_ntiles_by_week BY
    host_records_by_week::num_records >= host_records_by_week_ntiles::num_records_ntile.quantile_0_3173;
    
-STORE hosts_that_report_alot_on_USA INTO '/results/test/hosts_that_report_alot_on_USA;   
+STORE hosts_that_report_alot_on_USA INTO '/results/test/hosts_that_report_alot_on_USA';   
     
 -- ##### What is the AvgTone of records on the USA? #####
 AvgTone_about_USA_by_week = GROUP w_usa_actors BY gdelt_epoch_week;
@@ -199,7 +199,7 @@ very_negative_tone_about_USA_by_week = GROUP very_negative_tone_about_USA BY (
     w_usa_actors::host);
     
 host_count_of_very_negative_by_week = FOREACH very_negative_tone_about_USA_by_week GENERATE
-    FLATTEN(group) AS (gdelt_epoch_week, host),
+    FLATTEN(group) AS (w_usa_actors::gdelt_epoch_week, w_usa_actors::host),
     COUNT(very_negative_tone_about_USA) AS num_very_negative_records;
    
 join_host_counts_by_week = JOIN
