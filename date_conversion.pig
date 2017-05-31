@@ -213,4 +213,6 @@ fraction_of_very_negative_by_week = FOREACH join_host_counts_by_week GENERATE
     host_count_of_very_negative_by_week::num_records AS very_negative_num_records,
     (float)host_count_of_very_negative_by_week::num_records/host_records_by_week::num_records AS fraction_of_very_negative;
 
-
+fraction_of_very_negative_by_week = LIMIT fraction_of_very_negative_by_week 10;
+DUMP fraction_of_very_negative_by_week;
+DESCRIBE fraction_of_very_negative_by_week;
