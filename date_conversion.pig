@@ -114,10 +114,10 @@ gdelt_v2_sel_fields = FOREACH gdelt_v2 GENERATE
     SOURCEURL,
     (SOURCEURL IS NULL ? 'was_null' : org.apache.pig.piggybank.evaluation.util.apachelogparser.HostExtractor(SOURCEURL)) AS host;  
   
-gdelt_v2_sel_fields = LIMIT gdelt_v2_sel_fields 10;
-DUMP gdelt_v2_sel_fields;
+-- gdelt_v2_sel_fields = LIMIT gdelt_v2_sel_fields 10;
+-- DUMP gdelt_v2_sel_fields;
 
-DESCRIBE gdelt_v2_sel_fields;
+-- DESCRIBE gdelt_v2_sel_fields;
   
 -- w_usa_actors = FILTER gdelt_v2_sel_fields BY 
 --    (Actor1CountryCode == 'USA' OR Actor2CountryCode == 'USA')
