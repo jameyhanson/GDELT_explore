@@ -155,6 +155,12 @@ host_records_and_ntiles_by_week = JOIN
 hosts_that_report_alot_on_USA = FILTER host_records_and_ntiles_by_week BY
    host_records_by_week::num_records >= host_records_by_week_ntiles::num_records_ntile.quantile_0_3173;
    
+hosts_that_report_alot_on_USA = FOREACH hosts_that_report_alot_on_USA GENERATE
+    host_records_by_week::gdelt_epoch_week AS gdelt_epoch_week,
+    host_records_by_week::host AS host,
+    host_records_by_week::num_records AS num_records,
+    host_records_by_week_ntiles::num_records_ntile AS num_records_ntile);
+   
 STORE hosts_that_report_alot_on_USA INTO '/results/test/hosts_that_report_alot_on_USA';   
     
 -- ##### What is the AvgTone of records on the USA? #####
