@@ -115,7 +115,8 @@ gdelt_v2_sel_fields = FOREACH gdelt_v2 GENERATE
     AvgTone,
     (SOURCEURL IS NULL ? 'was_null' : org.apache.pig.piggybank.evaluation.util.apachelogparser.HostExtractor(SOURCEURL)) AS host,
     SOURCEURL;
-  
+
+-- ##### Which hosts report on the USA frequently? #####
 -- Records that include at least one actor from USA
 w_usa_actors = FILTER gdelt_v2_sel_fields BY 
    (Actor1CountryCode == 'USA' OR Actor2CountryCode == 'USA')
@@ -134,6 +135,19 @@ host_records_by_week_ntiles = FOREACH grp_host_records_by_week GENERATE
     FLATTEN(group) AS gdelt_epoch_week,
     Quantile(host_records_by_week.num_records) AS num_records_ntile;
     
+-- host_records_and_ntiles_by_week: {
+--     host_records_by_week::gdelt_epoch_week: long,
+--     host_records_by_week::host: chararray,
+--     host_records_by_week::num_records: long,
+--     host_records_by_week_ntiles::gdelt_epoch_week: long,
+--     host_records_by_week_ntiles::num_records_ntile: (
+--         quantile_0_0455: double,
+--         quantile_0_3173: double,
+--         quantile_0_5: double,
+--         quantile_0_6827: double,
+--         quantile_0_9545: double
+--     )
+-- }
 host_records_and_ntiles_by_week = JOIN
     host_records_by_week BY gdelt_epoch_week,
     host_records_by_week_ntiles BY gdelt_epoch_week;
@@ -141,7 +155,23 @@ host_records_and_ntiles_by_week = JOIN
 hosts_that_report_alot_on_USA = FILTER host_records_and_ntiles_by_week BY
    host_records_by_week::num_records >= host_records_by_week_ntiles::num_records_ntile.quantile_0_3173;
     
+-- ##### What is the AvgTone of records on the USA? #####
+AvgTone_about_USA_by_week = GROUP w_usa_actors BY gdelt_epoch_week;
+
+AvgTone_about_USA_by_week_ntiles = FOREACH AvgTone_about_USA_by_week GENERATE
+    FLATTEN(group) AS gdelt_epoch_week
+    Quantile(w_usa_actors.AvgTone) AS AvgTone_ntile;
+
+w_usa_AvgTone_and_ntiles_by_week = JOIN
+    AvgTone_about_USA_by_week_ntiles BY gdelt_epoch_week,
+    w_usa_actors BY gdelt_epoch_week;
+    
 hosts_that_report_alot_on_USA = LIMIT hosts_that_report_alot_on_USA 10;
 DUMP hosts_that_report_alot_on_USA;
-DESCRIBE host_records_and_ntiles_by_week;
 DESCRIBE hosts_that_report_alot_on_USA;
+
+w_usa_AvgTone_and_ntiles_by_week = LIMIT w_usa_AvgTone_and_ntiles_by_week;
+DUMP w_usa_AvgTone_and_ntiles_by_week;
+DESCRIBE w_usa_AvgTone_and_ntiles_by_week;
+
+
