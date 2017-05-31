@@ -1,12 +1,12 @@
 -- Who writes bad stuff about the USA?
 -- Approach:
---   1. Who writes about the USA?
+--   1. Who creates records with USA actors?
 --      w_usa_actors
---   2. How many articles to they write about the USA each month?
---      host_count_by_month
+--   2. How many records with USA actors does a host creat each week?
+--      host_records_by_week
 --   3. Which hosts write a lot of articles about the USA each month?
 --      hosts_that_report_alot_on_USA
---   4. What is the tone of articles about the USA?
+--   4. What is the tone of records about the USA?
 --      tone_of_articles_on_USA
 --   5. Which articles about the USA have a very negative tone?
 --      very_negative_records_about_usa
@@ -17,7 +17,7 @@
 
 -- Driving thresholds:
 --     Q:  What is the aggregation interval?
---         A: YearMonth that the article was created
+--         A: epoch_week the article was created
 --     Q: What defines a host with a lot of articles about the USA?
 --         A: any host with more than the median number of articles about the USA
 --     Q: What defines a an article about the USA with a very negative tone?
@@ -108,19 +108,26 @@ gdelt_v2_sel_fields = FOREACH gdelt_v2 GENERATE
     GLOBALEVENTID,
     ToDate(DATEADDED, 'YYYYMMDD') AS DATADDED,
     DaysBetween(ToDate(DATEADDED, 'YYYYMMDD'), ToDate('19790101', 'YYYYMMDD'))%7+1 AS day_added,  -- Sun = 0
-    DaysBetween(ToDate(DATEADDED, 'YYYYMMDD'), ToDate('19790101', 'YYYYMMDD')) AS gdelt_epoch_days,
-    DaysBetween(ToDate(DATEADDED, 'YYYYMMDD'), ToDate('19790101', 'YYYYMMDD'))/7 AS gdelt_epoch_weeks,
+    DaysBetween(ToDate(DATEADDED, 'YYYYMMDD'), ToDate('19790101', 'YYYYMMDD')) AS gdelt_epoch_day,
+    DaysBetween(ToDate(DATEADDED, 'YYYYMMDD'), ToDate('19790101', 'YYYYMMDD'))/7 AS gdelt_epoch_week,
     (Actor1CountryCode IS NULL ? 'was_null': Actor1CountryCode) AS Actor1CountryCode,
     (Actor2CountryCode IS NULL ? 'was_null': Actor2CountryCode) AS Actor2CountryCode,
     AvgTone,
-    SOURCEURL,
-    (SOURCEURL IS NULL ? 'was_null' : org.apache.pig.piggybank.evaluation.util.apachelogparser.HostExtractor(SOURCEURL)) AS host;  
+    (SOURCEURL IS NULL ? 'was_null' : org.apache.pig.piggybank.evaluation.util.apachelogparser.HostExtractor(SOURCEURL)) AS host,
+    SOURCEURL;
   
+-- Records that include at least one actor from USA
 w_usa_actors = FILTER gdelt_v2_sel_fields BY 
    (Actor1CountryCode == 'USA' OR Actor2CountryCode == 'USA')
    AND (AvgTone IS NOT NULL)
    AND (host IS NOT NULL);
-   
-w_usa_actors = LIMIT w_usa_actors 10;
-DUMP w_usa_actors;
-DESCRIBE w_usa_actors;
+
+grp_week_host = GROUP w_usa_actors BY (gdelt_epock_week, host);
+
+host_records_by_week = FOREACH grp_week_hgost GENERATE
+    FLATTEN(group) AS (gdelt_epock_week, host),
+    COUNT(w_usa_actors) AS NUM REGORDS;
+    
+host_records_by_week = LIMIT host_records_by_week 10;
+DUMP host_records_by_week;
+DESCRIBE host_records_by_week;
