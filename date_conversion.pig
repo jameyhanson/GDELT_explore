@@ -121,4 +121,5 @@ w_usa_actors = FILTER gdelt_v2_sel_fields BY
    AND (host IS NOT NULL);
    
 w_usa_actors = LIMIT w_usa_actors 10;
+DUMP w_usa_actors;
 DESCRIBE w_usa_actors;
