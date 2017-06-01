@@ -203,7 +203,7 @@ hosts_that_report_alot_on_USA = FOREACH hosts_that_report_alot_on_USA GENERATE
 STORE hosts_that_report_alot_on_USA INTO '/results/test/hosts_that_report_alot_on_USA';   
     
 -- ##### What is the AvgTone of records on the USA? #####
-AvgTone_about_USA_by_week = GROUP w_usa_actors BY gdelt_epoch_week;
+AvgTone_about_USA_by_week = GROUP w_usa_actors BY ew_date_mon;
 
 AvgTone_about_USA_by_week_ntiles = FOREACH AvgTone_about_USA_by_week GENERATE
     FLATTEN(group) AS ew_date_mon,
