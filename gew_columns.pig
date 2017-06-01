@@ -12,7 +12,7 @@ date_cols = FOREACH date_cols GENERATE
     DATEADDED,
     epoch_days,
     epoch_days%7 + 1 AS weekday,
-    CONCATE('P', (chararray)(((epoch_days-0)/7+1)*7+0), 'D') AS ew_offest_a,
+    CONCAT('P', (chararray)(((epoch_days-0)/7+1)*7+0), 'D') AS ew_offest_a,
     (chararray)(((epoch_days-1)/7+1)*7+1) AS ew_offest_b,
     (chararray)(((epoch_days-2)/7+1)*7+2) AS ew_offest_c,
     (chararray)(((epoch_days-3)/7+1)*7+3) AS ew_offest_d,
