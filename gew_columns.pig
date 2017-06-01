@@ -13,12 +13,12 @@ date_cols = FOREACH date_cols GENERATE
     epoch_days,
     epoch_days%7 + 1 AS weekday,
     CONCAT('P', (chararray)(((epoch_days-0)/7+1)*7+0), 'D') AS ew_offest_a,
-    (chararray)(((epoch_days-1)/7+1)*7+1) AS ew_offest_b,
-    (chararray)(((epoch_days-2)/7+1)*7+2) AS ew_offest_c,
-    (chararray)(((epoch_days-3)/7+1)*7+3) AS ew_offest_d,
-    (chararray)(((epoch_days-4)/7+1)*7+4) AS ew_offest_e,
-    (chararray)(((epoch_days-5)/7+1)*7+5) AS ew_offest_f,
-    (chararray)(((epoch_days-6)/7+1)*7+6) AS ew_offest_g;
+    CONCAT('P', (chararray)(((epoch_days-1)/7+1)*7+1), 'D') AS ew_offest_b,
+    CONCAT('P', (chararray)(((epoch_days-2)/7+1)*7+2), 'D') AS ew_offest_c,
+    CONCAT('P', (chararray)(((epoch_days-3)/7+1)*7+3), 'D') AS ew_offest_d,
+    CONCAT('P', (chararray)(((epoch_days-4)/7+1)*7+4), 'D') AS ew_offest_e,
+    CONCAT('P', (chararray)(((epoch_days-5)/7+1)*7+5), 'D') AS ew_offest_f,
+    CONCAT('P', (chararray)(((epoch_days-6)/7+1)*7+6), 'D') AS ew_offest_g;
         
 date_cols = LIMIT date_cols 50;
 DUMP date_cols;
