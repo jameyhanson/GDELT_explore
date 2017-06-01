@@ -11,7 +11,8 @@ date_cols = FOREACH raw_date GENERATE
 date_cols = FOREACH date_cols GENERATE
     DATEADDED,
     epoch_days,
-    epoch_days%7 + 1 AS weekday;
+    epoch_days%7 + 1 AS weekday,
+    ((epoch_days-0)/7+1)*7+0+DATEADDED AS ew_date_a;
     
 date_cols = LIMIT date_cols 50;
 DUMP date_cols;
