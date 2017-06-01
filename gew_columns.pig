@@ -12,13 +12,13 @@ date_cols = FOREACH date_cols GENERATE
     DATEADDED,
     epoch_days,
     epoch_days%7 + 1 AS weekday,
-    (chararray)((epoch_days-0)/7+1)*7+0 AS ew_offest_a,
-    (chararray)((epoch_days-1)/7+1)*7+1 AS ew_offest_b,
-    (chararray)((epoch_days-2)/7+1)*7+2 AS ew_offest_c,
-    (chararray)((epoch_days-3)/7+1)*7+3 AS ew_offest_d,
-    (chararray)((epoch_days-4)/7+1)*7+4 AS ew_offest_e,
-    (chararray)((epoch_days-5)/7+1)*7+5 AS ew_offest_f,
-    (chararray)((epoch_days-6)/7+1)*7+6 AS ew_offest_g;
+    (chararray)(((epoch_days-0)/7+1)*7+0) AS ew_offest_a,
+    (chararray)(((epoch_days-1)/7+1)*7+1) AS ew_offest_b,
+    (chararray)(((epoch_days-2)/7+1)*7+2) AS ew_offest_c,
+    (chararray)(((epoch_days-3)/7+1)*7+3) AS ew_offest_d,
+    (chararray)(((epoch_days-4)/7+1)*7+4) AS ew_offest_e,
+    (chararray)(((epoch_days-5)/7+1)*7+5) AS ew_offest_f,
+    (chararray)(((epoch_days-6)/7+1)*7+6) AS ew_offest_g;
         
 date_cols = LIMIT date_cols 50;
 DUMP date_cols;
