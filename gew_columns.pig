@@ -12,6 +12,7 @@ date_cols = FOREACH date_cols GENERATE
     DATEADDED,
     epoch_days,
     epoch_days%7 + 1 AS weekday,
+    ToDate('1979-01-01') AS epoch_start
     CONCAT('P', (chararray)(((epoch_days-0)/7+1)*7+0), 'D') AS ew_offset_mon,
     CONCAT('P', (chararray)(((epoch_days-1)/7+1)*7+1), 'D') AS ew_offset_tue,
     CONCAT('P', (chararray)(((epoch_days-2)/7+1)*7+2), 'D') AS ew_offset_wed,
@@ -23,13 +24,13 @@ date_cols = FOREACH date_cols GENERATE
 date_cols = FOREACH date_cols GENERATE
     DATEADDED,
     weekday,
-    AddDuration(DATEADDED, ew_offset_mon) AS ew_date_mon,
-    AddDuration(DATEADDED, ew_offset_tue) AS ew_date_tue,
-    AddDuration(DATEADDED, ew_offset_wed) AS ew_date_wed,
-    AddDuration(DATEADDED, ew_offset_thu) AS ew_date_thu,
-    AddDuration(DATEADDED, ew_offset_fri) AS ew_date_fri,
-    AddDuration(DATEADDED, ew_offset_sat) AS ew_date_sat,
-    AddDuration(DATEADDED, ew_offset_sun) AS ew_date_sun;
+    AddDuration(epoch_start, ew_offset_mon) AS ew_date_mon,
+    AddDuration(epoch_start, ew_offset_tue) AS ew_date_tue,
+    AddDuration(epoch_start, ew_offset_wed) AS ew_date_wed,
+    AddDuration(epoch_start, ew_offset_thu) AS ew_date_thu,
+    AddDuration(epoch_start, ew_offset_fri) AS ew_date_fri,
+    AddDuration(epoch_start, ew_offset_sat) AS ew_date_sat,
+    AddDuration(epoch_start, ew_offset_sun) AS ew_date_sun;
     
 date_cols = LIMIT date_cols 50;
 DUMP date_cols;
