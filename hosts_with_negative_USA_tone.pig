@@ -134,7 +134,7 @@ gdelt_v2_sel_fields = FOREACH gdelt_v2_sel_fields GENERATE
     host,
     SOURCEURL;    
     
-gdelt_v2_sel_fields = FOREACH gdelt_v2 GENERATE 
+gdelt_v2_sel_fields = FOREACH gdelt_v2_sel_fields GENERATE 
     GLOBALEVENTID,
     DATEADDED,
     epoch_start,
@@ -153,21 +153,6 @@ gdelt_v2_sel_fields = FOREACH gdelt_v2 GENERATE
     host,
     SOURCEURL;      
     
--- gew_end (gdelt epoch week) is the day after then end of the week, Monday.
---     the gdelt_epoch_week is the 7 days preceeding gew_end
-gdelt_v2_sel_fields = FOREACH gdelt_v2_sel_fields GENERATE
-    GLOBALEVENTID,
-    DATEADDED,
-    day_added,
-    gdelt_epoch_day,
-    gdelt_epoch_week,
-    AddDuration(ToDate('19790108', 'YYYYMMDD'), CONCAT('P', (chararray)(gdelt_epoch_week*7), 'D')) AS gew_end,
-    Actor1CountryCode,
-    Actor2CountryCode,
-    AvgTone,
-    host,
-    SOURCEURL;
-
 -- ##### Which hosts report on the USA frequently? #####
 -- Records that include at least one actor from USA
 w_usa_actors = FILTER gdelt_v2_sel_fields BY 
