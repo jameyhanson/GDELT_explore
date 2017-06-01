@@ -20,6 +20,11 @@ date_cols = FOREACH date_cols GENERATE
     CONCAT('P', (chararray)(((epoch_days-5)/7+1)*7+5), 'D') AS ew_offest_f,
     CONCAT('P', (chararray)(((epoch_days-6)/7+1)*7+6), 'D') AS ew_offest_g;
         
+date_cols = FOREACH date_cols GENERATE
+    DATEADDED,
+    weekday,
+    AddDuration(DATEADDED, ew_offset_a) AS ew_date_a;
+    
 date_cols = LIMIT date_cols 50;
 DUMP date_cols;
 DESCRIBE date_cols;
