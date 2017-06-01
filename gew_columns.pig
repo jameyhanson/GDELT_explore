@@ -8,7 +8,7 @@ date_cols = FOREACH raw_date GENERATE
     ToDate(DATEADDED, 'YYYYMMDD') AS DATEADDED;
     
 date_cols = FOREACH date_cols GENERATE
-    DATEADDED AS DATEADDED,
+    DATEADDED,
     DaysBetween(DATEADDED, ToDate(19790101, 'YYYYMMDD')) AS epoch_days,
     DaysBetween(DATEADDED, ToDate(19790101, 'YYYYMMDD'))/7 + 1 AS weekday;
     
