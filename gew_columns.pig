@@ -18,7 +18,7 @@ date_cols = FOREACH date_cols GENERATE
     CONCAT('P', (chararray)(((epoch_days-3)/7+1)*7+3), 'D') AS ew_offet_d,
     CONCAT('P', (chararray)(((epoch_days-4)/7+1)*7+4), 'D') AS ew_offet_e,
     CONCAT('P', (chararray)(((epoch_days-5)/7+1)*7+5), 'D') AS ew_offet_f,
-    CONCAT('P', (chararray)(((epoch_days-6)/7+1)*7+6), 'D') AS ew_offet_g';
+    CONCAT('P', (chararray)(((epoch_days-6)/7+1)*7+6), 'D') AS ew_offet_g;
         
 date_cols = FOREACH date_cols GENERATE
     DATEADDED,
