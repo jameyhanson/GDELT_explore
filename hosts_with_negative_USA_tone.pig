@@ -134,11 +134,14 @@ gdelt_v2_sel_fields = FOREACH gdelt_v2_sel_fields GENERATE
     host,
     SOURCEURL;    
     
-gdelt_v2_sel_fields = FOREACH gdelt_v2_sel_fields GENERATE 
+w_usa_actors = FILTER gdelt_v2_sel_fields BY 
+   (Actor1CountryCode == 'USA' OR Actor2CountryCode == 'USA')
+   AND (AvgTone IS NOT NULL)
+   AND (host IS NOT NULL);        
+    
+w_usa_actors = FOREACH w_usa_actors GENERATE 
     GLOBALEVENTID,
     DATEADDED,
-    epoch_start,
-    epoch_days,
     epoch_days%7 + 1 AS weekday,
     AddDuration(epoch_start, ew_offset_mon) AS ew_date_mon,
     AddDuration(epoch_start, ew_offset_tue) AS ew_date_tue,
@@ -147,8 +150,6 @@ gdelt_v2_sel_fields = FOREACH gdelt_v2_sel_fields GENERATE
     AddDuration(epoch_start, ew_offset_fri) AS ew_date_fri,
     AddDuration(epoch_start, ew_offset_sat) AS ew_date_sat,
     AddDuration(epoch_start, ew_offset_sun) AS ew_date_sun,
-    Actor1CountryCode,
-    Actor2CountryCode,
     AvgTone,
     host,
     SOURCEURL;      
@@ -156,10 +157,6 @@ gdelt_v2_sel_fields = FOREACH gdelt_v2_sel_fields GENERATE
 -- &&&&& Mondays code &&&&&
 -- ##### Which hosts report on the USA frequently? #####
 -- Records that include at least one actor from USA
-w_usa_actors = FILTER gdelt_v2_sel_fields BY 
-   (Actor1CountryCode == 'USA' OR Actor2CountryCode == 'USA')
-   AND (AvgTone IS NOT NULL)
-   AND (host IS NOT NULL);
 
 grp_week_host = GROUP w_usa_actors BY (ew_date_mon, host);
 
