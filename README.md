@@ -128,4 +128,12 @@ export TEZ_JARS=/usr/local/tez_jars
 export HADOOP_CLASSPATH=${TEZ_CONF_DIR}:${TEZ_JARS}:${TEZ_JARS}/lib:${HADOOP_CLASSPATH}:${JAVA_JDBC_LIBS}:${MAPREDUCE_LIBS}
 alias pig6='$PIG_HOME/bin/pig'
 ```
-
+### Install jython
+NOTE:  Jython is used with the Python UDF.   
+Installation instructions for Jython are https://wiki.python.org/jython/InstallationInstructions  
+1. Ensure that >= Java 1.7 is installed.  
+2. Download the Jython installer .jar  
+`wget http://search.maven.org/remotecontent?filepath=org/python/jython-installer/2.7.0/jython-installer-2.7.0.jar -o jython-installer-2.7.0.jar`
+3.  Install Jython
+`java -jar jython_installer-2.7.0.jar --console`
+2. 
