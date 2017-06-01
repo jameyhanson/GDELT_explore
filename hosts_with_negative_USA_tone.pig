@@ -152,7 +152,8 @@ gdelt_v2_sel_fields = FOREACH gdelt_v2_sel_fields GENERATE
     AvgTone,
     host,
     SOURCEURL;      
-    
+
+-- &&&&& Mondays code &&&&&
 -- ##### Which hosts report on the USA frequently? #####
 -- Records that include at least one actor from USA
 w_usa_actors = FILTER gdelt_v2_sel_fields BY 
@@ -160,16 +161,16 @@ w_usa_actors = FILTER gdelt_v2_sel_fields BY
    AND (AvgTone IS NOT NULL)
    AND (host IS NOT NULL);
 
-grp_week_host = GROUP w_usa_actors BY (gdelt_epoch_week, host);
+grp_week_host = GROUP w_usa_actors BY (ew_date_mon, host);
 
 host_records_by_week = FOREACH grp_week_host GENERATE
-    FLATTEN(group) AS (gdelt_epoch_week, host),
+    FLATTEN(group) AS (ew_date_mon, host),
     COUNT(w_usa_actors) AS num_records;
     
-grp_host_records_by_week = GROUP host_records_by_week BY (gdelt_epoch_week);
+grp_host_records_by_week = GROUP host_records_by_week BY (ew_date_mon);
 
 host_records_by_week_ntiles = FOREACH grp_host_records_by_week GENERATE
-    FLATTEN(group) AS (gdelt_epoch_week),
+    FLATTEN(group) AS (ew_date_mon),
     Quantile(host_records_by_week.num_records) AS num_records_ntile;
     
 -- host_records_and_ntiles_by_week: {
