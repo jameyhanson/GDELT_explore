@@ -188,14 +188,14 @@ host_records_by_week_ntiles = FOREACH grp_host_records_by_week GENERATE
 --     )
 -- }
 host_records_and_ntiles_by_week = JOIN
-    host_records_by_week BY gdelt_epoch_week,
-    host_records_by_week_ntiles BY gdelt_epoch_week;
+    host_records_by_week BY ew_date_mon,
+    host_records_by_week_ntiles BY ew_date_mon;
     
 hosts_that_report_alot_on_USA = FILTER host_records_and_ntiles_by_week BY
    host_records_by_week::num_records >= host_records_by_week_ntiles::num_records_ntile.quantile_0_3173;
    
 hosts_that_report_alot_on_USA = FOREACH hosts_that_report_alot_on_USA GENERATE
-    host_records_by_week::gdelt_epoch_week AS gdelt_epoch_week,
+    host_records_by_week::ew_date_mon AS ew_date_mon,
     host_records_by_week::host AS host,
     host_records_by_week::num_records AS num_records,
     host_records_by_week_ntiles::num_records_ntile AS num_records_ntile;
@@ -206,12 +206,12 @@ STORE hosts_that_report_alot_on_USA INTO '/results/test/hosts_that_report_alot_o
 AvgTone_about_USA_by_week = GROUP w_usa_actors BY gdelt_epoch_week;
 
 AvgTone_about_USA_by_week_ntiles = FOREACH AvgTone_about_USA_by_week GENERATE
-    FLATTEN(group) AS gdelt_epoch_week,
+    FLATTEN(group) AS ew_date_mon,
     Quantile(w_usa_actors.AvgTone) AS AvgTone_ntile;
 
 w_usa_AvgTone_and_ntiles_by_week = JOIN
-    AvgTone_about_USA_by_week_ntiles BY gdelt_epoch_week,
-    w_usa_actors BY gdelt_epoch_week;
+    AvgTone_about_USA_by_week_ntiles BY ew_date_mon,
+    w_usa_actors BY ew_date_mon;
 
 -- w_usa_AvgTone_and_ntiles_by_week: {
 --     AvgTone_about_USA_by_week_ntiles::gdelt_epoch_week: long,
@@ -240,19 +240,19 @@ very_negative_tone_about_USA = FILTER w_usa_AvgTone_and_ntiles_by_week BY
 STORE very_negative_tone_about_USA INTO '/results/test/very_negative_tone_about_USA';
     
 very_negative_tone_about_USA_by_week = GROUP very_negative_tone_about_USA BY (
-    w_usa_actors::gdelt_epoch_week,
+    w_usa_actors::ew_date_mon,
     w_usa_actors::host);
     
 host_count_of_very_negative_by_week = FOREACH very_negative_tone_about_USA_by_week GENERATE
-    FLATTEN(group) AS (w_usa_actors::gdelt_epoch_week, w_usa_actors::host),
+    FLATTEN(group) AS (w_usa_actors::ew_date_mon, w_usa_actors::host),
     COUNT(very_negative_tone_about_USA) AS num_very_negative_records;
    
 join_host_counts_by_week = JOIN
-    hosts_that_report_alot_on_USA BY (gdelt_epoch_week, host),
-    host_count_of_very_negative_by_week BY (gdelt_epoch_week, host);
+    hosts_that_report_alot_on_USA BY (ew_date_mon, host),
+    host_count_of_very_negative_by_week BY (ew_date_mon, host);
     
 fraction_of_very_negative_by_week = FOREACH join_host_counts_by_week GENERATE
-    hosts_that_report_alot_on_USA::gdelt_epoch_week AS gdelt_epoch_week,
+    hosts_that_report_alot_on_USA::ew_date_mon AS ew_date_mon,
     hosts_that_report_alot_on_USA::host AS host,
     host_count_of_very_negative_by_week::num_very_negative_records AS num_very_negative_records,    
     hosts_that_report_alot_on_USA::num_records AS total_num_records,
