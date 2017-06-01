@@ -1,6 +1,6 @@
 -- gew_date = gdelt epoch week.  The date following the week of aggregation
 
-gdelt_v2 = LOAD '/data/gdelt_v2/events/' AS (
+gdelt_v2 = LOAD '/data/gdelt_test/' AS (
     GLOBALEVENTID:long,
     SQLDATE:chararray,      -- dates when the event occurred
     MonthYear:chararray,    -- dates when the event occurred
