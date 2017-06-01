@@ -12,13 +12,13 @@ date_cols = FOREACH date_cols GENERATE
     DATEADDED,
     epoch_days,
     epoch_days%7 + 1 AS weekday,
-    CONCAT('P', (chararray)(((epoch_days-0)/7+1)*7+0), 'D') AS ew_offet_a,
-    CONCAT('P', (chararray)(((epoch_days-1)/7+1)*7+1), 'D') AS ew_offet_b,
-    CONCAT('P', (chararray)(((epoch_days-2)/7+1)*7+2), 'D') AS ew_offet_c,
-    CONCAT('P', (chararray)(((epoch_days-3)/7+1)*7+3), 'D') AS ew_offet_d,
-    CONCAT('P', (chararray)(((epoch_days-4)/7+1)*7+4), 'D') AS ew_offet_e,
-    CONCAT('P', (chararray)(((epoch_days-5)/7+1)*7+5), 'D') AS ew_offet_f,
-    CONCAT('P', (chararray)(((epoch_days-6)/7+1)*7+6), 'D') AS ew_offet_g;
+    CONCAT('P', (chararray)(((epoch_days-0)/7+1)*7+0), 'D') AS ew_offset_a,
+    CONCAT('P', (chararray)(((epoch_days-1)/7+1)*7+1), 'D') AS ew_offset_b,
+    CONCAT('P', (chararray)(((epoch_days-2)/7+1)*7+2), 'D') AS ew_offset_c,
+    CONCAT('P', (chararray)(((epoch_days-3)/7+1)*7+3), 'D') AS ew_offset_d,
+    CONCAT('P', (chararray)(((epoch_days-4)/7+1)*7+4), 'D') AS ew_offset_e,
+    CONCAT('P', (chararray)(((epoch_days-5)/7+1)*7+5), 'D') AS ew_offset_f,
+    CONCAT('P', (chararray)(((epoch_days-6)/7+1)*7+6), 'D') AS ew_offset_g;
         
 date_cols = FOREACH date_cols GENERATE
     DATEADDED,
