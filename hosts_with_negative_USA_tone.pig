@@ -115,7 +115,7 @@ gdelt_v2_sel_fields = FOREACH gdelt_v2 GENERATE
     (SOURCEURL IS NULL ? 'was_null' : org.apache.pig.piggybank.evaluation.util.apachelogparser.HostExtractor(SOURCEURL)) AS host,
     SOURCEURL;
     
-gdelt_v2_sel_fields = FOREACH gdelt_v2 GENERATE 
+gdelt_v2_sel_fields = FOREACH gdelt_v2_sel_fields GENERATE 
     GLOBALEVENTID,
     DATEADDED,
     epoch_start,
