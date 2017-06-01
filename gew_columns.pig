@@ -25,7 +25,7 @@ date_cols = FOREACH date_cols GENERATE
     weekday,
     AddDuration(DATEADDED, ew_offset_mon) AS ew_date_mon,
     AddDuration(DATEADDED, ew_offset_tue) AS ew_date_tue,
-    AddDuration(DATEADDED, ew_offset_wed) AS ew_date_wed
+    AddDuration(DATEADDED, ew_offset_wed) AS ew_date_wed,
     AddDuration(DATEADDED, ew_offset_thu) AS ew_date_thu,
     AddDuration(DATEADDED, ew_offset_fri) AS ew_date_fri,
     AddDuration(DATEADDED, ew_offset_sat) AS ew_date_sat,
