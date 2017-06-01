@@ -5,8 +5,7 @@ raw_date = LOAD '/data/date_test/' AS (
 );
 
 date_cols = FOREACH raw_date GENERATE 
-    ToDate(DATEADDED, 'YYYYMMDD') AS DATEADDED,
-    ;
+    ToDate(DATEADDED, 'YYYYMMDD') AS DATEADDED;
     
 date_cols = FOREACH date_cols GENERATE
     DATEADDED,
