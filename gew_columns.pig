@@ -9,7 +9,8 @@ date_cols = FOREACH raw_date GENERATE
     
 date_cols = FOREACH date_cols GENERATE
     DATEADDED,
-    ToDate('1979-01-01') AS start_of_epoch;
+    ToDate('1979-01-01') AS start_of_epoch,
+    DaysBetween(DATEADDED, ToDate('1979-01-01')) AS epoch_days;
     
 date_cols = LIMIT date_cols 50;
 DUMP date_cols;
