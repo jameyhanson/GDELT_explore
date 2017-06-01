@@ -173,20 +173,6 @@ host_records_by_week_ntiles = FOREACH grp_host_records_by_week GENERATE
     FLATTEN(group) AS (ew_date_mon),
     Quantile(host_records_by_week.num_records) AS num_records_ntile;
     
--- host_records_and_ntiles_by_week: {
---     host_records_by_week::gdelt_epoch_week: long,
---     host_records_by_week::gew_head: datetime,
---     host_records_by_week::host: chararray,
---     host_records_by_week::num_records: long,
---     host_records_by_week_ntiles::gdelt_epoch_week: long,
---     host_records_by_week_ntiles::num_records_ntile: (
---         quantile_0_0455: double,
---         quantile_0_3173: double,
---         quantile_0_5: double,
---         quantile_0_6827: double,
---         quantile_0_9545: double
---     )
--- }
 host_records_and_ntiles_by_week = JOIN
     host_records_by_week BY ew_date_mon,
     host_records_by_week_ntiles BY ew_date_mon;
@@ -212,27 +198,6 @@ AvgTone_about_USA_by_week_ntiles = FOREACH AvgTone_about_USA_by_week GENERATE
 w_usa_AvgTone_and_ntiles_by_week = JOIN
     AvgTone_about_USA_by_week_ntiles BY ew_date_mon,
     w_usa_actors BY ew_date_mon;
-
--- w_usa_AvgTone_and_ntiles_by_week: {
---     AvgTone_about_USA_by_week_ntiles::gdelt_epoch_week: long,
---     AvgTone_about_USA_by_week_ntiles::AvgTone_ntile: (
---         quantile_0_0455: double,
---         quantile_0_3173: double,
---         quantile_0_5: double,
---         quantile_0_6827: double,
---         quantile_0_9545: double
---     ),
---     w_usa_actors::GLOBALEVENTID: long,
---     w_usa_actors::DATEDDED: datetime,
---     w_usa_actors::day_added: long,
---     w_usa_actors::gdelt_epoch_day: long,
---     w_usa_actors::gdelt_epoch_week: long,
---     w_usa_actors::Actor1CountryCode: chararray,
---     w_usa_actors::Actor2CountryCode: chararray,
---     w_usa_actors::AvgTone: float,
---     w_usa_actors::host: chararray,
---     w_usa_actors::SOURCEURL: chararray
--- }
 
 very_negative_tone_about_USA = FILTER w_usa_AvgTone_and_ntiles_by_week BY
     w_usa_actors::AvgTone <= AvgTone_about_USA_by_week_ntiles::AvgTone_ntile.quantile_0_0455; -- AvgTone_ntile minus2sigma
