@@ -43,6 +43,8 @@
 REGISTER '/opt/cloudera/parcels/CDH-5.11.0-1.cdh5.11.0.p0.34/lib/pig/datafu.jar';
 DEFINE Quantile datafu.pig.stats.StreamingQuantile('0.0455', '0.3173', '0.5', '0.6827', '0.9545');
 
+REGISTER 'top_level_domain.py' using jython as example_udf;
+
 gdelt_v2 = LOAD '/data/gdelt_v2/events/' AS (
     GLOBALEVENTID:long,
     SQLDATE:chararray,      -- dates when the event occurred
@@ -132,12 +134,13 @@ gdelt_v2_sel_fields = FOREACH gdelt_v2_sel_fields GENERATE
     Actor2CountryCode,
     AvgTone,
     host,
+    example_udf.tld(host) AS tld,
     SOURCEURL;    
     
 w_usa_actors = FILTER gdelt_v2_sel_fields BY 
    (Actor1CountryCode == 'USA' OR Actor2CountryCode == 'USA')
    AND (AvgTone IS NOT NULL)
-   AND (host IS NOT NULL);        
+   AND (host != 'was_null');        
     
 w_usa_actors = FOREACH w_usa_actors GENERATE 
     GLOBALEVENTID,
@@ -152,16 +155,17 @@ w_usa_actors = FOREACH w_usa_actors GENERATE
     AddDuration(epoch_start, ew_offset_sun) AS ew_date_sun,
     AvgTone,
     host,
+    tld,
     SOURCEURL;      
 
 -- &&&&& Mondays code &&&&&
 -- ##### Which hosts report on the USA frequently? #####
 -- Records that include at least one actor from USA
 
-grp_week_host = GROUP w_usa_actors BY (ew_date_mon, host);
+grp_week_host = GROUP w_usa_actors BY (ew_date_mon, host, tld);
 
 host_records_by_week = FOREACH grp_week_host GENERATE
-    FLATTEN(group) AS (ew_date_mon, host),
+    FLATTEN(group) AS (ew_date_mon, host, tld),
     COUNT(w_usa_actors) AS num_records;
     
 grp_host_records_by_week = GROUP host_records_by_week BY (ew_date_mon);
@@ -180,6 +184,7 @@ hosts_that_report_alot_on_USA = FILTER host_records_and_ntiles_by_week BY
 hosts_that_report_alot_on_USA = FOREACH hosts_that_report_alot_on_USA GENERATE
     host_records_by_week::ew_date_mon AS ew_date_mon,
     host_records_by_week::host AS host,
+    host_records_by_week::tld AS tld,
     host_records_by_week::num_records AS num_records,
     host_records_by_week_ntiles::num_records_ntile AS num_records_ntile;
    
@@ -203,10 +208,11 @@ STORE very_negative_tone_about_USA INTO '/results/test/very_negative_tone_about_
     
 very_negative_tone_about_USA_by_week = GROUP very_negative_tone_about_USA BY (
     w_usa_actors::ew_date_mon,
-    w_usa_actors::host);
+    w_usa_actors::host,
+    w_usa_actors::tld);
     
 host_count_of_very_negative_by_week = FOREACH very_negative_tone_about_USA_by_week GENERATE
-    FLATTEN(group) AS (w_usa_actors::ew_date_mon, w_usa_actors::host),
+    FLATTEN(group) AS (w_usa_actors::ew_date_mon, w_usa_actors::host, w_usa_actors::tld),
     COUNT(very_negative_tone_about_USA) AS num_very_negative_records;
    
 join_host_counts_by_week = JOIN
@@ -216,6 +222,7 @@ join_host_counts_by_week = JOIN
 fraction_of_very_negative_by_week = FOREACH join_host_counts_by_week GENERATE
     hosts_that_report_alot_on_USA::ew_date_mon AS ew_date_mon,
     hosts_that_report_alot_on_USA::host AS host,
+    hosts_that_report_alot_on_USA::tld AS tld,
     host_count_of_very_negative_by_week::num_very_negative_records AS num_very_negative_records,    
     hosts_that_report_alot_on_USA::num_records AS total_num_records,
     (float)host_count_of_very_negative_by_week::num_very_negative_records/hosts_that_report_alot_on_USA::num_records AS fraction_of_very_negative;
