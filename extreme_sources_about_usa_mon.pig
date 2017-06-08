@@ -41,6 +41,8 @@
 REGISTER '/opt/cloudera/parcels/CDH-5.11.0-1.cdh5.11.0.p0.34/lib/pig/datafu.jar';
 DEFINE Quantile datafu.pig.stats.StreamingQuantile('0.0455', '0.3173', '0.5', '0.6827', '0.9545');
 
+Register 'top_level_domain.py' using jython as example_udf;
+
 gdelt_v2 = LOAD '/data/gdelt_v2/events/' AS (
     GLOBALEVENTID:long,
     SQLDATE:long,      -- dates when the event occurred
@@ -110,19 +112,30 @@ gdelt_v2_sel_fields = FOREACH gdelt_v2 GENERATE
     (Actor2CountryCode IS NULL ? 'was_null': Actor2CountryCode) AS Actor2CountryCode,
     AvgTone,
     SOURCEURL,
-    (SOURCEURL IS NULL ? 'was_null' : org.apache.pig.piggybank.evaluation.util.apachelogparser.HostExtractor(SOURCEURL)) AS host;  
+    (SOURCEURL IS NULL ? 'was_null' : org.apache.pig.piggybank.evaluation.util.apachelogparser.HostExtractor(SOURCEURL)) AS host; 
+    
+gdelt_v2_sel_fields = FOREACH gdelt_v2 GENERATE
+    GLOBALEVENTID,
+    DATEADDED,
+    DATEADDED/10 AS MonthYearReported,
+    (Actor1CountryCode IS NULL ? 'was_null': Actor1CountryCode) AS Actor1CountryCode,
+    (Actor2CountryCode IS NULL ? 'was_null': Actor2CountryCode) AS Actor2CountryCode,
+    AvgTone,
+    SOURCEURL,
+    host,
+    example_udf.tld(host) AS tld;
     
 w_usa_actors = FILTER gdelt_v2_sel_fields BY 
     (Actor1CountryCode == 'USA' OR Actor2CountryCode == 'USA')
     AND (AvgTone IS NOT NULL)
-    AND (host IS NOT NULL);
+    AND (host != 'was_null';
 
-grp_month_host = GROUP w_usa_actors BY (MonthYearReported,  host);
+grp_month_host = GROUP w_usa_actors BY (MonthYearReported,  host, tld);
 
 --  host_count_by_month :: number of records that include an American actor
 --                         for each host grouped by month
 host_count_by_month = FOREACH grp_month_host GENERATE 
-    FLATTEN(group) AS (MonthYearReported, host),
+    FLATTEN(group) AS (MonthYearReported, host, tld),
     COUNT(w_usa_actors) AS num_records;
     
 grp_host_count_by_month = GROUP host_count_by_month BY MonthYearReported;
@@ -136,6 +149,7 @@ host_count_by_month_ntiles = FOREACH grp_host_count_by_month GENERATE
 -- host_count_and_ntiles_by_month: {
 --     host_count_by_month::MonthYearReported: long,
 -- 	   host_count_by_month::host: chararray,
+--     host_count_by_month::tld: chararray,
 -- 	   host_count_by_month::num_records: long,
 -- 	   host_count_by_month_ntiles::MonthYearReported: long,
 -- 	   host_count_by_month_ntiles::num_records_ntile:(
@@ -155,6 +169,7 @@ hosts_that_report_alot_on_USA = FILTER host_count_and_ntiles_by_month BY
 -- hosts_that_report_alot_on_USA: {
 --     host_count_by_month::MonthYearReported: long,
 --      host_count_by_month::host: chararray,
+--      host_count_by_month::tld: chararray,
 --       host_count_by_month::num_records: long,
 --       host_count_by_month_ntiles::MonthYearReported: long,
 --       host_count_by_month_ntiles::num_records_ntile: (
@@ -191,15 +206,19 @@ w_usa_plus_AvgTone_monthly_ntiles = JOIN AvgTone_about_USA_by_month_ntiles BY Mo
 --     w_usa_actors::Actor2CountryCode: chararray,
 --     w_usa_actors::AvgTone: float,
 --     w_usa_actors::SOURCEURL: chararray,
---     w_usa_actors::host: chararray
+--     w_usa_actors::host: chararray,
+--     w_usa_actors::tld: chararray
 -- }
 very_negative_tone_about_USA = FILTER w_usa_plus_AvgTone_monthly_ntiles BY
     w_usa_actors::AvgTone <= AvgTone_about_USA_by_month_ntiles::AvgTone_ntile.quantile_0_0455;  -- AvgTone_ntile minus2sigma
     
-grp_month_host_very_negative = GROUP very_negative_tone_about_USA BY (w_usa_actors::MonthYearReported,  w_usa_actors::host);
+grp_month_host_very_negative = GROUP very_negative_tone_about_USA BY (
+    w_usa_actors::MonthYearReported,  
+    w_usa_actors::host,
+    w_usa_actors::tld);
 
 host_count_of_very_negative_by_month = FOREACH grp_month_host_very_negative GENERATE 
-    FLATTEN(group) AS (MonthYearReported, host),
+    FLATTEN(group) AS (MonthYearReported, host, tld),
     COUNT(very_negative_tone_about_USA) AS num_records;    
     
 join_host_counts_by_month = JOIN host_count_by_month BY MonthYearReported,
@@ -208,6 +227,7 @@ join_host_counts_by_month = JOIN host_count_by_month BY MonthYearReported,
 fraction_of_very_negative_by_month = FOREACH join_host_counts_by_month GENERATE 
      host_count_by_month::MonthYearReported AS MonthYearReported,
      host_count_by_month::host AS host,
+     host_count_by_month::tld AS tld,
      host_count_by_month::num_records AS total_num_records,
      host_count_of_very_negative_by_month::num_records AS very_negative_num_records,
      (float)host_count_of_very_negative_by_month::num_records/host_count_by_month::num_records AS fraction_of_very_negative;
