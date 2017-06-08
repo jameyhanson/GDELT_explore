@@ -4,7 +4,3 @@
  @outputSchema("tld:chararray")
  def tld(host):
      return host[host.rfind('.')+1:]
-
- hosts = LOAD '/data/hosts/' AS (
-    hosts:chararray
-);
