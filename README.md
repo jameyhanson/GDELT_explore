@@ -8,6 +8,50 @@ NOTE:  Change the Pig logging directory in the `pig.properties pig.logfile`.
 
 [Pig cheat-sheet] (https://www.qubole.com/resources/cheatsheet/pig-function-cheat-sheet/).  
 
+## Pig script common header
+Q:  Who writes bad stuff about the USA?  
+Approach:
+  1. Who creates records with USA actors?
+      w_usa_actors
+  2. How many records with USA actors does a host create each week?
+      host_records_by_week
+   3. Which hosts write a lot of articles about the USA each month?
+      hosts_that_report_alot_on_USA
+   4. What is the tone of records about the USA?
+      tone_of_articles_on_USA
+   5. Which articles about the USA have a very negative tone?
+      very_negative_records_about_usa
+   6. How many very negative tone articles about USA to they write each month?
+      host_count_very_negative_by_month
+   7. What hosts write a large fraction of their articles about the USA with a very negative tone?
+      large_fraction_negative_about_USA
+
+Driving thresholds:  
+     Q:  What is the aggregation interval?  
+         A: epoch_week the article was created  
+     Q: What defines a host with a lot of articles about the USA?  
+         A: any host with more than the median number of articles about the USA  
+     Q: What defines a an article about the USA with a very negative tone?  
+         A: any article with a tone more than 2-sigma below the average tone  
+     Q: What defines a host that writes a lot of very negative articles about the USA?  
+         A: Any host FOR WHICH more than 1/2 of their articles about about the USA  
+             have a very negative tone.  
+
+DataFu quantiles    
+Creates lines for:  
+```
+ +2 sigma p=0.9545  
+ +1 sigma p=0.6827  
+ median   p=0.5  
+ -1 sigma p=0.3173  
+ -2 sigma p=0.0455
+```
+
+gdelpt epoch began on 1-Jan-1979.  gdelt_epoch is since 1-Jan-1979  
+
+Register DataFu and define an alias for the function  
+Ref:  https://datafu.incubator.apache.org/docs/datafu/guide.html  
+
 ### Install AWS-CLI and `distcp` the GDELT dataset to your cluster
 1. Install AWS-CLI  
 AWS-CLI [installation documentation] (http://docs.aws.amazon.com/cli/latest/userguide/installing.html)
