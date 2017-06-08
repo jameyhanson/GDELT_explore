@@ -156,27 +156,25 @@ SELECT
    percentile(gdelt_ua.NumMentions,0.75) AS q75,
    percentile(gdelt_ua.NumMentions,0.95) AS q95,
    MAX(gdelt_ua.NumMentions) AS max_NumMentions,
-   Year
+   DATEADDED/1000 AS YearAdded
 FROM (
 SELECT 
     GLOBALEVENTID,
-    Year,
+    DateAdded/1000 AS YearAdded,
     NumMentions
 FROM gdelt_v1
 WHERE (
     GLOBALEVENTID IS NOT NULL
-    AND Year IS NOT NULL
     AND (cast(NumMentions AS int) IS NOT NULL)
     )
 UNION ALL
 SELECT 
     GLOBALEVENTID,
-    Year,
+    DATEADDED/1000 AS Year,
     NumMentions
 FROM gdelt_v2
 WHERE (
     GLOBALEVENTID IS NOT NULL
-    AND Year IS NOT NULL
     AND (cast(NumMentions AS int) IS NOT NULL)
     )) gdelt_ua
-GROUP BY gdelt_ua.Year;
+GROUP BY gdelt_ua.YearAdded;
