@@ -112,7 +112,7 @@ gdelt_v2_sel_fields = FOREACH gdelt_v2 GENERATE
     (Actor2CountryCode IS NULL ? 'was_null': Actor2CountryCode) AS Actor2CountryCode,
     AvgTone,
     SOURCEURL,
-    (SOURCEURL IS NULL ? 'was_null' : org.apache.pig.piggybank.evaluation.util.apachelogparser.HostExtractor(SOURCEURL)) AS host; 
+    ((SOURCEURL IS NULL ? 'was_null' : org.apache.pig.piggybank.evaluation.util.apachelogparser.HostExtractor(SOURCEURL))) AS host; 
     
 gdelt_v2_sel_fields = FOREACH gdelt_v2 GENERATE
     GLOBALEVENTID,
