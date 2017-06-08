@@ -239,4 +239,4 @@ hosts_that_are_significantly_negative_about_USA = FILTER fraction_of_very_negati
     
 DESCRIBE hosts_that_are_significantly_negative_about_USA;
 
-STORE hosts_that_are_significantly_negative_about_USA INTO '/results/negative_hosts/mon_hosts_that_are_significantly_negative_about_USA'
+STORE hosts_that_are_significantly_negative_about_USA INTO '/results/negative_hosts/mon_hosts_that_are_significantly_negative_about_USA';
