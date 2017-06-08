@@ -228,6 +228,7 @@ fraction_of_very_negative_by_week = FOREACH join_host_counts_by_week GENERATE
     (float)host_count_of_very_negative_by_week::num_very_negative_records/hosts_that_report_alot_on_USA::num_records AS fraction_of_very_negative;
 
 hosts_with_lots_of_very_negative_by_week = FILTER fraction_of_very_negative_by_week BY
-    fraction_of_very_negative >= 0.5;
+    fraction_of_very_negative >= 0.5
+    AND tld != 'com';
 
 STORE hosts_with_lots_of_very_negative_by_week INTO '/results/test/hosts_with_lots_of_very_negative_by_week';
