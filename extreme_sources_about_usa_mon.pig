@@ -128,7 +128,7 @@ gdelt_v2_sel_fields = FOREACH gdelt_v2_sel_fields GENERATE
 w_usa_actors = FILTER gdelt_v2_sel_fields BY 
     (Actor1CountryCode == 'USA' OR Actor2CountryCode == 'USA')
     AND (AvgTone IS NOT NULL)
-    AND (host != 'was_null';
+    AND (host != 'was_null');
 
 grp_month_host = GROUP w_usa_actors BY (MonthYearReported,  host, tld);
 
