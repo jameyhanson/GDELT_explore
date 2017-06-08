@@ -1,5 +1,5 @@
 -- Hosts with writing articles with bad tones about the USA actors
--- weekly moving averages for the 7 daqys before each Monday
+-- weekly moving averages for the 7 days before each Monday
 
 REGISTER '/opt/cloudera/parcels/CDH-5.11.0-1.cdh5.11.0.p0.34/lib/pig/datafu.jar';
 DEFINE Quantile datafu.pig.stats.StreamingQuantile('0.0455', '0.3173', '0.5', '0.6827', '0.9545');
@@ -85,12 +85,12 @@ gdelt_v2_sel_fields = FOREACH gdelt_v2_sel_fields GENERATE
     epoch_days,
     epoch_days%7 + 1 AS weekday,
     CONCAT('P', (chararray)(((epoch_days-0)/7+1)*7+0), 'D') AS ew_offset_mon,
-    CONCAT('P', (chararray)(((epoch_days-1)/7+1)*7+1), 'D') AS ew_offset_tue,
-    CONCAT('P', (chararray)(((epoch_days-2)/7+1)*7+2), 'D') AS ew_offset_wed,
-    CONCAT('P', (chararray)(((epoch_days-3)/7+1)*7+3), 'D') AS ew_offset_thu,
-    CONCAT('P', (chararray)(((epoch_days-4)/7+1)*7+4), 'D') AS ew_offset_fri,
-    CONCAT('P', (chararray)(((epoch_days-5)/7+1)*7+5), 'D') AS ew_offset_sat,
-    CONCAT('P', (chararray)(((epoch_days-6)/7+1)*7+6), 'D') AS ew_offset_sun,
+--    CONCAT('P', (chararray)(((epoch_days-1)/7+1)*7+1), 'D') AS ew_offset_tue,
+--    CONCAT('P', (chararray)(((epoch_days-2)/7+1)*7+2), 'D') AS ew_offset_wed,
+--    CONCAT('P', (chararray)(((epoch_days-3)/7+1)*7+3), 'D') AS ew_offset_thu,
+--    CONCAT('P', (chararray)(((epoch_days-4)/7+1)*7+4), 'D') AS ew_offset_fri,
+--    CONCAT('P', (chararray)(((epoch_days-5)/7+1)*7+5), 'D') AS ew_offset_sat,
+--    CONCAT('P', (chararray)(((epoch_days-6)/7+1)*7+6), 'D') AS ew_offset_sun,
     Actor1CountryCode,
     Actor2CountryCode,
     AvgTone,
@@ -108,12 +108,12 @@ w_usa_actors = FOREACH w_usa_actors GENERATE
     DATEADDED,
     epoch_days%7 + 1 AS weekday,
     AddDuration(epoch_start, ew_offset_mon) AS ew_date_mon,
-    AddDuration(epoch_start, ew_offset_tue) AS ew_date_tue,
-    AddDuration(epoch_start, ew_offset_wed) AS ew_date_wed,
-    AddDuration(epoch_start, ew_offset_thu) AS ew_date_thu,
-    AddDuration(epoch_start, ew_offset_fri) AS ew_date_fri,
-    AddDuration(epoch_start, ew_offset_sat) AS ew_date_sat,
-    AddDuration(epoch_start, ew_offset_sun) AS ew_date_sun,
+--    AddDuration(epoch_start, ew_offset_tue) AS ew_date_tue,
+--    AddDuration(epoch_start, ew_offset_wed) AS ew_date_wed,
+--    AddDuration(epoch_start, ew_offset_thu) AS ew_date_thu,
+--    AddDuration(epoch_start, ew_offset_fri) AS ew_date_fri,
+--    AddDuration(epoch_start, ew_offset_sat) AS ew_date_sat,
+--    AddDuration(epoch_start, ew_offset_sun) AS ew_date_sun,
     AvgTone,
     host,
     tld,
@@ -192,4 +192,4 @@ hosts_with_lots_of_very_negative_by_week = FILTER fraction_of_very_negative_by_w
     fraction_of_very_negative >= 0.5
     AND tld != 'com';
 
-STORE hosts_with_lots_of_very_negative_by_week INTO '/results/test/hosts_with_lots_of_very_negative_by_week';
+STORE hosts_with_lots_of_very_negative_by_week INTO '/results/hosts_with_lots_of_very_negative/01Mon_results';
