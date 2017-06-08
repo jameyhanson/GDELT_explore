@@ -130,7 +130,7 @@ w_usa_actors = FILTER gdelt_v2_sel_fields BY
     AND (AvgTone IS NOT NULL)
     AND (host != 'was_null');
 
-grp_month_host = GROUP w_usa_actors BY (MonthYearReported,  host, tld);
+grp_month_host = GROUP w_usa_actors BY (MonthYearReported, host, tld);
 
 --  host_count_by_month :: number of records that include an American actor
 --                         for each host grouped by month
@@ -160,8 +160,8 @@ host_count_by_month_ntiles = FOREACH grp_host_count_by_month GENERATE
 -- 		   quantile_0_9545: double
 -- 	   )
 -- }
-host_count_and_ntiles_by_month = JOIN host_count_by_month BY MonthYearReported,
-    host_count_by_month_ntiles BY MonthYearReported;
+host_count_and_ntiles_by_month = JOIN host_count_by_month BY (MonthYearReported, host)
+    host_count_by_month_ntiles BY (MonthYearReported, host);
     
 hosts_that_report_alot_on_USA = FILTER host_count_and_ntiles_by_month BY 
     host_count_by_month::num_records >= host_count_by_month_ntiles::num_records_ntile.quantile_0_5;
