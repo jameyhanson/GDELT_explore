@@ -187,4 +187,7 @@ Installation instructions for Jython are https://wiki.python.org/jython/Installa
 `wget http://search.maven.org/remotecontent?filepath=org/python/jython-installer/2.7.0/jython-installer-2.7.0.jar -o jython-installer-2.7.0.jar`
 3.  Install Jython
 `java -jar jython_installer-2.7.0.jar --console`
-2. 
+## Create an explain plan ##
+```
+pig6 -x <engine> -e 'explain -script <file>.pig'
+```
