@@ -141,12 +141,12 @@ gdelt_v2_nums = FOREACH gdelt_v2 GENERATE
     DATEADDED/100 AS YearAdded,
     AvgTone;
 
-gdelt_v1 = FILTER gdelt_v1 BY (GLOBALEVENTID IS NOT NULL)
+gdelt_v1 = FILTER gdelt_v1_nums BY (GLOBALEVENTID IS NOT NULL)
                                AND (YearAdded IS NOT NULL)
                                AND (AvgTone IS NOT NULL);
 
 
-gdelt_v2 = FILTER gdelt_v2 BY (GLOBALEVENTID IS NOT NULL)
+gdelt_v2 = FILTER gdelt_v2_nums BY (GLOBALEVENTID IS NOT NULL)
                                AND (YearAdded IS NOT NULL)
                                AND (AvgTone IS NOT NULL);
 
