@@ -128,12 +128,12 @@ gdelt_v2 = LOAD '/data/gdelt_v2/events/' AS (
     SOURCEURL:chararray
 );
 
-gdelt_v1_nums = FOREACH gdelt_v1 GENERATE 
+gdelt_v1_nums = FOREACH gdelt_v1_nums GENERATE 
     GLOBALEVENTID,
     DATEADDED/1000 AS YearAdded,
     NumMentions;
 
-gdelt_v2_nums = FOREACH gdelt_v2 GENERATE 
+gdelt_v2_nums = FOREACH gdelt_v2_nums GENERATE 
     GLOBALEVENTID,
     YearAdded,
     NumMentions;
