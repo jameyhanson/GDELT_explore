@@ -139,13 +139,12 @@ gdelt_v2_nums = FOREACH gdelt_v2 GENERATE
     DATEADDED/1000 AS YearAdded,
     NumArticles;
 
-gdelt_v1 = FILTER gdelt_v1 BY (GLOBALEVENTID IS NOT NULL)
+gdelt_v1 = FILTER gdelt_v1_nums BY (GLOBALEVENTID IS NOT NULL)
                                AND (YearAdded IS NOT NULL)
                                AND (NumArticles IS NOT NULL)
                                AND org.apache.pig.piggybank.evaluation.IsInt(NumArticles);
 
-
-gdelt_v2 = FILTER gdelt_v2 BY (GLOBALEVENTID IS NOT NULL)
+gdelt_v2 = FILTER gdelt_v2_nums BY (GLOBALEVENTID IS NOT NULL)
                                AND (YearAdded IS NOT NULL)
                                AND org.apache.pig.piggybank.evaluation.IsInt(NumArticles);
 
