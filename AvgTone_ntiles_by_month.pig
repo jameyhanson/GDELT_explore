@@ -137,9 +137,6 @@ gdelt_v2 = LOAD '/data/gdelt_v2/events/' AS (
     SOURCEURL:chararray
 );
 
--- gdelt_v1 = SAMPLE gdelt_v1 0.1;
--- gdelt_v2 = SAMPLE gdelt_v2 0.1;
-
 gdelt_v1_nums = FOREACH gdelt_v1 GENERATE 
     GLOBALEVENTID,
     DATEADDED/10 AS MonthYearAdded,
@@ -147,15 +144,15 @@ gdelt_v1_nums = FOREACH gdelt_v1 GENERATE
 
 gdelt_v2_nums = FOREACH gdelt_v2 GENERATE 
     GLOBALEVENTID,
-     DATEADDED/10 AS MonthYearAdded,
+    DATEADDED/10 AS MonthYearAdded,
     AvgTone;
 
-gdelt_v1 = FILTER gdelt_v1 BY (GLOBALEVENTID IS NOT NULL)
+gdelt_v1_nums = FILTER gdelt_v1_nums BY (GLOBALEVENTID IS NOT NULL)
                                AND (MonthYearAdded IS NOT NULL)
                                AND (AvgTone IS NOT NULL);
 
 
-gdelt_v2 = FILTER gdelt_v2 BY (GLOBALEVENTID IS NOT NULL)
+gdelt_v2_nums = FILTER gdelt_v2_nums BY (GLOBALEVENTID IS NOT NULL)
                                AND (MonthYearAdded IS NOT NULL)
                                AND (AvgTone IS NOT NULL);
 
