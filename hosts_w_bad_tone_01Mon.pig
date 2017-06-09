@@ -148,8 +148,6 @@ hosts_that_report_alot_on_USA = FOREACH hosts_that_report_alot_on_USA GENERATE
     host_records_by_week::tld AS tld,
     host_records_by_week::num_records AS num_records,
     host_records_by_week_ntiles::num_records_ntile AS num_records_ntile;
-   
-STORE hosts_that_report_alot_on_USA INTO '/results/test/hosts_that_report_alot_on_USA';   
     
 -- ##### What is the AvgTone of records on the USA? #####
 AvgTone_about_USA_by_week = GROUP w_usa_actors BY ew_date_mon;
@@ -164,9 +162,7 @@ w_usa_AvgTone_and_ntiles_by_week = JOIN
 
 very_negative_tone_about_USA = FILTER w_usa_AvgTone_and_ntiles_by_week BY
     w_usa_actors::AvgTone <= AvgTone_about_USA_by_week_ntiles::AvgTone_ntile.quantile_0_0455; -- AvgTone_ntile minus2sigma
-
-STORE very_negative_tone_about_USA INTO '/results/test/very_negative_tone_about_USA';
-    
+  
 very_negative_tone_about_USA_by_week = GROUP very_negative_tone_about_USA BY (
     w_usa_actors::ew_date_mon,
     w_usa_actors::host,
