@@ -133,12 +133,12 @@ gdelt_v2 = LOAD '/data/gdelt_v2/events/' AS (
 
 gdelt_v1_nums = FOREACH gdelt_v1 GENERATE 
     GLOBALEVENTID,
-    MonthYearAdded/100 AS YearAdded,
+    DATEADDED/100 AS YearAdded,
     AvgTone;
 
 gdelt_v2_nums = FOREACH gdelt_v2 GENERATE 
     GLOBALEVENTID,
-    MonthYearAdded/100 AS YearAdded,
+    DATEADDED/100 AS YearAdded,
     AvgTone;
 
 gdelt_v1 = FILTER gdelt_v1 BY (GLOBALEVENTID IS NOT NULL)
