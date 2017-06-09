@@ -147,25 +147,21 @@ gdelt_v2_nums = FOREACH gdelt_v2 GENERATE
     DATEADDED/10 AS MonthYearAdded,
     AvgTone;
 
-gdelt_v1_nums = FILTER gdelt_v1_nums BY (GLOBALEVENTID IS NOT NULL)
-                               AND (MonthYearAdded IS NOT NULL)
-                               AND (AvgTone IS NOT NULL);
+gdelt_v1_nums = FILTER gdelt_v1_nums BY AvgTone IS NOT NULL;
 
 
-gdelt_v2_nums = FILTER gdelt_v2_nums BY (GLOBALEVENTID IS NOT NULL)
-                               AND (MonthYearAdded IS NOT NULL)
-                               AND (AvgTone IS NOT NULL);
+gdelt_v2_nums = FILTER gdelt_v2_nums BY AvgTone IS NOT NULL;
 
 gdelt_nums = UNION ONSCHEMA gdelt_v1_nums, gdelt_v2_nums;
 
 gdelt_nums_by_month = GROUP gdelt_nums BY MonthYearAdded;
 
 gdelt_AvgTone_ntiles_by_month = FOREACH gdelt_nums_by_month GENERATE
-    group AS month,
+    group AS MonthYearAdded,
     Quantile(gdelt_nums.AvgTone) AS AvgTone_ntile; 
  
 gdelt_AvgTone_flat_ntiles_by_month = FOREACH gdelt_AvgTone_ntiles_by_month GENERATE
-    month,
+    MonthYearAdded,
     AvgTone_ntile.$0 AS minus2sigma,
     AvgTone_ntile.$1 AS minus1sigma,
     AvgTone_ntile.$2 AS median,
