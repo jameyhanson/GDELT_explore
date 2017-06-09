@@ -159,7 +159,7 @@ gdelt_NumSources_ntiles_by_year = FOREACH gdelt_nums_by_year GENERATE
     Quantile(gdelt_nums.NumSources) AS NumSources_ntile; 
  
 gdelt_NumSources_flat_ntiles_by_year = FOREACH gdelt_NumSources_ntiles_by_year GENERATE
-    year,
+    YearAdded,
     NumSources_ntile.$0 AS min,
     NumSources_ntile.$1 AS q05,
     NumSources_ntile.$2 AS q25,
