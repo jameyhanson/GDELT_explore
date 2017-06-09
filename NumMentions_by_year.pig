@@ -128,9 +128,6 @@ gdelt_v2 = LOAD '/data/gdelt_v2/events/' AS (
     SOURCEURL:chararray
 );
 
--- gdelt_v1 = SAMPLE gdelt_v1 0.1;
--- gdelt_v2 = SAMPLE gdelt_v2 0.1;
-
 gdelt_v1_nums = FOREACH gdelt_v1 GENERATE 
     GLOBALEVENTID,
     DATEADDED/1000 AS YearAdded,
@@ -141,11 +138,11 @@ gdelt_v2_nums = FOREACH gdelt_v2 GENERATE
     YearAdded,
     NumMentions;
 
-gdelt_v1 = FILTER gdelt_v1 BY (GLOBALEVENTID IS NOT NULL)
+gdelt_v1_nums = FILTER gdelt_v1_nums BY (GLOBALEVENTID IS NOT NULL)
                                AND org.apache.pig.piggybank.evaluation.IsInt(NumMentions);
 
 
-gdelt_v2 = FILTER gdelt_v2 BY (GLOBALEVENTID IS NOT NULL)
+gdelt_v2_nums = FILTER gdelt_v2_nums BY (GLOBALEVENTID IS NOT NULL)
                                AND org.apache.pig.piggybank.evaluation.IsInt(NumMentions);
 
 gdelt_nums = UNION ONSCHEMA gdelt_v1_nums, gdelt_v2_nums;
