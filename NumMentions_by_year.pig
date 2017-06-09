@@ -154,7 +154,7 @@ gdelt_NumMentions_ntiles_by_year = FOREACH gdelt_nums_by_year GENERATE
     Quantile(gdelt_nums.NumMentions) AS NumMentions_ntile; 
    
 gdelt_NumMentions_flat_ntiles_by_year = FOREACH gdelt_NumMentions_ntiles_by_year GENERATE
-    year,
+    YearAdded,
     NumMentions_ntile.$0 AS min,
     NumMentions_ntile.$1 AS q05,
     NumMentions_ntile.$2 AS q25,
