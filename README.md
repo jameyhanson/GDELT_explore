@@ -47,7 +47,7 @@ Creates lines for:
  -2 sigma p=0.0455
 ```
 
-gdelpt epoch began on 1-Jan-1979.  gdelt_epoch is since 1-Jan-1979  
+gdelpt epoch began on 1-Jan-1979.  
 
 Register DataFu and define an alias for the function  
 Ref:  https://datafu.incubator.apache.org/docs/datafu/guide.html  
@@ -58,7 +58,7 @@ AWS-CLI [installation documentation] (http://docs.aws.amazon.com/cli/latest/user
 2. Review the GDELT dataset
 `aws s3 ls s3://gdelt-open-data/events/ --recursive --human-readable --summarize`
 3. Copy GDELT.  The scripts assume `/Data/GDELT_v[1-2]/events`.  
-The format changed slightly, which is why we put the files in two directories.  
+On 1-Apr-2013 the a URL column was added.  GDELT_V1 refers to the scheme before 1-Apr-2013, i.e. without URL 
 ```
 export awsAccessKey=XXXXXXXXXXXXXXXXXXXX
 export awsSecretAccessKey=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
@@ -67,6 +67,13 @@ sudo -u hdfs hdfs dfs -mv /data/gdelt_v2/events/19??.csv /data/gdelt_v1/events
 sudo -u hdfs hdfs dfs -mv /data/gdelt_v2/events/200?.csv /data/gdelt_v1/events
 sudo -u hdfs hdfs dfs -mv /data/gdelt_v2/events/200???.csv /data/gdelt_v1/events
 sudo -u hdfs hdfs dfs -mv /data/gdelt_v2/events/201???.csv /data/gdelt_v1/events
+```
+#### Updated GDELT_V2 with most recent days
+NOTE:  It is recommended to overwrite the two most recent files because, per the GDELT documentation, records are occassionally added a few days late.  
+```
+export awsAccessKey=XXXXXXXXXXXXXXXXXXXX
+export awsSecretAccessKey=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+hadoop distcp -Dfs.s3n.awsAccessKeyId=$awsAccessKey -Dfs.s3n.awsSecretAccessKey=$awsSecretAccessKey s3n://gdelt-open-data/events/ 2017????.export.csv hdfs:///data/gdelt_v2/
 ```
 ### Install Maven and build Protobuf
 1.  Install `bzip2`, `gcc*`, and `wget`  
