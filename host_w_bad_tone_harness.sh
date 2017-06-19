@@ -14,6 +14,7 @@ hosts_w_bad_tone_04Thu.pig
 hosts_w_bad_tone_05Fri.pig
 hosts_w_bad_tone_06Sat.pig
 hosts_w_bad_tone_07Sun.pig
+hosts_w_bad_tone_99summary.pig
 EOF
 
 frameworks='tez mapreduce'
@@ -27,6 +28,7 @@ do
     do
         echo "clean output directory"
         hdfs dfs -rm -r -skipTrash /results/hosts_with_lots_of_very_negative*
+        hdfs dfs -rm -r -skipTrash /results/very_negative_hosts_by_moving_week_avg
     
         # inner loop for pig script
         for script in $scripts
