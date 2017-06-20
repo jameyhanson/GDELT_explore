@@ -72,7 +72,7 @@ gdelt_v1 = LOAD '/data/gdelt_v1/events/' AS (
     ActionGeo_Lat:float,
     ActionGeo_Long:float,
     ActionGeo_FeatureID:chararray,
-    DATEADDED:long
+    DATEADDED:chararray
 );
 
 -- gdelt_v2 = LOAD '/data/gdelt_v2/events/20?????1.export.csv' AS (
@@ -133,12 +133,9 @@ gdelt_v2 = LOAD '/data/gdelt_v2/events/' AS (
     ActionGeo_Lat:float,
     ActionGeo_Long:float,
     ActionGeo_FeatureID:chararray,
-    DATEADDED:long,
+    DATEADDED:chararray,
     SOURCEURL:chararray
 );
-
--- gdelt_v1 = SAMPLE gdelt_v1 0.1;
--- gdelt_v2 = SAMPLE gdelt_v2 0.1;
 
 gdelt_v1_nums = FOREACH gdelt_v1 GENERATE 
     GLOBALEVENTID,
