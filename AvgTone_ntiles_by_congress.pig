@@ -164,5 +164,7 @@ gdelt_AvgTone_flat_ntiles_by_congress = FOREACH gdelt_AvgTone_ntiles_by_congress
     AvgTone_ntile.$3 AS plus1sigma,
     AvgTone_ntile.$4 AS plus2sigma;
     
+gdelt_AvgTone_flat_ntiles_by_congress = ORDER gdelt_AvgTone_flat_ntiles_by_congress BY CongressNum DESC;    
+    
 STORE gdelt_AvgTone_flat_ntiles_by_congress INTO '/results/gdelt_AvgTone_ntiles_by_congress'
     USING PigStorage('\t', '-tagsource');
