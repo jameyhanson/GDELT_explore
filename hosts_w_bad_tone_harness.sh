@@ -3,7 +3,6 @@
 # see http://ryanstutorials.net/bash-scripting-tutorial/bash-loops.php
 
 # loop through scripts using tez and mapreduce
-num_runs = 2
 
 # scripts to test
 read -d '' scripts << EOF
@@ -24,7 +23,7 @@ do
     echo "####### $framework tests ######"
     
     # middle loop for run number
-    for run_num in {1..$num_runs}
+    for run_num in {1..3}
     do
         echo "clean output directory"
         hdfs dfs -rm -r -skipTrash /results/hosts_with_lots_of_very_negative*
