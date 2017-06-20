@@ -3,7 +3,7 @@
 
 REGISTER '/opt/cloudera/parcels/CDH-5.11.0-1.cdh5.11.0.p0.34/lib/pig/datafu.jar';
 DEFINE DIST datafu.pig.geo.HaversineDistInMiles;
-DEFINE Quantile datafu.pig.stats.StreamingQuantile('0.0', '0.05', '0.25', '0.5', '0.75', '0.9', '1.0');
+DEFINE Quantile datafu.pig.stats.StreamingQuantile('0.0455', '0.3173', '0.5', '0.6827', '0.9545');
 
 gdelt_v1 = LOAD '/data/gdelt_v1/events/' AS (
     GLOBALEVENTID:long,
@@ -62,7 +62,7 @@ gdelt_v1 = LOAD '/data/gdelt_v1/events/' AS (
     ActionGeo_Lat:float,
     ActionGeo_Long:float,
     ActionGeo_FeatureID:chararray,
-    DATEADDED:long
+    DATEADDED:bigint
 );
 
 gdelt_v2 = LOAD '/data/gdelt_v2/events/' AS (
@@ -122,28 +122,23 @@ gdelt_v2 = LOAD '/data/gdelt_v2/events/' AS (
     ActionGeo_Lat:float,
     ActionGeo_Long:float,
     ActionGeo_FeatureID:chararray,
-    DATEADDED:long,
+    DATEADDED:bigint,
     SOURCEURL:chararray
 );
 
 gdelt_v1_nums = FOREACH gdelt_v1 GENERATE 
     GLOBALEVENTID,
-    DATEADDED/100000 AS YearAdded,
+    DATEADDED/10000 AS YearAdded,
     AvgTone;
 
 gdelt_v2_nums = FOREACH gdelt_v2 GENERATE 
     GLOBALEVENTID,
-    DATEADDED/100000 AS YearAdded,
+    DATEADDED/10000 AS YearAdded,
     AvgTone;
 
-gdelt_v1 = FILTER gdelt_v1_nums BY (GLOBALEVENTID IS NOT NULL)
-                               AND (YearAdded IS NOT NULL)
-                               AND (AvgTone IS NOT NULL);
+gdelt_v1 = FILTER gdelt_v1_nums AvgTone IS NOT NULL;
 
-
-gdelt_v2 = FILTER gdelt_v2_nums BY (GLOBALEVENTID IS NOT NULL)
-                               AND (YearAdded IS NOT NULL)
-                               AND (AvgTone IS NOT NULL);
+gdelt_v2 = FILTER gdelt_v2_nums AvgTone IS NOT NULL;
 
 gdelt_nums = UNION ONSCHEMA gdelt_v1_nums, gdelt_v2_nums;
 
@@ -155,13 +150,11 @@ gdelt_AvgTone_ntiles_by_year = FOREACH gdelt_nums_by_year GENERATE
  
 gdelt_AvgTone_flat_ntiles_by_year = FOREACH gdelt_AvgTone_ntiles_by_year GENERATE
     YearAdded,
-    AvgTone_ntile.$0 AS min,
-    AvgTone_ntile.$1 AS q05,
-    AvgTone_ntile.$2 AS q25,
-    AvgTone_ntile.$3 AS median,
-    AvgTone_ntile.$4 AS q75,
-    AvgTone_ntile.$5 AS q95,
-    AvgTone_ntile.$6 AS max;
+    AvgTone_ntile.$0 AS minus2sigma,
+    AvgTone_ntile.$1 AS minus1sigma,
+    AvgTone_ntile.$2 AS median,
+    AvgTone_ntile.$3 AS plus1sigma,
+    AvgTone_ntile.$4 AS plus2sigma;
     
 gdelt_AvgTone_flat_ntiles_by_year = ORDER gdelt_AvgTone_flat_ntiles_by_year BY YearAdded DESC;    
     
