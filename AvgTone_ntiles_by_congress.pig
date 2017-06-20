@@ -7,7 +7,7 @@
 
 REGISTER '/opt/cloudera/parcels/CDH-5.11.0-1.cdh5.11.0.p0.34/lib/pig/datafu.jar';
 DEFINE DIST datafu.pig.geo.HaversineDistInMiles;
-DEFINE Quantile datafu.pig.stats.StreamingQuantile('0.05', '0.25', '0.5', '0.75', '0.9');
+DEFINE Quantile datafu.pig.stats.StreamingQuantile('0.0455', '0.3173', '0.5', '0.6827', '0.9545');
 
 -- gdelt_v1 = LOAD '/data/gdelt_v1/events/19*.csv' AS (
 gdelt_v1 = LOAD '/data/gdelt_v1/events/' AS (
@@ -160,11 +160,11 @@ gdelt_AvgTone_ntiles_by_congress = FOREACH gdelt_nums_by_congress GENERATE
  
 gdelt_AvgTone_flat_ntiles_by_congress = FOREACH gdelt_AvgTone_ntiles_by_congress GENERATE
     CongressNum,
-    AvgTone_ntile.$0 AS q05,
-    AvgTone_ntile.$1 AS q25,
+    AvgTone_ntile.$0 AS minus2sigma,
+    AvgTone_ntile.$1 AS minus1sigmma,
     AvgTone_ntile.$2 AS median,
-    AvgTone_ntile.$3 AS q75,
-    AvgTone_ntile.$4 AS q95;
+    AvgTone_ntile.$3 AS plus1sigma,
+    AvgTone_ntile.$4 AS plus2sigma;
     
 STORE gdelt_AvgTone_flat_ntiles_by_congress INTO '/results/gdelt_AvgTone_ntiles_by_congress'
     USING PigStorage('\t', '-tagsource');
