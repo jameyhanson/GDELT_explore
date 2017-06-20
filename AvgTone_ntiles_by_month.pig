@@ -137,13 +137,29 @@ gdelt_v2 = LOAD '/data/gdelt_v2/events/' AS (
 
 gdelt_v1_nums = FOREACH gdelt_v1 GENERATE 
     GLOBALEVENTID,
-    ToDate((chararray)(DATEADDED/10), 'YYYYMM') AS MonthYearAdded,
+    DATEADDED/10 AS MY_DATEADDED,
+    DATEADDED
     AvgTone;
+    
+gdelt_v1_nums = FOREACH gdelt_v1 GENERATE 
+    GLOBALEVENTID,
+    ToDate(MY_DATEADDED, 'yyyyMM') AS MonthYearAdded,
+    MY_DATEADDED
+    DATEADDED
+    AvgTone;    
 
 gdelt_v2_nums = FOREACH gdelt_v2 GENERATE 
     GLOBALEVENTID,
-    ToDate((chararray)(DATEADDED/10), 'YYYYMM') AS MonthYearAdded,
+    DATEADDED/10 AS MY_DATEADDED,
+    DATEADDED
     AvgTone;
+    
+gdelt_v2_nums = FOREACH gdelt_v2 GENERATE 
+    GLOBALEVENTID,
+    ToDate(MY_DATEADDED, 'yyyyMM') AS MonthYearAdded,
+    MY_DATEADDED
+    DATEADDED
+    AvgTone;   
 
 gdelt_v1_nums = FILTER gdelt_v1_nums BY AvgTone IS NOT NULL;
 
