@@ -168,7 +168,7 @@ gdelt_AvgTone_ntiles_by_day = FOREACH gdelt_nums_by_day GENERATE
     Quantile(gdelt_nums.AvgTone) AS AvgTone_ntile; 
  
 gdelt_AvgTone_flat_ntiles_by_day = FOREACH gdelt_AvgTone_ntiles_by_day GENERATE
-    day,
+    ToDate(day, 'YYYYMMDD') AS day,
     AvgTone_ntile.$0 AS minus2sigma,
     AvgTone_ntile.$1 AS minus1sigma,
     AvgTone_ntile.$2 AS median,
