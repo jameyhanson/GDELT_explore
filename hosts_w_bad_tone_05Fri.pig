@@ -69,9 +69,9 @@ gdelt_v2 = LOAD '/data/gdelt_v2/events/' AS (
 
 gdelt_v2_sel_fields = FOREACH gdelt_v2 GENERATE 
     GLOBALEVENTID,
-    ToDate(DATEADDED, 'YYYYMMDD') AS DATEADDED,
+    ToDate(DATEADDED, 'YYYYMMdd') AS DATEADDED,
     ToDate('1979-01-01') AS epoch_start,
-    DaysBetween(ToDate(DATEADDED, 'YYYYMMDD'), ToDate('1979-01-01')) AS epoch_days,
+    DaysBetween(ToDate(DATEADDED, 'YYYYMMdd'), ToDate('1979-01-01')) AS epoch_days,
     (Actor1CountryCode IS NULL ? 'was_null': Actor1CountryCode) AS Actor1CountryCode,
     (Actor2CountryCode IS NULL ? 'was_null': Actor2CountryCode) AS Actor2CountryCode,
     AvgTone,
