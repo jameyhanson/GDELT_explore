@@ -142,9 +142,6 @@ gdelt_v2_nums = FILTER gdelt_v2_nums BY AvgTone IS NOT NULL;
 
 gdelt_nums = UNION ONSCHEMA gdelt_v1_nums, gdelt_v2_nums;
 
-fred = LIMIT gdelt_nums 100;
-DUMP fred;
-
 gdelt_nums_by_year = GROUP gdelt_nums BY YearAdded;
 
 gdelt_AvgTone_ntiles_by_year = FOREACH gdelt_nums_by_year GENERATE
