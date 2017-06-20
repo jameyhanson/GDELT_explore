@@ -3,8 +3,6 @@
 
 # loop through programs in mapreduce and tez
 
-num_runs=3
-
 # scripts to test
 read -d '' scripts << EOF
 count_GDELT.pig
@@ -21,7 +19,7 @@ do
     echo "####### $framework tests ######"
     
     # middle loop for run number
-    for run_num in {1..$num_runs}
+    for run_num in {1..3}
     do
         echo "clean output directory"
         hdfs dfs -rm -r -skipTrash /results/*
