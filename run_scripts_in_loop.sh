@@ -3,12 +3,15 @@
 
 # loop through programs in mapreduce and tez
 
+num_runs = 3
+
 # scripts to test
 read -d '' scripts << EOF
-AvgTone_ntiles_by_day.pig
-AvgTone_ntiles_by_month.pig
-AvgTone_ntiles_by_year.pig
-AvgTone_ntiles_by_congress.pig
+count_GDELT.pig
+-- AvgTone_ntiles_by_day.pig
+-- AvgTone_ntiles_by_month.pig
+-- AvgTone_ntiles_by_year.pig
+--- AvgTone_ntiles_by_congress.pig
 EOF
 
 frameworks='tez mapreduce'
@@ -18,7 +21,7 @@ do
     echo "####### $framework tests ######"
     
     # middle loop for run number
-    for run_num in {1..3}
+    for run_num in {1..$num_runs}
     do
         echo "clean output directory"
         hdfs dfs -rm -r -skipTrash /results/*
