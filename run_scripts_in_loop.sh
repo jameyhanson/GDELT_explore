@@ -3,7 +3,7 @@
 
 # loop through programs in mapreduce and tez
 
-num_runs = 3
+num_runs=3
 
 # scripts to test
 read -d '' scripts << EOF
