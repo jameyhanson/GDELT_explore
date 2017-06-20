@@ -136,9 +136,9 @@ gdelt_v2_nums = FOREACH gdelt_v2 GENERATE
     DATEADDED/10000 AS YearAdded,
     AvgTone;
 
-gdelt_v1 = FILTER gdelt_v1_nums AvgTone IS NOT NULL;
+gdelt_v1_nums = FILTER gdelt_v1_nums BY AvgTone IS NOT NULL;
 
-gdelt_v2 = FILTER gdelt_v2_nums AvgTone IS NOT NULL;
+gdelt_v2_nums = FILTER gdelt_v2_nums BY AvgTone IS NOT NULL;
 
 gdelt_nums = UNION ONSCHEMA gdelt_v1_nums, gdelt_v2_nums;
 
