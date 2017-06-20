@@ -143,7 +143,7 @@ gdelt_v1_nums = FOREACH gdelt_v1 GENERATE
     
 gdelt_v1_nums = FOREACH gdelt_v1_nums GENERATE 
     GLOBALEVENTID,
-    ToDate(MY_DATEADDED, 'yyyyMM') AS MonthYearAdded,
+    ToDate((chararray)MY_DATEADDED, 'yyyyMM') AS MonthYearAdded,
     MY_DATEADDED,
     DATEADDED,
     AvgTone;    
@@ -156,7 +156,7 @@ gdelt_v2_nums = FOREACH gdelt_v2 GENERATE
     
 gdelt_v2_nums = FOREACH gdelt_v2_nums GENERATE 
     GLOBALEVENTID,
-    ToDate(MY_DATEADDED, 'yyyyMM') AS MonthYearAdded,
+    ToDate((chararray)MY_DATEADDED, 'yyyyMM') AS MonthYearAdded,
     MY_DATEADDED,
     DATEADDED,
     AvgTone;   
