@@ -122,8 +122,8 @@ gdelt_v2 = LOAD '/data/gdelt_v2/events/' AS (
     ActionGeo_Lat:float,
     ActionGeo_Long:float,
     ActionGeo_FeatureID:chararray,
-    DATEADDED:bigint,
-    SOURCEURL:long
+    DATEADDED:long,
+    SOURCEURL:chararray
 );
 
 gdelt_v1_nums = FOREACH gdelt_v1 GENERATE 
