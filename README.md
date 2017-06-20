@@ -152,6 +152,7 @@ sudo -u hdfs hdfs dfs -mkdir -p /apps/tez-0.7.0
 sudo -u hdfs hdfs dfs -put /tmp/tez-0.7.0.tar.gz /apps/tez-0.7.0
 ```
 5.  Create a `tez-site.xml` file in the `$TEZ_CONF_DIR` directory, `/etc/hadoop/conf`, with:
+**_NOTE:  This tez-site.xml is overwritten by CM when client configuration is redeployed._**
 ```
 <configuration>
     <property>
