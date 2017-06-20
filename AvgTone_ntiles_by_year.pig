@@ -62,7 +62,7 @@ gdelt_v1 = LOAD '/data/gdelt_v1/events/' AS (
     ActionGeo_Lat:float,
     ActionGeo_Long:float,
     ActionGeo_FeatureID:chararray,
-    DATEADDED:bigint
+    DATEADDED:long
 );
 
 gdelt_v2 = LOAD '/data/gdelt_v2/events/' AS (
@@ -123,7 +123,7 @@ gdelt_v2 = LOAD '/data/gdelt_v2/events/' AS (
     ActionGeo_Long:float,
     ActionGeo_FeatureID:chararray,
     DATEADDED:bigint,
-    SOURCEURL:chararray
+    SOURCEURL:long
 );
 
 gdelt_v1_nums = FOREACH gdelt_v1 GENERATE 
@@ -141,6 +141,9 @@ gdelt_v1 = FILTER gdelt_v1_nums AvgTone IS NOT NULL;
 gdelt_v2 = FILTER gdelt_v2_nums AvgTone IS NOT NULL;
 
 gdelt_nums = UNION ONSCHEMA gdelt_v1_nums, gdelt_v2_nums;
+
+fred = LIMIT gdelt_nums 100;
+DUMP fred;
 
 gdelt_nums_by_year = GROUP gdelt_nums BY YearAdded;
 
