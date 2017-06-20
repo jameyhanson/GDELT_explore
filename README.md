@@ -126,6 +126,7 @@ alias pig6='$PIG_HOME/bin/pig'
 `pig6`  
 `grunt> ls /user`  
 expect the directory structure of hdfs `/user/`  
+`grunt> quit`  
 ### Install Tez 0.7.0
 NOTE:  The Tez UI was not used or installed  
 1. Download and untar Tez 0.7.0 source.  
