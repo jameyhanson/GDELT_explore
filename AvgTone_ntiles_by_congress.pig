@@ -135,14 +135,12 @@ gdelt_v2 = LOAD '/data/gdelt_v2/events/' AS (
 gdelt_v1_nums = FOREACH gdelt_v1 GENERATE 
     GLOBALEVENTID,
     DATEADDED,
-    DATEADDED/10 AS MonthYearAdded,
     (Year + 1)/2 - 894 AS CongressNum,
     AvgTone;
 
 gdelt_v2_nums = FOREACH gdelt_v2 GENERATE 
     GLOBALEVENTID,
     DATEADDED,
-    DATEADDED/10 AS MonthYearAdded,
     (DATEADDED/10000 + 1)/2 - 894 AS CongressNum,
     AvgTone;
 
