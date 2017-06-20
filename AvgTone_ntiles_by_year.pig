@@ -128,12 +128,12 @@ gdelt_v2 = LOAD '/data/gdelt_v2/events/' AS (
 
 gdelt_v1_nums = FOREACH gdelt_v1 GENERATE 
     GLOBALEVENTID,
-    DATEADDED/10000 AS YearAdded,
+    DATEADDED/100000 AS YearAdded,
     AvgTone;
 
 gdelt_v2_nums = FOREACH gdelt_v2 GENERATE 
     GLOBALEVENTID,
-    DATEADDED/10000 AS YearAdded,
+    DATEADDED/100000 AS YearAdded,
     AvgTone;
 
 gdelt_v1 = FILTER gdelt_v1_nums BY (GLOBALEVENTID IS NOT NULL)
@@ -153,9 +153,6 @@ gdelt_AvgTone_ntiles_by_year = FOREACH gdelt_nums_by_year GENERATE
     group AS YearAdded,
     Quantile(gdelt_nums.AvgTone) AS AvgTone_ntile; 
  
--- gdelt_tone_quants_by_year = FOREACH gdelt_quantiles_by_year 
---    GENERATE YearAdded, FLATTEN(avgtone_quant)  AS (min:float, fifth:float, quarter:float, median:float, threequarters:float, nintyfifth:float, max:float); 
-
 gdelt_AvgTone_flat_ntiles_by_year = FOREACH gdelt_AvgTone_ntiles_by_year GENERATE
     YearAdded,
     AvgTone_ntile.$0 AS min,
@@ -165,6 +162,8 @@ gdelt_AvgTone_flat_ntiles_by_year = FOREACH gdelt_AvgTone_ntiles_by_year GENERAT
     AvgTone_ntile.$4 AS q75,
     AvgTone_ntile.$5 AS q95,
     AvgTone_ntile.$6 AS max;
+    
+gdelt_AvgTone_flat_ntiles_by_year = ORDER gdelt_AvgTone_flat_ntiles_by_year BY YearAdded DESC;    
     
 STORE gdelt_AvgTone_flat_ntiles_by_year INTO '/results/gdelt_AvgTone_ntiles_by_year'
     USING PigStorage('\t', '-tagsource');
