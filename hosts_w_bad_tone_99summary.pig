@@ -3,7 +3,7 @@
 -- collect and sort final results
 
 very_negative_hosts_by_moving_week_avg = LOAD '/results/hosts_with_lots_of_very_negative' AS (
-    ew_date_sun:chararray,
+    week_ended_date:chararray,
     host:chararray,
     tld:chararray,
     num_very_negative_records:int,    
@@ -12,7 +12,7 @@ very_negative_hosts_by_moving_week_avg = LOAD '/results/hosts_with_lots_of_very_
 );	
 
 very_negative_hosts_by_moving_week_avg = FOREACH very_negative_hosts_by_moving_week_avg GENERATE 
-    ToDate(ew_date_sun) AS week_ended_date,
+    ToDate(week_ended_date) AS week_ended_date,
     host,
     tld,
     num_very_negative_records,    
