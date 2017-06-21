@@ -1,3 +1,6 @@
+--     https://www.senate.gov/reference/Years_to_Congress.htm
+--     CongressNum = (Year + 1)/2 - 894 with integer division
+
 -- Register DataFu and define an alias for the function
 -- https://datafu.incubator.apache.org/docs/datafu/guide.html
 
