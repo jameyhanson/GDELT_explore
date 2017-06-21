@@ -133,33 +133,34 @@ gdelt_v1 = FILTER gdelt_v1 BY AvgTone IS NOT NULL;
 
 gdelt_v2 = FILTER gdelt_v2 BY AvgTone IS NOT NULL;
 
+-- Based off SQLDATE for gdelt_v1 because DATEADDED is 20130203 for all records
 gdelt_v1_nums = FOREACH gdelt_v1 GENERATE 
     GLOBALEVENTID,
-    DATEADDED/10000 AS YearAdded,
+    SQLDATE/10000 AS Year,
     AvgTone;
 
 gdelt_v2_nums = FOREACH gdelt_v2 GENERATE 
     GLOBALEVENTID,
-    DATEADDED/10000 AS YearAdded,
+    DATEADDED/10000 AS Year,
     AvgTone;
 
 gdelt_nums = UNION ONSCHEMA gdelt_v1_nums, gdelt_v2_nums;
 
-gdelt_nums_by_year = GROUP gdelt_nums BY YearAdded;
+gdelt_nums_by_year = GROUP gdelt_nums BY Year;
 
 gdelt_AvgTone_ntiles_by_year = FOREACH gdelt_nums_by_year GENERATE
-    group AS YearAdded,
+    group AS Year,
     Quantile(gdelt_nums.AvgTone) AS AvgTone_ntile; 
  
 gdelt_AvgTone_flat_ntiles_by_year = FOREACH gdelt_AvgTone_ntiles_by_year GENERATE
-    YearAdded,
+    Year,
     AvgTone_ntile.$0 AS minus2sigma,
     AvgTone_ntile.$1 AS minus1sigma,
     AvgTone_ntile.$2 AS median,
     AvgTone_ntile.$3 AS plus1sigma,
     AvgTone_ntile.$4 AS plus2sigma;
     
-gdelt_AvgTone_flat_ntiles_by_year = ORDER gdelt_AvgTone_flat_ntiles_by_year BY YearAdded DESC;    
+gdelt_AvgTone_flat_ntiles_by_year = ORDER gdelt_AvgTone_flat_ntiles_by_year BY Year DESC;    
     
 STORE gdelt_AvgTone_flat_ntiles_by_year INTO '/results/gdelt_AvgTone_ntiles_by_year'
     USING PigStorage('\t', '-tagsource');
