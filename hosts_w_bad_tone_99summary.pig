@@ -22,4 +22,4 @@ very_negative_hosts_by_moving_week_avg = FOREACH very_negative_hosts_by_moving_w
 
 very_negative_hosts_by_moving_week_avg = ORDER very_negative_hosts_by_moving_week_avg BY week_ended_date DESC;
 
-STORE hosts_with_lots_of_very_negative_by_week INTO '/results/very_negative_hosts_by_moving_week_avg';
+STORE very_negative_hosts_by_moving_week_avg INTO '/results/very_negative_hosts_by_moving_week_avg';
