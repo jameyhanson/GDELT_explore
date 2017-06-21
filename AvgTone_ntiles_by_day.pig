@@ -72,7 +72,7 @@ gdelt_v1 = LOAD '/data/gdelt_v1/events/' AS (
     ActionGeo_Lat:float,
     ActionGeo_Long:float,
     ActionGeo_FeatureID:chararray,
-    DATEADDED:chararray
+    DATEADDED:long
 );
 
 -- gdelt_v2 = LOAD '/data/gdelt_v2/events/20?????1.export.csv' AS (
@@ -133,18 +133,19 @@ gdelt_v2 = LOAD '/data/gdelt_v2/events/' AS (
     ActionGeo_Lat:float,
     ActionGeo_Long:float,
     ActionGeo_FeatureID:chararray,
-    DATEADDED:chararray,
+    DATEADDED:long,
     SOURCEURL:chararray
 );
 
+-- Based off SQLDATE for gdelt_v1 because DATEADDED is 20130203 for all records
 gdelt_v1_nums = FOREACH gdelt_v1 GENERATE 
     GLOBALEVENTID,
-    ToDate(DATEADDED, 'YYYYMMdd') AS DATEADDED,
+    ToDate((chararray)SQLDATE, 'YYYYMMdd') AS Day,
     AvgTone;
 
 gdelt_v2_nums = FOREACH gdelt_v2 GENERATE 
     GLOBALEVENTID,
-    ToDate(DATEADDED, 'YYYYMMdd') AS DATEADDED,
+    ToDate(DATEADDED, 'YYYYMMdd') AS Day,
     AvgTone;
 
 gdelt_v1 = FILTER gdelt_v1 BY AvgTone IS NOT NULL;
@@ -153,21 +154,21 @@ gdelt_v2 = FILTER gdelt_v2 BY AvgTone IS NOT NULL;
 
 gdelt_nums = UNION ONSCHEMA gdelt_v1_nums, gdelt_v2_nums;
 
-gdelt_nums_by_day = GROUP gdelt_nums BY DATEADDED;
+gdelt_nums_by_day = GROUP gdelt_nums BY Day;
 
 gdelt_AvgTone_ntiles_by_day = FOREACH gdelt_nums_by_day GENERATE
-    group AS day,
+    group AS Day,
     Quantile(gdelt_nums.AvgTone) AS AvgTone_ntile; 
  
 gdelt_AvgTone_flat_ntiles_by_day = FOREACH gdelt_AvgTone_ntiles_by_day GENERATE
-    day,
+    Day,
     AvgTone_ntile.$0 AS minus2sigma,
     AvgTone_ntile.$1 AS minus1sigma,
     AvgTone_ntile.$2 AS median,
     AvgTone_ntile.$3 AS plus1sigma,
     AvgTone_ntile.$4 AS plus2sigma;
     
-gdelt_AvgTone_flat_ntiles_by_day = ORDER gdelt_AvgTone_flat_ntiles_by_day BY day DESC;    
+gdelt_AvgTone_flat_ntiles_by_day = ORDER gdelt_AvgTone_flat_ntiles_by_day BY Day DESC;    
     
 STORE gdelt_AvgTone_flat_ntiles_by_day INTO '/results/gdelt_AvgTone_ntiles_by_day'
     USING PigStorage('\t', '-tagsource');
