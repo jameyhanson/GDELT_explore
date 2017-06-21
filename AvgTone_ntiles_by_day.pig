@@ -145,7 +145,7 @@ gdelt_v1_nums = FOREACH gdelt_v1 GENERATE
 
 gdelt_v2_nums = FOREACH gdelt_v2 GENERATE 
     GLOBALEVENTID,
-    ToDate(DATEADDED, 'YYYYMMdd') AS Day,
+    ToDate((chararray)DATEADDED, 'YYYYMMdd') AS Day,
     AvgTone;
 
 gdelt_v1 = FILTER gdelt_v1 BY AvgTone IS NOT NULL;
