@@ -138,8 +138,8 @@ gdelt_v2 = FILTER gdelt_v2 BY AvgTone IS NOT NULL;
 
 gdelt_v1_nums = FOREACH gdelt_v1 GENERATE 
     GLOBALEVENTID,
-    DATEADDED,
-    (Year + 1)/2 - 894 AS CongressNum,
+    SQLDATE,
+    (SQLDATE/10000 + 1)/2 - 894 AS CongressNum,
     AvgTone;
 
 gdelt_v2_nums = FOREACH gdelt_v2 GENERATE 
