@@ -139,35 +139,36 @@ gdelt_v1 = FILTER gdelt_v1 BY AvgTone IS NOT NULL;
 
 gdelt_v2 = FILTER gdelt_v2 BY AvgTone IS NOT NULL;
 
+-- Based off SQLDATE for gdelt_v1 because DATEADDED is 20130203 for all records
 gdelt_v1_nums = FOREACH gdelt_v1 GENERATE 
     GLOBALEVENTID,
-   ToDate((chararray)(DATEADDED/100), 'YYYYMM') AS MonthYearAdded,
+   ToDate((chararray)(SQLDATE/100), 'YYYYMM') AS MonthYear,
     DATEADDED,
     AvgTone;   
 
 gdelt_v2_nums = FOREACH gdelt_v2 GENERATE 
     GLOBALEVENTID,
-    ToDate((chararray)(DATEADDED/100), 'YYYYMM') AS MonthYearAdded,
+    ToDate((chararray)(DATEADDED/100), 'YYYYMM') AS MonthYear,
     DATEADDED,
     AvgTone; 
 
 gdelt_nums = UNION ONSCHEMA gdelt_v1_nums, gdelt_v2_nums;
 
-gdelt_nums_by_month = GROUP gdelt_nums BY MonthYearAdded;
+gdelt_nums_by_month = GROUP gdelt_nums BY MonthYear;
 
 gdelt_AvgTone_ntiles_by_month = FOREACH gdelt_nums_by_month GENERATE
-    group AS MonthYearAdded,
+    group AS MonthYear,
     Quantile(gdelt_nums.AvgTone) AS AvgTone_ntile; 
  
 gdelt_AvgTone_flat_ntiles_by_month = FOREACH gdelt_AvgTone_ntiles_by_month GENERATE
-    MonthYearAdded,
+    MonthYear,
     AvgTone_ntile.$0 AS minus2sigma,
     AvgTone_ntile.$1 AS minus1sigma,
     AvgTone_ntile.$2 AS median,
     AvgTone_ntile.$3 AS plus1sigma,
     AvgTone_ntile.$4 AS plus2sigma;
     
-gdelt_AvgTone_flat_ntiles_by_month = ORDER gdelt_AvgTone_flat_ntiles_by_month BY MonthYearAdded DESC;    
+gdelt_AvgTone_flat_ntiles_by_month = ORDER gdelt_AvgTone_flat_ntiles_by_month BY MonthYear DESC;    
     
 STORE gdelt_AvgTone_flat_ntiles_by_month INTO '/results/gdelt_AvgTone_ntiles_by_month'
     USING PigStorage('\t', '-tagsource');
