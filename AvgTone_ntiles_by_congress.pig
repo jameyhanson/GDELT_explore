@@ -9,7 +9,6 @@ REGISTER '/opt/cloudera/parcels/CDH-5.11.0-1.cdh5.11.0.p0.34/lib/pig/datafu.jar'
 DEFINE DIST datafu.pig.geo.HaversineDistInMiles;
 DEFINE Quantile datafu.pig.stats.StreamingQuantile('0.0455', '0.3173', '0.5', '0.6827', '0.9545');
 
--- gdelt_v1 = LOAD '/data/gdelt_v1/events/19*.csv' AS (
 gdelt_v1 = LOAD '/data/gdelt_v1/events/' AS (
     GLOBALEVENTID:long,
     SQLDATE:long,
@@ -70,7 +69,6 @@ gdelt_v1 = LOAD '/data/gdelt_v1/events/' AS (
     DATEADDED:long
 );
 
--- gdelt_v2 = LOAD '/data/gdelt_v2/events/20?????1.export.csv' AS (
 gdelt_v2 = LOAD '/data/gdelt_v2/events/' AS (
     GLOBALEVENTID:long,
     SQLDATE:long,
@@ -136,6 +134,7 @@ gdelt_v1 = FILTER gdelt_v1 BY AvgTone IS NOT NULL;
 
 gdelt_v2 = FILTER gdelt_v2 BY AvgTone IS NOT NULL;
 
+-- Based off SQLDATE for gdelt_v1 because DATEADDED is 20130203 for all records
 gdelt_v1_nums = FOREACH gdelt_v1 GENERATE 
     GLOBALEVENTID,
     SQLDATE,
