@@ -132,6 +132,10 @@ gdelt_v2 = LOAD '/data/gdelt_v2/events/' AS (
     SOURCEURL:chararray
 );
 
+gdelt_v1 = FILTER gdelt_v1 BY AvgTone IS NOT NULL;
+
+gdelt_v2 = FILTER gdelt_v2 BY AvgTone IS NOT NULL;
+
 gdelt_v1_nums = FOREACH gdelt_v1 GENERATE 
     GLOBALEVENTID,
     DATEADDED,
@@ -143,10 +147,6 @@ gdelt_v2_nums = FOREACH gdelt_v2 GENERATE
     DATEADDED,
     (DATEADDED/10000 + 1)/2 - 894 AS CongressNum,
     AvgTone;
-
-gdelt_v1 = FILTER gdelt_v1 BY AvgTone IS NOT NULL;
-
-gdelt_v2 = FILTER gdelt_v2 BY AvgTone IS NOT NULL;
 
 gdelt_nums = UNION ONSCHEMA gdelt_v1_nums, gdelt_v2_nums;
 
