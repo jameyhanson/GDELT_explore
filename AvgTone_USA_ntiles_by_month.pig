@@ -135,18 +135,26 @@ gdelt_v2 = LOAD '/data/gdelt_v2/events/' AS (
     SOURCEURL:chararray
 );
 
-gdelt_v1 = FILTER gdelt_v1 BY AvgTone IS NOT NULL;
+gdelt_v1 = FILTER gdelt_v1 BY
+    AvgTone IS NOT NULL AND
+    (
+        (Actor1CountryCode IS NOT NULL AND Actor1CountryCode == 'USA')
+        OR (Actor2CountryCode IS NOT NULL AND Actor2CountryCode == 'USA')
+    );
 
-gdelt_v2 = FILTER gdelt_v2 BY AvgTone IS NOT NULL;
+gdelt_v2 = FILTER gdelt_v2 BY
+    AvgTone IS NOT NULL AND
+    (
+        (Actor1CountryCode IS NOT NULL AND Actor1CountryCode == 'USA')
+        OR (Actor2CountryCode IS NOT NULL AND Actor2CountryCode == 'USA')
+    );
 
 -- Based off SQLDATE for gdelt_v1 because DATEADDED is 20130203 for all records
 gdelt_v1_nums = FOREACH gdelt_v1 GENERATE 
     GLOBALEVENTID,
    ToDate((chararray)(SQLDATE/100), 'YYYYMM') AS MonthYear,
     DATEADDED,
-    AvgTone,
-    (Actor1CountryCode IS NULL ? 'was_null': Actor1CountryCode) AS Actor1CountryCode,
-    (Actor2CountryCode IS NULL ? 'was_null': Actor2CountryCode) AS Actor2CountryCode;   
+    AvgTone;   
     
 gdelt_v1_nums = FILTER gdelt_v1_nums BY 
     AvgTone IS NOT NULL
@@ -156,9 +164,7 @@ gdelt_v2_nums = FOREACH gdelt_v2 GENERATE
     GLOBALEVENTID,
     ToDate((chararray)(DATEADDED/100), 'YYYYMM') AS MonthYear,
     DATEADDED,
-    AvgTone,
-    (Actor1CountryCode IS NULL ? 'was_null': Actor1CountryCode) AS Actor1CountryCode,
-    (Actor2CountryCode IS NULL ? 'was_null': Actor2CountryCode) AS Actor2CountryCode; 
+    AvgTone; 
 
 gdelt_v2_nums = FILTER gdelt_v2_nums BY 
     AvgTone IS NOT NULL
