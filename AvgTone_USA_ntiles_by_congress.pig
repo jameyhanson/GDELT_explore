@@ -130,9 +130,19 @@ gdelt_v2 = LOAD '/data/gdelt_v2/events/' AS (
     SOURCEURL:chararray
 );
 
-gdelt_v1 = FILTER gdelt_v1 BY AvgTone IS NOT NULL;
-
-gdelt_v2 = FILTER gdelt_v2 BY AvgTone IS NOT NULL;
+gdelt_v1 = FILTER gdelt_v1 BY 
+    AvgTone IS NOT NULL AND
+    (
+        (Actor1CountryCode IS NOT NULL AND Actor1CountryCode == 'USA')
+        OR (Actor2CountryCode IS NOT NULL AND Actor2CountryCode == 'USA')
+    );
+    
+gdelt_v2 = FILTER gdelt_v2 BY
+    AvgTone IS NOT NULL AND
+    (
+        (Actor1CountryCode IS NOT NULL AND Actor1CountryCode == 'USA')
+        OR (Actor2CountryCode IS NOT NULL AND Actor2CountryCode == 'USA')
+    );
 
 -- Based off SQLDATE for gdelt_v1 because DATEADDED is 20130203 for all records
 gdelt_v1_nums = FOREACH gdelt_v1 GENERATE 
@@ -153,9 +163,6 @@ gdelt_v2_nums = FOREACH gdelt_v2 GENERATE
 
 gdelt_nums = UNION ONSCHEMA gdelt_v1_nums, gdelt_v2_nums;
 
-gdelt_nums = FILTER gdelt_nums BY
-   (Actor1CountryCode == 'USA' OR Actor2CountryCode == 'USA');  
-
 gdelt_nums_by_congress = GROUP gdelt_nums BY CongressNum;
 
 gdelt_AvgTone_ntiles_by_congress = FOREACH gdelt_nums_by_congress GENERATE
@@ -172,5 +179,5 @@ gdelt_AvgTone_flat_ntiles_by_congress = FOREACH gdelt_AvgTone_ntiles_by_congress
     
 gdelt_AvgTone_flat_ntiles_by_congress = ORDER gdelt_AvgTone_flat_ntiles_by_congress BY CongressNum DESC;    
     
-STORE gdelt_AvgTone_flat_ntiles_by_congress INTO '/results/gdelt_AvgTone_USA_ntiles_by_congress'
+STORE gdelt_AvgTone_flat_ntiles_by_congress INTO '/results/AvgTone_USA_ntiles_by_congress'
     USING PigStorage('\t', '-tagsource');
