@@ -129,28 +129,30 @@ gdelt_v2 = LOAD '/data/gdelt_v2/events/' AS (
     SOURCEURL:chararray
 );
 
+gdelt_v1 = FILTER gdelt_v1 BY 
+    AvgTone IS NOT NULL AND
+    (
+        (Actor1CountryCode IS NOT NULL AND Actor1CountryCode == 'USA')
+        OR (Actor2CountryCode IS NOT NULL AND Actor2CountryCode == 'USA')
+    );
+
+gdelt_v2 = FILTER gdelt_v2 BY
+    AvgTone IS NOT NULL AND
+    (
+        (Actor1CountryCode IS NOT NULL AND Actor1CountryCode == 'USA')
+        OR (Actor2CountryCode IS NOT NULL AND Actor2CountryCode == 'USA')
+    );
+
 -- Based off SQLDATE for gdelt_v1 because DATEADDED is 20130203 for all records
 gdelt_v1_nums = FOREACH gdelt_v1 GENERATE 
     GLOBALEVENTID,
     SQLDATE/10000 AS Year,
-    AvgTone,
-    (Actor1CountryCode IS NULL ? 'was_null': Actor1CountryCode) AS Actor1CountryCode,
-    (Actor2CountryCode IS NULL ? 'was_null': Actor2CountryCode) AS Actor2CountryCode;
+    AvgTone;
 
 gdelt_v2_nums = FOREACH gdelt_v2 GENERATE 
     GLOBALEVENTID,
     DATEADDED/10000 AS Year,
-    AvgTone,
-    (Actor1CountryCode IS NULL ? 'was_null': Actor1CountryCode) AS Actor1CountryCode,
-    (Actor2CountryCode IS NULL ? 'was_null': Actor2CountryCode) AS Actor2CountryCode;
-    
-gdelt_v1 = FILTER gdelt_v1 BY 
-    AvgTone IS NOT NULL
-    AND (Actor1CountryCode == 'USA' OR Actor2CountryCode == 'USA');
-
-gdelt_v2 = FILTER gdelt_v2 BY
-    AvgTone IS NOT NULL
-    AND (Actor1CountryCode == 'USA' OR Actor2CountryCode == 'USA');    
+    AvgTone; 
 
 gdelt_nums = UNION ONSCHEMA gdelt_v1_nums, gdelt_v2_nums;
 
