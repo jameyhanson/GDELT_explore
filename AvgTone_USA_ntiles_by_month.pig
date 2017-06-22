@@ -160,11 +160,7 @@ gdelt_v2_nums = FOREACH gdelt_v2 GENERATE
     GLOBALEVENTID,
     ToDate((chararray)(DATEADDED/100), 'YYYYMM') AS MonthYear,
     DATEADDED,
-    AvgTone; 
-
-gdelt_v2_nums = FILTER gdelt_v2_nums BY 
-    AvgTone IS NOT NULL
-    AND (Actor1CountryCode == 'USA' OR Actor2CountryCode == 'USA');   
+    AvgTone;  
 
 gdelt_nums = UNION ONSCHEMA gdelt_v1_nums, gdelt_v2_nums;
 
