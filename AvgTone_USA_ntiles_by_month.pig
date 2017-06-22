@@ -182,5 +182,5 @@ gdelt_AvgTone_flat_ntiles_by_month = FOREACH gdelt_AvgTone_ntiles_by_month GENER
     
 gdelt_AvgTone_flat_ntiles_by_month = ORDER gdelt_AvgTone_flat_ntiles_by_month BY MonthYear DESC;    
     
-STORE gdelt_AvgTone_flat_ntiles_by_month INTO '/results/gdelt_AvgTone_ntiles_by_month'
+STORE gdelt_AvgTone_flat_ntiles_by_month INTO '/results/AvgTone_USA_ntiles_by_month'
     USING PigStorage('\t', '-tagsource');
