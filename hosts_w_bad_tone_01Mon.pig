@@ -67,18 +67,24 @@ gdelt_v2 = LOAD '/data/gdelt_v2/events/' AS (
     SOURCEURL:chararray
 );
 
-gdelt_v2_sel_fields = FOREACH gdelt_v2 GENERATE 
+w_usa_actors = FILTER gdelt_v2 BY 
+    AvgTone IS NOT NULL AND
+	host IS NOT NULL AND
+    (
+        Actor1CountryCode == 'USA'
+        OR Actor2CountryCode == 'USA'
+    ); 
+
+w_usa_actors_sel_fields = FOREACH w_usa_actors GENERATE 
     GLOBALEVENTID,
     ToDate(DATEADDED, 'YYYYMMdd') AS DATEADDED,
     ToDate('1979-01-01') AS epoch_start,
     DaysBetween(ToDate(DATEADDED, 'YYYYMMdd'), ToDate('1979-01-01')) AS epoch_days,
-    (Actor1CountryCode IS NULL ? 'was_null': Actor1CountryCode) AS Actor1CountryCode,
-    (Actor2CountryCode IS NULL ? 'was_null': Actor2CountryCode) AS Actor2CountryCode,
     AvgTone,
-    (SOURCEURL IS NULL ? 'was_null' : org.apache.pig.piggybank.evaluation.util.apachelogparser.HostExtractor(SOURCEURL)) AS host,
+    org.apache.pig.piggybank.evaluation.util.apachelogparser.HostExtractor(SOURCEURL) AS host,
     SOURCEURL;
     
-gdelt_v2_sel_fields = FOREACH gdelt_v2_sel_fields GENERATE 
+w_usa_actors = FOREACH w_usa_actors_sel_fields GENERATE 
     GLOBALEVENTID,
     DATEADDED,
     epoch_start,
@@ -91,17 +97,10 @@ gdelt_v2_sel_fields = FOREACH gdelt_v2_sel_fields GENERATE
 --    CONCAT('P', (chararray)(((epoch_days-4)/7+1)*7+4), 'D') AS ew_offset_fri,
 --    CONCAT('P', (chararray)(((epoch_days-5)/7+1)*7+5), 'D') AS ew_offset_sat,
 --    CONCAT('P', (chararray)(((epoch_days-6)/7+1)*7+6), 'D') AS ew_offset_sun,
-    Actor1CountryCode,
-    Actor2CountryCode,
     AvgTone,
     host,
     example_udf.tld(host) AS tld,
-    SOURCEURL;    
-    
-w_usa_actors = FILTER gdelt_v2_sel_fields BY 
-   (Actor1CountryCode == 'USA' OR Actor2CountryCode == 'USA')
-   AND (AvgTone IS NOT NULL)
-   AND (host != 'was_null');        
+    SOURCEURL;         
     
 w_usa_actors = FOREACH w_usa_actors GENERATE 
     GLOBALEVENTID,
