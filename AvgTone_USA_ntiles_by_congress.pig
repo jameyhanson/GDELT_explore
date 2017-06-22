@@ -149,16 +149,12 @@ gdelt_v1_nums = FOREACH gdelt_v1 GENERATE
     GLOBALEVENTID,
     SQLDATE,
     (SQLDATE/10000 + 1)/2 - 894 AS CongressNum,
-    (Actor1CountryCode IS NULL ? 'was_null': Actor1CountryCode) AS Actor1CountryCode,
-    (Actor2CountryCode IS NULL ? 'was_null': Actor2CountryCode) AS Actor2CountryCode,
     AvgTone;
 
 gdelt_v2_nums = FOREACH gdelt_v2 GENERATE 
     GLOBALEVENTID,
     DATEADDED,
-    (DATEADDED/10000 + 1)/2 - 894 AS CongressNum,
-    (Actor1CountryCode IS NULL ? 'was_null': Actor1CountryCode) AS Actor1CountryCode,
-    (Actor2CountryCode IS NULL ? 'was_null': Actor2CountryCode) AS Actor2CountryCode,    
+    (DATEADDED/10000 + 1)/2 - 894 AS CongressNum,  
     AvgTone;
 
 gdelt_nums = UNION ONSCHEMA gdelt_v1_nums, gdelt_v2_nums;
