@@ -67,18 +67,25 @@ gdelt_v2 = LOAD '/data/gdelt_v2/events/' AS (
     SOURCEURL:chararray
 );
 
-gdelt_v2_sel_fields = FOREACH gdelt_v2 GENERATE 
+w_usa_actors = FILTER gdelt_v2 BY 
+    AvgTone IS NOT NULL AND
+    SOURCEURL IS NOT NULL AND
+    org.apache.pig.piggybank.evaluation.util.apachelogparser.HostExtractor(SOURCEURL) IS NOT NULL AND
+    (
+        Actor1CountryCode == 'USA'
+        OR Actor2CountryCode == 'USA'
+    ); 
+
+w_usa_actors_sel_fields = FOREACH w_usa_actors GENERATE 
     GLOBALEVENTID,
     ToDate(DATEADDED, 'YYYYMMdd') AS DATEADDED,
     ToDate('1979-01-01') AS epoch_start,
     DaysBetween(ToDate(DATEADDED, 'YYYYMMdd'), ToDate('1979-01-01')) AS epoch_days,
-    (Actor1CountryCode IS NULL ? 'was_null': Actor1CountryCode) AS Actor1CountryCode,
-    (Actor2CountryCode IS NULL ? 'was_null': Actor2CountryCode) AS Actor2CountryCode,
     AvgTone,
-    (SOURCEURL IS NULL ? 'was_null' : org.apache.pig.piggybank.evaluation.util.apachelogparser.HostExtractor(SOURCEURL)) AS host,
+    org.apache.pig.piggybank.evaluation.util.apachelogparser.HostExtractor(SOURCEURL) AS host,
     SOURCEURL;
     
-gdelt_v2_sel_fields = FOREACH gdelt_v2_sel_fields GENERATE 
+w_usa_actors = FOREACH w_usa_actors_sel_fields GENERATE 
     GLOBALEVENTID,
     DATEADDED,
     epoch_start,
@@ -91,17 +98,10 @@ gdelt_v2_sel_fields = FOREACH gdelt_v2_sel_fields GENERATE
     CONCAT('P', (chararray)(((epoch_days-4)/7+1)*7+4), 'D') AS ew_offset_fri,
 --    CONCAT('P', (chararray)(((epoch_days-5)/7+1)*7+5), 'D') AS ew_offset_sat,
 --    CONCAT('P', (chararray)(((epoch_days-6)/7+1)*7+6), 'D') AS ew_offset_sun,
-    Actor1CountryCode,
-    Actor2CountryCode,
     AvgTone,
     host,
     example_udf.tld(host) AS tld,
-    SOURCEURL;    
-    
-w_usa_actors = FILTER gdelt_v2_sel_fields BY 
-   (Actor1CountryCode == 'USA' OR Actor2CountryCode == 'USA')
-   AND (AvgTone IS NOT NULL)
-   AND (host != 'was_null');        
+    SOURCEURL;         
     
 w_usa_actors = FOREACH w_usa_actors GENERATE 
     GLOBALEVENTID,
@@ -119,7 +119,7 @@ w_usa_actors = FOREACH w_usa_actors GENERATE
     tld,
     SOURCEURL;      
 
--- &&&&& Friday's code &&&&&
+-- &&&&& Fridays code &&&&&
 -- ##### Which hosts report on the USA frequently? #####
 -- Records that include at least one actor from USA
 
@@ -148,7 +148,7 @@ hosts_that_report_alot_on_USA = FOREACH hosts_that_report_alot_on_USA GENERATE
     host_records_by_week::tld AS tld,
     host_records_by_week::num_records AS num_records,
     host_records_by_week_ntiles::num_records_ntile AS num_records_ntile;
-       
+    
 -- ##### What is the AvgTone of records on the USA? #####
 AvgTone_about_USA_by_week = GROUP w_usa_actors BY ew_date_fri;
 
@@ -162,7 +162,7 @@ w_usa_AvgTone_and_ntiles_by_week = JOIN
 
 very_negative_tone_about_USA = FILTER w_usa_AvgTone_and_ntiles_by_week BY
     w_usa_actors::AvgTone <= AvgTone_about_USA_by_week_ntiles::AvgTone_ntile.quantile_0_0455; -- AvgTone_ntile minus2sigma
-    
+  
 very_negative_tone_about_USA_by_week = GROUP very_negative_tone_about_USA BY (
     w_usa_actors::ew_date_fri,
     w_usa_actors::host,
@@ -190,4 +190,4 @@ hosts_with_lots_of_very_negative_by_week = FILTER fraction_of_very_negative_by_w
     AND tld != 'org'
     AND tld != 'net';
 
-STORE hosts_with_lots_of_very_negative_by_week INTO '/results/hosts_with_lots_of_very_negative/05Fri_results';
+STORE hosts_with_lots_of_very_negative_by_week INTO '/results/hosts_with_lots_of_very_negative/06Fri_results';
