@@ -152,14 +152,10 @@ gdelt_v2 = FILTER gdelt_v2 BY
 -- Based off SQLDATE for gdelt_v1 because DATEADDED is 20130203 for all records
 gdelt_v1_nums = FOREACH gdelt_v1 GENERATE 
     GLOBALEVENTID,
-   ToDate((chararray)(SQLDATE/100), 'YYYYMM') AS MonthYear,
+    ToDate((chararray)(SQLDATE/100), 'YYYYMM') AS MonthYear,
     DATEADDED,
     AvgTone;   
     
-gdelt_v1_nums = FILTER gdelt_v1_nums BY 
-    AvgTone IS NOT NULL
-    AND (Actor1CountryCode == 'USA' OR Actor2CountryCode == 'USA');    
-
 gdelt_v2_nums = FOREACH gdelt_v2 GENERATE 
     GLOBALEVENTID,
     ToDate((chararray)(DATEADDED/100), 'YYYYMM') AS MonthYear,
