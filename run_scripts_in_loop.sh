@@ -6,10 +6,10 @@
 # scripts to test
 read -d '' scripts << EOF
 count_GDELT.pig
-AvgTone_ntiles_by_day.pig
-AvgTone_ntiles_by_month.pig
-AvgTone_ntiles_by_year.pig
-AvgTone_ntiles_by_congress.pig
+AvgTone_USA_ntiles_by_day.pig
+AvgTone_USA_ntiles_by_month.pig
+AvgTone_USA_ntiles_by_year.pig
+AvgTone_USA_ntiles_by_congress.pig
 EOF
 
 frameworks='tez mapreduce'
