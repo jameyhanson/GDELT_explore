@@ -133,15 +133,15 @@ gdelt_v2 = LOAD '/data/gdelt_v2/events/' AS (
 gdelt_v1 = FILTER gdelt_v1 BY 
     AvgTone IS NOT NULL AND
     (
-        (Actor1CountryCode IS NOT NULL AND Actor1CountryCode == 'USA')
-        OR (Actor2CountryCode IS NOT NULL AND Actor2CountryCode == 'USA')
+        Actor1CountryCode == 'USA'
+        OR Actor2CountryCode == 'USA'
     );
     
 gdelt_v2 = FILTER gdelt_v2 BY
     AvgTone IS NOT NULL AND
     (
-        (Actor1CountryCode IS NOT NULL AND Actor1CountryCode == 'USA')
-        OR (Actor2CountryCode IS NOT NULL AND Actor2CountryCode == 'USA')
+        Actor1CountryCode == 'USA'
+        OR Actor2CountryCode == 'USA'
     );
 
 -- Based off SQLDATE for gdelt_v1 because DATEADDED is 20130203 for all records
