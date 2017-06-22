@@ -69,7 +69,8 @@ gdelt_v2 = LOAD '/data/gdelt_v2/events/' AS (
 
 w_usa_actors = FILTER gdelt_v2 BY 
     AvgTone IS NOT NULL AND
-	SOURCEURL IS NOT NULL AND
+    SOURCEURL IS NOT NULL AND
+    org.apache.pig.piggybank.evaluation.util.apachelogparser.HostExtractor(SOURCEURL) IS NOT NULL AND
     (
         Actor1CountryCode == 'USA'
         OR Actor2CountryCode == 'USA'
