@@ -178,5 +178,5 @@ gdelt_AvgTone_flat_ntiles_by_day = FOREACH gdelt_AvgTone_ntiles_by_day GENERATE
     
 gdelt_AvgTone_flat_ntiles_by_day = ORDER gdelt_AvgTone_flat_ntiles_by_day BY Day DESC;    
     
-STORE gdelt_AvgTone_flat_ntiles_by_day INTO '/results/gdelt_AvgTone_ntiles_by_day'
+STORE gdelt_AvgTone_flat_ntiles_by_day INTO '/results/AvgTone_USA_ntiles_by_day'
     USING PigStorage('\t', '-tagsource');
