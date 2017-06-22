@@ -125,4 +125,5 @@ gdelt = UNION ONSCHEMA gdelt_v1, gdelt_v2;
 
 gdelt_count = FOREACH (GROUP gdelt ALL) GENERATE COUNT_STAR(gdelt);
 
-DUMP gdelt_count;
+STORE gdelt_count INTO '/results/gdelt_count'
+    USING PigStorage('\t', '-tagsource');
