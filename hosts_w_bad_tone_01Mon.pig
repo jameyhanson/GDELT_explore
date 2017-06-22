@@ -69,7 +69,7 @@ gdelt_v2 = LOAD '/data/gdelt_v2/events/' AS (
 
 w_usa_actors = FILTER gdelt_v2 BY 
     AvgTone IS NOT NULL AND
-	host IS NOT NULL AND
+	SOURCEURL IS NOT NULL AND
     (
         Actor1CountryCode == 'USA'
         OR Actor2CountryCode == 'USA'
