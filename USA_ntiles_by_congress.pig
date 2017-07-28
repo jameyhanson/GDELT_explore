@@ -6,7 +6,6 @@
 -- https://datafu.incubator.apache.org/docs/datafu/guide.html
 
 REGISTER '/opt/cloudera/parcels/CDH-5.11.0-1.cdh5.11.0.p0.34/lib/pig/datafu.jar';
-DEFINE DIST datafu.pig.geo.HaversineDistInMiles;
 DEFINE Quantile datafu.pig.stats.StreamingQuantile('0.0455', '0.3173', '0.5', '0.6827', '0.9545');
 
 gdelt_v1 = LOAD '/data/gdelt_v1/events/' AS (
