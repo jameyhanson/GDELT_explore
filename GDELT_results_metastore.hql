@@ -15,7 +15,7 @@ ROW FORMAT DELIMITED
 FIELDS TERMINATED BY '\t'
 LINES TERMINATED BY '\n'
 STORED AS TEXTFILE
-LOCATION  '/results/gdelt_AvgTone_ntiles_by_congress';
+LOCATION  '/results/gdelt_AvgTone_ntiles_by_congress/';
 
 CREATE EXTERNAL TABLE IF NOT EXISTS gdelt.avgtone_by_year (
     year     INT,
@@ -31,7 +31,7 @@ ROW FORMAT DELIMITED
 FIELDS TERMINATED BY '\t'
 LINES TERMINATED BY '\n'
 STORED AS TEXTFILE
-LOCATION  '/results/gdelt_AvgTone_ntiles_by_year';
+LOCATION  '/results/gdelt_AvgTone_ntiles_by_year/';
 
 CREATE EXTERNAL TABLE IF NOT EXISTS gdelt.avgtone_by_month (
     month        INT,
@@ -45,7 +45,7 @@ ROW FORMAT DELIMITED
 FIELDS TERMINATED BY '\t'
 LINES TERMINATED BY '\n'
 STORED AS TEXTFILE
-LOCATION  '/results/gdelt_AvgTone_ntiles_by_month';
+LOCATION  '/results/gdelt_AvgTone_ntiles_by_month/';
 
 CREATE EXTERNAL TABLE IF NOT EXISTS gdelt.avgtone_by_day (
     day        INT,
@@ -59,7 +59,7 @@ ROW FORMAT DELIMITED
 FIELDS TERMINATED BY '\t'
 LINES TERMINATED BY '\n'
 STORED AS TEXTFILE
-LOCATION  '/results/gdelt_AvgTone_ntiles_by_day';
+LOCATION  '/results/gdelt_AvgTone_ntiles_by_day/';
 
 CREATE EXTERNAL TABLE IF NOT EXISTS gdelt.num_articles_by_year (
     year     INT,
@@ -75,7 +75,7 @@ ROW FORMAT DELIMITED
 FIELDS TERMINATED BY '\t'
 LINES TERMINATED BY '\n'
 STORED AS TEXTFILE
-LOCATION  '/results/gdelt_NumArticles_ntiles_by_year';
+LOCATION  '/results/gdelt_NumArticles_ntiles_by_year/';
 
 CREATE EXTERNAL TABLE IF NOT EXISTS gdelt.num_mentions_by_year (
     year     INT,
@@ -91,7 +91,7 @@ ROW FORMAT DELIMITED
 FIELDS TERMINATED BY '\t'
 LINES TERMINATED BY '\n'
 STORED AS TEXTFILE
-LOCATION  '/results/gdelt_NumMentions_ntiles_by_year';
+LOCATION  '/results/gdelt_NumMentions_ntiles_by_year/';
 
 CREATE EXTERNAL TABLE IF NOT EXISTS gdelt.num_sources_by_year (
     year     INT,
@@ -107,4 +107,4 @@ ROW FORMAT DELIMITED
 FIELDS TERMINATED BY '\t'
 LINES TERMINATED BY '\n'
 STORED AS TEXTFILE
-LOCATION  '/results/gdelt_NumSources_ntiles_by_year';
+LOCATION  '/results/gdelt_NumSources_ntiles_by_year/';
