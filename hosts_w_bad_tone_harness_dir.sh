@@ -6,14 +6,14 @@
 
 # scripts to test
 read -d '' scripts << EOF
-pig -param_file pig.cfg hosts_w_bad_tone_01Mon.pig
-pig -param_file pig.cfg hosts_w_bad_tone_02Tue.pig
-pig -param_file pig.cfg hosts_w_bad_tone_03Wed.pig
-pig -param_file pig.cfg hosts_w_bad_tone_04Thu.pig
-pig -param_file pig.cfg hosts_w_bad_tone_05Fri.pig
-pig -param_file pig.cfg hosts_w_bad_tone_06Sat.pig
-pig -param_file pig.cfg hosts_w_bad_tone_07Sun.pig
-pig -param_file pig.cfg hosts_w_bad_tone_99summary.pig
+hosts_w_bad_tone_01Mon.pig
+hosts_w_bad_tone_02Tue.pig
+hosts_w_bad_tone_03Wed.pig
+hosts_w_bad_tone_04Thu.pig
+hosts_w_bad_tone_05Fri.pig
+hosts_w_bad_tone_06Sat.pig
+hosts_w_bad_tone_07Sun.pig
+hosts_w_bad_tone_99summary.pig
 EOF
 
 config_files='pig_1.cfg pig_2.cfg'
@@ -32,7 +32,7 @@ do
         # inner loop for pig script
         for script in $scripts
         do
-            echo $framework $script
+            echo $config_file $script
             # NOTE:  applicaiton tags do not work with Tez
             export HADOOP_OPTS=-Dmapreduce.job.tags=trial_number:_$run_num
             /usr/bin/pig  -param_file $config_file $script
