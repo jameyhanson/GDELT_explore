@@ -6,7 +6,7 @@ DEFINE Quantile datafu.pig.stats.StreamingQuantile('0.0455', '0.3173', '0.5', '0
 
 REGISTER 'top_level_domain.py' using jython as example_udf;
 
-gdelt_v2 = LOAD '/unencrypted/GDELT/v2/' AS (
+gdelt_v2 = LOAD '$V2_DATA_DIR' AS (
     GLOBALEVENTID:long,
     SQLDATE:chararray,      -- dates when the event occurred
     MonthYear:chararray,    -- dates when the event occurred
