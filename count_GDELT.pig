@@ -1,6 +1,6 @@
 -- Load GDELT records into relation and count
 
-gdelt_v1 = LOAD '/unencrypted/GDELT/v1/' AS (
+gdelt_v1 = LOAD '$V1_DATA_DIR' AS (
     GLOBALEVENTID:long,
     SQLDATE:long,
     MonthYear:long,
@@ -60,7 +60,7 @@ gdelt_v1 = LOAD '/unencrypted/GDELT/v1/' AS (
     DATEADDED:long
 );
 
-gdelt_v2 = LOAD '/unencrypted/GDELT/v2/' AS (
+gdelt_v2 = LOAD '$V2_DATA_DIR' AS (
     GLOBALEVENTID:long,
     SQLDATE:long,
     MonthYear:long,
