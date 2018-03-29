@@ -9,7 +9,7 @@ NOTE:  Change the Pig logging directory in the `pig.properties pig.logfile`.
 [Pig cheat-sheet] (https://www.qubole.com/resources/cheatsheet/pig-function-cheat-sheet/).  
 
 ## Call pig scripts with parameter file
-''pig -param_file pig.cfg AvgTone_USA_ntiles_by_day.pig''
+`pig -param_file pig.cfg AvgTone_USA_ntiles_by_day.pig`
 
 ## Pig script common header
 Q:  Who writes bad stuff about the USA?  
