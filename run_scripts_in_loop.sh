@@ -12,7 +12,7 @@ AvgTone_USA_ntiles_by_year.pig
 AvgTone_USA_ntiles_by_congress.pig
 EOF
 
-frameworks='tez mapreduce'
+# frameworks='tez mapreduce' # uncomment when using tez
 # outer loop for frameworks
 for framework in $frameworks
 do
