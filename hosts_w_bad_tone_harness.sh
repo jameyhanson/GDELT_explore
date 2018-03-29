@@ -16,8 +16,8 @@ pig -param_file pig.cfg hosts_w_bad_tone_07Sun.pig
 pig -param_file pig.cfg hosts_w_bad_tone_99summary.pig
 EOF
 
-frameworks='tez mapreduce'
-# outer loop for frameworks
+frameworks='mapreduce'
+# outer loop for frameworks # tez and/or local if needed
 for framework in $frameworks
 do
     echo "####### $framework tests ######"
