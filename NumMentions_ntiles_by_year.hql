@@ -64,7 +64,7 @@ FIELD TERMINATED BY '\t'
 LINES TERMINATED BY '\n'
 STORED AS TEXTFILE;
 
-LOAD DATA INPATH '/data/gdelt_v1/events/*'
+LOAD DATA INPATH '/unencrypted/GDELT/v1/'
 OVERWRITE INTO TABLE gdelt_v1;
 
 CREATE TABLE IF NOT EXISTS gdelt_events_v2 (
@@ -132,7 +132,7 @@ FIELD TERMINATED BY '\t'
 LINES TERMINATED BY '\n'
 STORED AS TEXTFILE;
 
-LOAD DATA INPATH '/data/gdelt_v2/events/*'
+LOAD DATA INPATH '/unencrypted/GDELT/v2/'
 OVERWRITE INTO TABLE gdelt_v2;
 
 -- INSERT OVERWRITE gdelt_v1_samp
@@ -147,7 +147,7 @@ OVERWRITE INTO TABLE gdelt_v2;
 
 -- https://cwiki.apache.org/confluence/display/Hive/LanguageManual+UDF
 
-INSERT OVERWRITE DIRECTORY '/user/pigtez/hive_NumMentions/'
+INSERT OVERWRITE DIRECTORY '/results/hive_NumMentions/'
 SELECT
    MAX(gdelt_ua.NumMentions) AS min_NumMentions,
    percentile(gdelt_ua.NumMentions,0.05) AS q05, 
