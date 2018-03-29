@@ -6,14 +6,14 @@
 
 # scripts to test
 read -d '' scripts << EOF
-hosts_w_bad_tone_01Mon.pig
-hosts_w_bad_tone_02Tue.pig
-hosts_w_bad_tone_03Wed.pig
-hosts_w_bad_tone_04Thu.pig
-hosts_w_bad_tone_05Fri.pig
-hosts_w_bad_tone_06Sat.pig
-hosts_w_bad_tone_07Sun.pig
-hosts_w_bad_tone_99summary.pig
+pig -param_file pig.cfg hosts_w_bad_tone_01Mon.pig
+pig -param_file pig.cfg hosts_w_bad_tone_02Tue.pig
+pig -param_file pig.cfg hosts_w_bad_tone_03Wed.pig
+pig -param_file pig.cfg hosts_w_bad_tone_04Thu.pig
+pig -param_file pig.cfg hosts_w_bad_tone_05Fri.pig
+pig -param_file pig.cfg hosts_w_bad_tone_06Sat.pig
+pig -param_file pig.cfg hosts_w_bad_tone_07Sun.pig
+pig -param_file pig.cfg hosts_w_bad_tone_99summary.pig
 EOF
 
 frameworks='tez mapreduce'
