@@ -5,7 +5,7 @@ REGISTER '/opt/cloudera/parcels/CDH-5.12.2-1.cdh5.12.2.p0.4/lib/pig/datafu.jar';
 DEFINE DIST datafu.pig.geo.HaversineDistInMiles;
 DEFINE Quantile datafu.pig.stats.StreamingQuantile('0.0', '0.05', '0.25', '0.5', '0.75', '0.9', '1.0');
 
-gdelt_v1 = LOAD '/unencrypted/GDELT/v1/' AS (
+gdelt_v1 = LOAD '$V1_DATA_DIR' AS (
     GLOBALEVENTID:long,
     SQLDATE:long,
     MonthYear:long,
@@ -65,7 +65,7 @@ gdelt_v1 = LOAD '/unencrypted/GDELT/v1/' AS (
     DATEADDED:long
 );
 
-gdelt_v2 = LOAD '/unencrypted/GDELT/v2/' AS (
+gdelt_v2 = LOAD '$V2_DATA_DIR' AS (
     GLOBALEVENTID:long,
     SQLDATE:long,
     MonthYear:long,
