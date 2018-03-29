@@ -136,9 +136,9 @@ STORED AS TEXTFILE
 LOCATION '/unencrypted/GDELT/v2/';
 
 -- from https://www.gdeltproject.org/data/lookups/CAMEO.country.txt
--- wget -O /lookup/country_codes.txt https://www.gdeltproject.org/data/lookups/CAMEO.country.txt
+-- wget -O /data01/lookup/country_codes.txt https://www.gdeltproject.org/data/lookups/CAMEO.country.txt
 -- hdfs dfs -mkdir -p /unencrypted/CAMEO/country_codes
--- hdfs dfs -put /lookup/country_codes.txt /unencrypted/CAMEO/country_codes/
+-- hdfs dfs -put /data01/lookup/country_codes.txt /unencrypted/CAMEO/country_codes/
 CREATE EXTERNAL TABLE IF NOT EXISTS gdelt.country_codes (
     country_code STRING,
     coutry_name STRING)
@@ -151,9 +151,9 @@ LOCATION  '/unencrypted/CAMEO/country_codes/'
 tblproperties ("skip.header.line.count"="1");
 
 -- from https://www.gdeltproject.org/data/lookups/CAMEO.ethnic.txt
--- wget -O /lookup/ethnic_codes.txt https://www.gdeltproject.org/data/lookups/CAMEO.ethnic.txt
+-- wget -O /data01/lookup/ethnic_codes.txt https://www.gdeltproject.org/data/lookups/CAMEO.ethnic.txt
 -- hdfs dfs -mkdir -p /unencrypted/CAMEO/ethnic_codes
--- hdfs dfs -put /lookup/ethnic_codes.txt /unencrypted/CAMEO/ethnic_codes/
+-- hdfs dfs -put /data01/lookup/ethnic_codes.txt /unencrypted/CAMEO/ethnic_codes/
 CREATE EXTERNAL TABLE IF NOT EXISTS gdelt.ethnic_codes (
     ethnic_code STRING,
     ethnicity_name STRING)
@@ -166,9 +166,9 @@ LOCATION  '/unencrypted/CAMEO/ethnic_codes/'
 tblproperties ("skip.header.line.count"="1");
 
 -- from https://www.gdeltproject.org/data/lookups/CAMEO.knowngroup.txt
--- wget -O /lookup/known_groups.txt https://www.gdeltproject.org/data/lookups/CAMEO.knowngroup.txt
+-- wget -O /data01/lookup/known_groups.txt https://www.gdeltproject.org/data/lookups/CAMEO.knowngroup.txt
 -- hdfs dfs -mkdir -p /unencrypted/CAMEO/known_groups
--- hdfs dfs -put /lookup/known_groups.txt /unencrypted/CAMEO/known_groups/
+-- hdfs dfs -put /data01/lookup/known_groups.txt /unencrypted/CAMEO/known_groups/
 CREATE EXTERNAL TABLE IF NOT EXISTS gdelt.known_groups (
     group_code STRING,
     group_name STRING)
@@ -181,9 +181,9 @@ LOCATION  '/unencrypted/CAMEO/known_groups/'
 tblproperties ("skip.header.line.count"="1");
 
 -- from https://www.gdeltproject.org/data/lookups/CAMEO.religion.txt
--- wget -O /lookup/religion_codes.txt https://www.gdeltproject.org/data/lookups/CAMEO.religion.txt
+-- wget -O /data01/lookup/religion_codes.txt https://www.gdeltproject.org/data/lookups/CAMEO.religion.txt
 -- hdfs dfs -mkdir -p /unencrypted/CAMEO/religion_codes
--- hdfs dfs -put /lookup/religion_codes.txt /unencrypted/CAMEO/religion_codes/
+-- hdfs dfs -put /data01/lookup/religion_codes.txt /unencrypted/CAMEO/religion_codes/
 CREATE EXTERNAL TABLE IF NOT EXISTS gdelt.religion_codes (
     religion_code STRING,
     religion_name STRING)
@@ -196,9 +196,9 @@ LOCATION  '/unencrypted/CAMEO/religion_codes/'
 tblproperties ("skip.header.line.count"="1");
 
 -- https://www.gdeltproject.org/data/lookups/CAMEO.type.txt
--- wget -O /lookup/type_codes.txt https://www.gdeltproject.org/data/lookups/CAMEO.type.txt
+-- wget -O /data01/lookup/type_codes.txt https://www.gdeltproject.org/data/lookups/CAMEO.type.txt
 -- hdfs dfs -mkdir -p /unencrypted/CAMEO/type_codes
--- hdfs dfs -put /lookup/type_codes.txt /unencrypted/CAMEO/type_codes/
+-- hdfs dfs -put /data01/lookup/type_codes.txt /unencrypted/CAMEO/type_codes/
 CREATE EXTERNAL TABLE IF NOT EXISTS gdelt.type_codes (
     type_code STRING,
     type_name STRING)
