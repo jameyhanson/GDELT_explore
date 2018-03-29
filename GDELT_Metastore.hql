@@ -67,7 +67,7 @@ ROW FORMAT DELIMITED
 FIELDS TERMINATED BY '\t'
 LINES TERMINATED BY '\n'
 STORED AS TEXTFILE
-LOCATION  '/unencrypted/GDELT/v1/';
+LOCATION  '$V1_DATA_DIR';
 
 CREATE TABLE IF NOT EXISTS gdelt.gdelt_events_v2 (
     GLOBALEVENTID INT,
@@ -133,7 +133,7 @@ ROW FORMAT DELIMITED
 FIELDS TERMINATED BY '\t'
 LINES TERMINATED BY '\n'
 STORED AS TEXTFILE
-LOCATION '/unencrypted/GDELT/v2/';
+LOCATION '$V2_DATA_DIR';
 
 -- from https://www.gdeltproject.org/data/lookups/CAMEO.country.txt
 -- wget -O /data01/lookup/country_codes.txt https://www.gdeltproject.org/data/lookups/CAMEO.country.txt
