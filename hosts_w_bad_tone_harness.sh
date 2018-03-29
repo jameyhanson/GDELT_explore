@@ -35,7 +35,7 @@ do
             echo $framework $script
             # NOTE:  applicaiton tags do not work with Tez
             export HADOOP_OPTS=-Dmapreduce.job.tags=trial_number:_$run_num
-            /usr/local/pig-0.16.0/bin/pig -x $framework $script
+            /usr/bin/pig -x $framework $script
         done
     done
 done
