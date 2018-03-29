@@ -4,11 +4,11 @@
 -- Register DataFu and define an alias for the function
 -- https://datafu.incubator.apache.org/docs/datafu/guide.html
 
-REGISTER '/opt/cloudera/parcels/CDH-5.11.0-1.cdh5.11.0.p0.34/lib/pig/datafu.jar';
+REGISTER '/opt/cloudera/parcels/CDH-5.12.2-1.cdh5.12.2.p0.4/lib/pig/datafu.jar';
 DEFINE DIST datafu.pig.geo.HaversineDistInMiles;
 DEFINE Quantile datafu.pig.stats.StreamingQuantile('0.0455', '0.3173', '0.5', '0.6827', '0.9545');
 
-gdelt_v1 = LOAD '/data/gdelt_v1/events/' AS (
+gdelt_v1 = LOAD '/unencrypted/GDELT/v1/' AS (
     GLOBALEVENTID:long,
     SQLDATE:long,
     MonthYear:long,
@@ -68,7 +68,7 @@ gdelt_v1 = LOAD '/data/gdelt_v1/events/' AS (
     DATEADDED:long
 );
 
-gdelt_v2 = LOAD '/data/gdelt_v2/events/' AS (
+gdelt_v2 = LOAD '/unencrypted/GDELT/v2/' AS (
     GLOBALEVENTID:long,
     SQLDATE:long,
     MonthYear:long,
