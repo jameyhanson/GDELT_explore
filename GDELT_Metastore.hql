@@ -1,5 +1,6 @@
 -- Create Hive Metastore tables related to GDELT and associated
 --    lookup tables
+-- See https://www.gdeltproject.org/data.html
 
 CREATE DATABASE IF NOT EXISTS gdelt;
 
@@ -66,7 +67,7 @@ ROW FORMAT DELIMITED
 FIELDS TERMINATED BY '\t'
 LINES TERMINATED BY '\n'
 STORED AS TEXTFILE
-LOCATION  '/data/gdelt_v1/events';
+LOCATION  '/unencrypted/GDELT/v1/';
 
 CREATE TABLE IF NOT EXISTS gdelt.gdelt_events_v2 (
     GLOBALEVENTID INT,
@@ -132,8 +133,9 @@ ROW FORMAT DELIMITED
 FIELDS TERMINATED BY '\t'
 LINES TERMINATED BY '\n'
 STORED AS TEXTFILE
-LOCATION  '/data/gdelt_v2/events';
+LOCATION '/unencrypted/GDELT/v2/';
 
+-- from https://www.gdeltproject.org/data/lookups/CAMEO.country.txt
 CREATE EXTERNAL TABLE IF NOT EXISTS gdelt.country_codes (
     country_code STRING,
     coutry_name STRING)
@@ -144,6 +146,7 @@ LINES TERMINATED BY '\n'
 STORED AS TEXTFILE
 LOCATION  '/data/country_codes';
 
+-- from https://www.gdeltproject.org/data/lookups/CAMEO.ethnic.txt
 CREATE EXTERNAL TABLE IF NOT EXISTS gdelt.ethnic_codes (
     ethnic_code STRING,
     ethnicity_name STRING)
@@ -164,6 +167,7 @@ LINES TERMINATED BY '\n'
 STORED AS TEXTFILE
 LOCATION  '/data/known_groups';
 
+-- from https://www.gdeltproject.org/data/lookups/CAMEO.religion.txt
 CREATE EXTERNAL TABLE IF NOT EXISTS gdelt.religion_codes (
     religion_code STRING,
     religion_name STRING)
@@ -174,6 +178,7 @@ LINES TERMINATED BY '\n'
 STORED AS TEXTFILE
 LOCATION  '/data/religion_codes';
 
+-- https://www.gdeltproject.org/data/lookups/CAMEO.type.txt
 CREATE EXTERNAL TABLE IF NOT EXISTS gdelt.type_codes (
     type_code STRING,
     type_name STRING)
