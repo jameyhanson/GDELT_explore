@@ -1,6 +1,7 @@
 -- Hosts with writing articles with bad tones about the USA actors
 -- weekly moving averages for the 7 days before each Friday
 
+REGISTER '/usr/lib/pig/piggybank.jar';
 REGISTER '/opt/cloudera/parcels/CDH-5.11.0-1.cdh5.11.0.p0.34/lib/pig/datafu.jar';
 DEFINE Quantile datafu.pig.stats.StreamingQuantile('0.0455', '0.3173', '0.5', '0.6827', '0.9545');
 
