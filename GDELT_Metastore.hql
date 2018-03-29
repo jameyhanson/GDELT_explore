@@ -144,7 +144,7 @@ ROW FORMAT DELIMITED
 FIELDS TERMINATED BY '\t'
 LINES TERMINATED BY '\n'
 STORED AS TEXTFILE
-LOCATION  '/unencrypted/CAMEO/country_codes';
+LOCATION  '/unencrypted/CAMEO/country_codes/';
 
 -- from https://www.gdeltproject.org/data/lookups/CAMEO.ethnic.txt
 CREATE EXTERNAL TABLE IF NOT EXISTS gdelt.ethnic_codes (
@@ -155,7 +155,7 @@ ROW FORMAT DELIMITED
 FIELDS TERMINATED BY '\t'
 LINES TERMINATED BY '\n'
 STORED AS TEXTFILE
-LOCATION  '/unencrypted/CAMEO/ethnic_codes';
+LOCATION  '/unencrypted/CAMEO/ethnic_codes/';
 
 CREATE EXTERNAL TABLE IF NOT EXISTS gdelt.known_groups (
     group_code STRING,
@@ -165,7 +165,7 @@ ROW FORMAT DELIMITED
 FIELDS TERMINATED BY '\t'
 LINES TERMINATED BY '\n'
 STORED AS TEXTFILE
-LOCATION  '/unencrypted/CAMEO/known_groups';
+LOCATION  '/unencrypted/CAMEO/known_groups/';
 
 -- from https://www.gdeltproject.org/data/lookups/CAMEO.religion.txt
 CREATE EXTERNAL TABLE IF NOT EXISTS gdelt.religion_codes (
@@ -176,7 +176,7 @@ ROW FORMAT DELIMITED
 FIELDS TERMINATED BY '\t'
 LINES TERMINATED BY '\n'
 STORED AS TEXTFILE
-LOCATION  '/unencrypted/CAMEO/religion_codes';
+LOCATION  '/unencrypted/CAMEO/religion_codes/';
 
 -- https://www.gdeltproject.org/data/lookups/CAMEO.type.txt
 CREATE EXTERNAL TABLE IF NOT EXISTS gdelt.type_codes (
@@ -187,4 +187,4 @@ ROW FORMAT DELIMITED
 FIELDS TERMINATED BY '\t'
 LINES TERMINATED BY '\n'
 STORED AS TEXTFILE
-LOCATION  '/unencrypted/CAMEO/type_codes';
+LOCATION  '/unencrypted/CAMEO/type_codes/';
