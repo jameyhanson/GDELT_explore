@@ -157,6 +157,7 @@ LINES TERMINATED BY '\n'
 STORED AS TEXTFILE
 LOCATION  '/unencrypted/CAMEO/ethnic_codes/';
 
+-- from https://www.gdeltproject.org/data/lookups/CAMEO.knowngroup.txt
 CREATE EXTERNAL TABLE IF NOT EXISTS gdelt.known_groups (
     group_code STRING,
     group_name STRING)
