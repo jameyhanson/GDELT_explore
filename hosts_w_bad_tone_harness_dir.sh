@@ -33,7 +33,7 @@ do
         for script in $scripts
         do
             echo $config_file $script
-            # NOTE:  applicaiton tags do not work with Tez
+            # NOTE:  application tags do not work with Tez
             export HADOOP_OPTS=-Dmapreduce.job.tags=trial_number:_$run_num
             /usr/bin/pig  -param_file $config_file $script
         done
