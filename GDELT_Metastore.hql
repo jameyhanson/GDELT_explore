@@ -136,6 +136,7 @@ STORED AS TEXTFILE
 LOCATION '/unencrypted/GDELT/v2/';
 
 -- from https://www.gdeltproject.org/data/lookups/CAMEO.country.txt
+-- wget -O /lookup/country_codes.txt https://www.gdeltproject.org/data/lookups/CAMEO.country.txt
 CREATE EXTERNAL TABLE IF NOT EXISTS gdelt.country_codes (
     country_code STRING,
     coutry_name STRING)
@@ -144,9 +145,11 @@ ROW FORMAT DELIMITED
 FIELDS TERMINATED BY '\t'
 LINES TERMINATED BY '\n'
 STORED AS TEXTFILE
-LOCATION  '/unencrypted/CAMEO/country_codes/';
+LOCATION  '/unencrypted/CAMEO/country_codes/'
+tblproperties ("skip.header.line.count"="1");
 
 -- from https://www.gdeltproject.org/data/lookups/CAMEO.ethnic.txt
+-- wget -O /lookup/ethnic_codes.txt https://www.gdeltproject.org/data/lookups/CAMEO.ethnic.txt
 CREATE EXTERNAL TABLE IF NOT EXISTS gdelt.ethnic_codes (
     ethnic_code STRING,
     ethnicity_name STRING)
@@ -155,9 +158,11 @@ ROW FORMAT DELIMITED
 FIELDS TERMINATED BY '\t'
 LINES TERMINATED BY '\n'
 STORED AS TEXTFILE
-LOCATION  '/unencrypted/CAMEO/ethnic_codes/';
+LOCATION  '/unencrypted/CAMEO/ethnic_codes/'
+tblproperties ("skip.header.line.count"="1");
 
 -- from https://www.gdeltproject.org/data/lookups/CAMEO.knowngroup.txt
+-- wget -O /lookup/known_groups.txt https://www.gdeltproject.org/data/lookups/CAMEO.knowngroup.txt
 CREATE EXTERNAL TABLE IF NOT EXISTS gdelt.known_groups (
     group_code STRING,
     group_name STRING)
@@ -166,9 +171,11 @@ ROW FORMAT DELIMITED
 FIELDS TERMINATED BY '\t'
 LINES TERMINATED BY '\n'
 STORED AS TEXTFILE
-LOCATION  '/unencrypted/CAMEO/known_groups/';
+LOCATION  '/unencrypted/CAMEO/known_groups/'
+tblproperties ("skip.header.line.count"="1");
 
 -- from https://www.gdeltproject.org/data/lookups/CAMEO.religion.txt
+-- wget -O /lookup/religion_codes.txt https://www.gdeltproject.org/data/lookups/CAMEO.religion.txt
 CREATE EXTERNAL TABLE IF NOT EXISTS gdelt.religion_codes (
     religion_code STRING,
     religion_name STRING)
@@ -177,9 +184,11 @@ ROW FORMAT DELIMITED
 FIELDS TERMINATED BY '\t'
 LINES TERMINATED BY '\n'
 STORED AS TEXTFILE
-LOCATION  '/unencrypted/CAMEO/religion_codes/';
+LOCATION  '/unencrypted/CAMEO/religion_codes/'
+tblproperties ("skip.header.line.count"="1");
 
 -- https://www.gdeltproject.org/data/lookups/CAMEO.type.txt
+-- wget -O /lookup/type_codes.txt https://www.gdeltproject.org/data/lookups/CAMEO.type.txt
 CREATE EXTERNAL TABLE IF NOT EXISTS gdelt.type_codes (
     type_code STRING,
     type_name STRING)
@@ -188,4 +197,5 @@ ROW FORMAT DELIMITED
 FIELDS TERMINATED BY '\t'
 LINES TERMINATED BY '\n'
 STORED AS TEXTFILE
-LOCATION  '/unencrypted/CAMEO/type_codes/';
+LOCATION  '/unencrypted/CAMEO/type_codes/'
+tblproperties ("skip.header.line.count"="1");
