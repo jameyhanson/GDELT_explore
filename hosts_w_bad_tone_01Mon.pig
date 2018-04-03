@@ -84,7 +84,7 @@ w_usa_actors_sel_fields = FOREACH w_usa_actors GENERATE
     GLOBALEVENTID,
     ToDate(DATEADDED, 'YYYYMMdd') AS DATEADDED,
     ToDate('1979-01-01') AS epoch_start,
-    DaysBetween(ToDate(DATEADDED, 'YYYYMMdd'), ToDate('1979-01-01')) AS (epoch_days:LONG),
+    DaysBetween(ToDate(DATEADDED, 'YYYYMMdd'), ToDate('1979-01-01')) AS epoch_days,
     AvgTone,
     org.apache.pig.piggybank.evaluation.util.apachelogparser.HostExtractor(SOURCEURL) AS host,
     SOURCEURL;
