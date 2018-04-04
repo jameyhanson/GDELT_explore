@@ -26,8 +26,8 @@ do
     for run_num in {1..1}
     do
         echo "clean output directory"
-        hdfs dfs -rm -r -skipTrash /results/hosts_with_lots_of_very_negative*
-        hdfs dfs -rm -r -skipTrash /results/very_negative_hosts_by_moving_week_avg
+        hdfs dfs -rm -r -skipTrash /results/hosts_with_lots_of_very_negative/*
+        hdfs dfs -rm -r -skipTrash /results/very_negative_hosts_by_moving_week_avg/
     
         # inner loop for pig script
         for script in $scripts
@@ -35,7 +35,7 @@ do
             echo $config_file $script
             # NOTE:  application tags do not work with Tez
             export HADOOP_OPTS=-Dmapreduce.job.tags=trial_number:_$run_num
-            /usr/bin/pig  -param_file $config_file $script
+            time /usr/bin/pig -param_file $config_file $script
         done
     done
 done
