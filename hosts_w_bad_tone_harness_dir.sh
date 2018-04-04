@@ -27,7 +27,7 @@ do
     do
         echo "clean output directory"
         hdfs dfs -rm -r -skipTrash /results/hosts_with_lots_of_very_negative/*
-        hdfs dfs -rm -r -skipTrash /results/very_negative_hosts_by_moving_week_avg/
+        hdfs dfs -rm -r -skipTrash /results/very_negative_hosts_by_moving_week_avg
     
         # inner loop for pig script
         for script in $scripts
