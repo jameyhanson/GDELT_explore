@@ -23,7 +23,7 @@ do
     echo "####### $encrypted data tests ######"
     
     # middle loop for run number
-    for run_num in {1..1}
+    for run_num in {1..3}
     do
         echo "clean output directory"
         hdfs dfs -rm -r -skipTrash /results/hosts_with_lots_of_very_negative/*
