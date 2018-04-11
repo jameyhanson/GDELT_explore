@@ -191,4 +191,4 @@ hosts_with_lots_of_very_negative_by_week = FILTER fraction_of_very_negative_by_w
     AND tld != 'org'
     AND tld != 'net';
 
-STORE hosts_with_lots_of_very_negative_by_week INTO '/results/hosts_with_lots_of_very_negative/02Tue_results';
+STORE hosts_with_lots_of_very_negative_by_week INTO '$RESULTS_BASE_DIR/results/hosts_with_lots_of_very_negative/02Tue_results';
