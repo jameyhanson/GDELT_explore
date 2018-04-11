@@ -16,7 +16,7 @@ hosts_w_bad_tone_07Sun.pig
 hosts_w_bad_tone_99summary.pig
 EOF
 
-config_files='pig_1.cfg pig_2.cfg'
+config_files='pig_enc_enc.cfg pig_enc_enc.cfg'
 # outer loop for frameworks # tez and/or local if needed
 for config_file in $config_files
 do
@@ -25,9 +25,13 @@ do
     # middle loop for run number
     for run_num in {1..3}
     do
-        echo "clean output directory"
-        hdfs dfs -rm -r -skipTrash /results/hosts_with_lots_of_very_negative/*
-        hdfs dfs -rm -r -skipTrash /results/very_negative_hosts_by_moving_week_avg
+        echo "clean unencrypted output directory"
+        hdfs dfs -rm -r -skipTrash /unencrypted/results/hosts_with_lots_of_very_negative/*
+        hdfs dfs -rm -r -skipTrash /unencrypted/results/very_negative_hosts_by_moving_week_avg
+
+        echo "clean encrypted output directory"
+        hdfs dfs -rm -r -skipTrash /enc_zone1/results/hosts_with_lots_of_very_negative/*
+        hdfs dfs -rm -r -skipTrash /enc_zone1/results/very_negative_hosts_by_moving_week_avg    
     
         # inner loop for pig script
         for script in $scripts
