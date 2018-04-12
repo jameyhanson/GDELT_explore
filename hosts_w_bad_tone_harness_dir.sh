@@ -16,14 +16,14 @@ hosts_w_bad_tone_07Sun.pig
 hosts_w_bad_tone_99summary.pig
 EOF
 
-config_files='pig_enc_un.cfg'
+config_files='pig_enc_un.cfg pig_enc_enc.cfg pig_un_un.cfg pig_un_enc.cfg'
 # outer loop for frameworks # tez and/or local if needed
 for config_file in $config_files
 do
     echo "####### $encrypted data tests ######"
     
     # middle loop for run number
-    for run_num in {1..1}
+    for run_num in {1..3}
     do
         echo "clean unencrypted output directory"
         hdfs dfs -rm -r -skipTrash /unencrypted/results/hosts_with_lots_of_very_negative/*
