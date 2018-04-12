@@ -2,7 +2,7 @@
 -- weekly moving averages for the 7 days before each Sunday
 -- collect and sort final results
 
-very_negative_hosts_by_moving_week_avg = LOAD '/results/hosts_with_lots_of_very_negative' AS (
+very_negative_hosts_by_moving_week_avg = LOAD '$RESULTS_BASE_DIR/hosts_with_lots_of_very_negative' AS (
     week_ended_date:chararray,
     host:chararray,
     tld:chararray,
@@ -22,4 +22,4 @@ very_negative_hosts_by_moving_week_avg = FOREACH very_negative_hosts_by_moving_w
 
 very_negative_hosts_by_moving_week_avg = ORDER very_negative_hosts_by_moving_week_avg BY week_ended_date DESC;
 
-STORE very_negative_hosts_by_moving_week_avg INTO '/results/very_negative_hosts_by_moving_week_avg';
+STORE very_negative_hosts_by_moving_week_avg INTO '$RESULTS_BASE_DIR/very_negative_hosts_by_moving_week_avg';
