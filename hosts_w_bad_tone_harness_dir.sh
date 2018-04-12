@@ -38,7 +38,7 @@ do
         do
             echo $config_file $script
             # NOTE:  application tags do not work with Tez
-            export HADOOP_OPTS=-Dmapreduce.job.tags=$config_file_:_trial_$run_num
+            export HADOOP_OPTS=-Dmapreduce.job.tags=_trial_$run_num:_conf_$config_file
             time /usr/bin/pig -param_file $config_file $script
         done
     done
